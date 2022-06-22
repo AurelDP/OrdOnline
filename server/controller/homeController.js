@@ -1,4 +1,4 @@
-const home = require('../model/home');
+const home = require('../repository/home');
 
 async function getTitle(req, res) {
     const email = req.body;
