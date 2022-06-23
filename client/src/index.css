@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ord-background-gradient {
+    @apply min-h-screen bg-gradient-to-b from-ord-green-600;
+}
