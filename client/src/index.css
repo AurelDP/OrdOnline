@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .ord-button {
+        @apply rounded-lg h-7 w-40 flex items-center justify-center font-semibold;
+    }
+
+    .ord-button-green {
+        @apply bg-ord-green-100 text-white;
+    }
+
+    .ord-button-lightgreen {
+        @apply bg-ord-green-600 text-ord-green-100;
+    }
+
+    .ord-button-red {
+        @apply bg-ord-red text-white;
+    }
+
+    .ord-button-green-hover {
+        @apply bg-ord-green-300 text-white;
+    }
+
+    .ord-button-lightgreen-hover {
+        @apply bg-white text-ord-green-100;
+    }
+
+    .ord-button-red-hover {
+        @apply bg-ord-lightred text-white;
+    }
+
+    .ord-px-adapt {
+        @apply md:px-10 sm:px-6 px-6;
+    }
+
+    .ord-py-adapt {
+        @apply md:py-12 sm:py-8 py-4;
+    }
+}

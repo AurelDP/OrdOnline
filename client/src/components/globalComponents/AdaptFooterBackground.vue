@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue'
-import BackgroundGradient from "@/components/BackgroundGradient";
+import Footer from '@/components/globalComponents/Footer.vue'
+import BackgroundGradient from "@/components/globalComponents/BackgroundGradient";
 
 export default {
   name: "AdaptFooterBackground",
