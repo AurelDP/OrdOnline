@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/AccueilView.vue'
 import AboutView from '../views/AboutView.vue'
 import Error404 from '../views/ErrorView.vue'
 
