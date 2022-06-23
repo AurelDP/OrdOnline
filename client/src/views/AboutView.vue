@@ -1,18 +1,19 @@
 <template>
   <AdaptFooterBackground v-bind:backgroundGradient="false">
-      <h1>This is an about page</h1>
+    <Navbar/>
+    <h1>This is an about page</h1>
   </AdaptFooterBackground>
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue'
-import AdaptFooterBackground from "@/components/AdaptFooterBackground";
+import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
+import Navbar from "@/components/globalComponents/Navbar";
 
 export default {
   name: 'AboutView',
   components: {
     AdaptFooterBackground,
-    Footer
+    Navbar
   }
 }
 </script>

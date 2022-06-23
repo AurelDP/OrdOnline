@@ -1,22 +1,25 @@
 <template>
   <AdaptFooterBackground v-bind:backgroundGradient="true">
-      <img alt="Vue logo" src="../assets/logo.png" class="h-28 w-28">
-      <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Navbar
+        v-bind:buttons="true"
+        v-bind:text1="'Inscription'"
+        v-bind:text2="'Connexion'"
+        v-bind:src1="'/singUp'"
+        v-bind:src2="'/signIn'"
+    />
   </AdaptFooterBackground>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import Footer from '@/components/Footer.vue'
-import AdaptFooterBackground from "@/components/AdaptFooterBackground";
+import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
+import Navbar from "@/components/globalComponents/Navbar";
 
 export default {
   name: 'HomeView',
   components: {
     AdaptFooterBackground,
-    HelloWorld,
-    Footer
+    Navbar
   }
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <footer class="bg-ord-dark-blue shadow md:py-12 md:px-10 sm:py-8 sm:px-6 py-4 px-6 text-light-gray mt-auto">
+  <footer class="bg-ord-dark-blue shadow ord-px-adapt ord-py-adapt text-light-gray mt-auto">
     <div class="flex items-center justify-between flex-col sm:flex-row">
       <router-link to="/" class="flex items-center hover:text-ord-green-600">
-        <img src="../assets/logo.svg" class="mr-3 h-8" alt="OrdOnline Logo"/>
+        <img src="../../assets/logo.svg" class="mr-3 h-8" alt="OrdOnline Logo"/>
         <p class="text-2xl font-semibold whitespace-nowrap">OrdOnline</p>
       </router-link>
       <ul class="flex flex-wrap items-center">

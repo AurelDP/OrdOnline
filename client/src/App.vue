@@ -1,9 +1,3 @@
 <template>
-  <router-view/>
+  <router-view class="font-sans"/>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-}
-</style>
