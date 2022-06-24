@@ -38,4 +38,12 @@
     .ord-py-adapt {
         @apply md:py-12 sm:py-8 py-4;
     }
+
+    .ord-text-title {
+        @apply text-4xl font-bold;
+    }
+
+    .ord-text-subtitle {
+        @apply text-2xl;
+    }
 }
