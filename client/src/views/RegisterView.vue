@@ -1,20 +1,19 @@
 <template>
-  <div class="bg ord-background-gradient">
-    <RegisterForm></RegisterForm>
-  </div>
+  <WhiteBoard title="Informations Patient">
+    <RegisterForm/>
+  </WhiteBoard>
 </template>
 
 <script>
-import RegisterForm from "@/components/RegisterForm";
+import WhiteBoard from "@/components/globalComponents/WhiteBoard";
+import RegisterForm from "@/components/registerPage/RegisterForm";
 
 export default {
   name: "RegisterView",
-  components: {RegisterForm}
+  components: {RegisterForm, WhiteBoard}
 }
 </script>
 
 <style scoped>
-.bg {
-  width: 1920px;
-}
+
 </style>
