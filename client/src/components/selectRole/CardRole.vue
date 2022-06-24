@@ -1,10 +1,9 @@
 <template>
-
   <div class="m-5">
-    <router-link to="/" class="group flex place-content-center px-10 py-6 bg-white rounded-2xl shadow-md w-64 h-64">
-      <div class="flex flex-col place-content-center">
+    <router-link to="/" class="group flex place-content-center bg-white rounded-3xl shadow-lg w-52 h-52 p-4">
+      <div class="flex flex-col text-center place-content-center">
 
-        <svg v-if="role === 'patient'" class="mx-auto group-hover:fill-ord-green-100 transition h-40" fill="#2D3047"
+        <svg v-if="role === 'patient'" class="mx-auto group-hover:fill-ord-green-100 transition h-28" fill="#2D3047"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 448 512">
           <path
@@ -12,7 +11,7 @@
         </svg>
         <p v-if="role === 'patient'" class="mt-4 text-2xl font-black text-ord-dark-blue group-hover:text-ord-green-100 transition">Patient</p>
 
-        <svg v-if="role === 'doctor'" class="mx-auto group-hover:fill-ord-green-100 transition h-40" fill="#2D3047"
+        <svg v-if="role === 'doctor'" class="mx-auto group-hover:fill-ord-green-100 transition h-28" fill="#2D3047"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 448 512">
           <path
@@ -20,7 +19,7 @@
         </svg>
         <p v-if="role === 'doctor'" class="mt-4 text-2xl font-black text-ord-dark-blue group-hover:text-ord-green-100 transition">Medecin</p>
 
-        <svg v-if="role === 'pharma'" class="mx-auto group-hover:fill-ord-green-100 transition h-40" fill="#2D3047" width="150px" height="150px"
+        <svg v-if="role === 'pharma'" class="mx-auto group-hover:fill-ord-green-100 transition h-28" fill="#2D3047" width="150px" height="150px"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 576 512">
           <path
@@ -28,7 +27,7 @@
         </svg>
         <p v-if="role === 'pharma'" class="mt-4 text-2xl font-black text-ord-dark-blue group-hover:text-ord-green-100 transition">Pharmacie</p>
 
-        <svg v-if="role === 'healthService'" class="mx-auto group-hover:fill-ord-green-100 transition h-40" fill="#2D3047" width="150px" height="150px"
+        <svg v-if="role === 'healthService'" class="mx-auto group-hover:fill-ord-green-100 transition h-28" fill="#2D3047" width="150px" height="150px"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 640 512">
           <path
@@ -43,7 +42,7 @@
 
 <script>
 export default {
-  name: "cardRole",
+  name: "CardRole",
   props: {
     role: String,
   },
