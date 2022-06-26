@@ -3,10 +3,10 @@
     <NavbarBanner/>
     <NavbarButtons
         v-if="buttons === true"
-        v-bind:text1=text1
-        v-bind:text2=text2
-        v-bind:src1=src1
-        v-bind:src2=src2
+        :text1=text1
+        :text2=text2
+        :src1=src1
+        :src2=src2
     />
   </nav>
 </template>

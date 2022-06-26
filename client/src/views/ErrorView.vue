@@ -1,5 +1,5 @@
 <template>
- <AdaptFooterBackground v-bind:backgroundGradient="true">
+ <AdaptFooterBackground :backgroundGradient="true">
    <Navbar/>
    <div class="ord-py-adapt ord-px-adapt">
      <h1 class="font-bold text-ord-lightred text-5xl text-center">

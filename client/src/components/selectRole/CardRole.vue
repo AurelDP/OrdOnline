@@ -1,6 +1,6 @@
 <template>
   <div class="m-5">
-    <router-link to="/" class="group flex place-content-center bg-white rounded-3xl shadow-lg w-52 h-52 p-4">
+    <router-link to="/register" class="group flex place-content-center bg-white rounded-3xl shadow-lg w-52 h-52 p-4">
       <div class="flex flex-col text-center place-content-center">
 
         <svg v-if="role === 'patient'" class="mx-auto group-hover:fill-ord-green-100 transition h-28" fill="#2D3047"

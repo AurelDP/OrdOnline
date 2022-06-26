@@ -1,5 +1,5 @@
 <template>
-  <router-link v-bind:to=src class="transition ord-button">
+  <router-link :to=src class="transition ord-button">
       {{text}}
   </router-link>
 </template>
