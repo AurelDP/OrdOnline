@@ -40,7 +40,7 @@
         <input
             class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
             id="grid-phone-number"
-            type="number"
+            type="text"
             placeholder="Numéro de téléphone"
             v-model="phoneNumber"
             :class="{ 'border-ord-red focus:border-ord-red': phoneNumberIsNotValid }"
@@ -77,7 +77,7 @@
         <input
             class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
             id="grid-street-number"
-            type="number"
+            type="text"
             placeholder="N° rue"
             v-model="streetNumber"
             :class="{ 'border-ord-red focus:border-ord-red': streetNumberIsNotValid }"
@@ -99,7 +99,7 @@
         <input
             class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
             id="grid-postal-code"
-            type="number"
+            type="text"
             placeholder="Code postal"
             v-model="postalCode"
             :class="{ 'border-ord-red focus:border-ord-red': postalCodeIsNotValid }"
@@ -150,23 +150,23 @@ export default {
   },
   watch: {
     lastName: function() {
-      this.lastNameIsNotValid = !/^[A-Z][-a-zA-Z]+$/.test(this.lastName);
+      this.lastNameIsNotValid = !/^[A-Z][-a-zA-Z\u00E0-\u00FC]+$/.test(this.lastName);
     },
 
     firstName: function() {
-      this.firstNameIsNotValid = !/^[A-Z][-a-zA-Z]+$/.test(this.firstName);
+      this.firstNameIsNotValid = !/^[A-Z][-a-zA-Z\u00E0-\u00FC]+$/.test(this.firstName);
     },
 
     email: function() {
-      this.emailIsNotValid = !/^[a-zA-Z\d_.+-]+@[a-zA-Z\d-]+\.[a-zA-Z\d-.]+$/.test(this.email);
+      this.emailIsNotValid = !/^[a-zA-Z\u00E0-\u00FC\d_.+-]+@[a-zA-Z\u00E0-\u00FC\d-]+\.[a-zA-Z\u00E0-\u00FC\d-.]+$/.test(this.email);
     },
 
     phoneNumber: function() {
-      this.phoneNumberIsNotValid = !/^\d{10}$/.test(this.phoneNumber);
+      this.phoneNumberIsNotValid = !/^0[67]\d{8}$/.test(this.phoneNumber);
     },
 
     password: function() {
-      this.passwordIsNotValid = !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(this.password);
+      this.passwordIsNotValid = !/^(?=.*[A-Za-z\u00E0-\u00FC])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\u00E0-\u00FC\d@$!%*#?&]{8,}$/.test(this.password);
     },
 
     passwordConfirm: function() {
@@ -178,7 +178,7 @@ export default {
     },
 
     streetName: function() {
-      this.streetNameIsNotValid = !/^[-a-zA-Z ]+$/.test(this.streetName);
+      this.streetNameIsNotValid = !/^[-a-zA-Z\u00E0-\u00FC ]+$/.test(this.streetName);
     },
 
     postalCode: function() {
@@ -186,7 +186,7 @@ export default {
     },
 
     city: function() {
-      this.cityIsNotValid = !/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(this.city);
+      this.cityIsNotValid = !/^[a-zA-Z\u00E0-\u00FC]+(?:[\s-][a-zA-Z\u00E0-\u00FC]+)*$/.test(this.city);
     },
   },
 }
