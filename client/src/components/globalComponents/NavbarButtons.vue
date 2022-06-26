@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-row flex-wrap justify-center gap-x-7">
     <Button
-        v-bind:text=text1
-        v-bind:src=src1
+        :text=text1
+        :src=src1
         class="ord-button-green hover:ord-button-green-hover"
     />
     <Button
-        v-bind:text=text2
-        v-bind:src=src2
+        :text=text2
+        :src=src2
         class="ord-button-lightgreen hover:ord-button-lightgreen-hover"
     />
   </div>

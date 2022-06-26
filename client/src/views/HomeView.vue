@@ -1,11 +1,11 @@
 <template>
-  <AdaptFooterBackground v-bind:backgroundGradient="true">
+  <AdaptFooterBackground :backgroundGradient="true">
     <Navbar
-        v-bind:buttons="true"
-        v-bind:text1="'Inscription'"
-        v-bind:text2="'Connexion'"
-        v-bind:src1="'/signUp'"
-        v-bind:src2="'/signIn'"
+        :buttons="true"
+        :text1="'Inscription'"
+        :text2="'Connexion'"
+        :src1="'/signUp'"
+        :src2="'/signIn'"
     />
   </AdaptFooterBackground>
 </template>

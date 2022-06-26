@@ -1,5 +1,5 @@
 <template>
-  <AdaptFooterBackground v-bind:backgroundGradient="false">
+  <AdaptFooterBackground :backgroundGradient="false">
     <Navbar/>
     <h1>This is an about page</h1>
   </AdaptFooterBackground>

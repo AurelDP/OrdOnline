@@ -1,5 +1,5 @@
 <template>
-  <AdaptFooterBackground v-bind:backgroundGradient="true">
+  <AdaptFooterBackground :backgroundGradient="true">
     <div class="md:px-24 sm:px-16 px-8 py-10">
       <HeaderLogo/>
       <div class="flex flex-col">

@@ -24,6 +24,7 @@ module.exports = {
       'ord-lightred': '#E47273',
       'white': colors.white,
       'light-gray': colors.gray[300],
+      'white-gray': colors.gray[200],
       'gray': colors.gray,
     }
   },
