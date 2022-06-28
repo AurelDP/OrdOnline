@@ -8,6 +8,7 @@
         :text1="'Continuer'"
         :src1="'/'"
     >
+      <LoginForm/>
     </WhiteBoard>
   </AdaptFooterBackground>
 </template>
@@ -16,10 +17,11 @@
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
+import LoginForm from "@/components/loginPage/LoginForm";
 
 export default {
   name: "LoginView",
-  components: {WhiteBoard, AdaptFooterBackground, Navbar}
+  components: {LoginForm, WhiteBoard, AdaptFooterBackground, Navbar}
 }
 </script>
 
