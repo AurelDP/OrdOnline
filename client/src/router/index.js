@@ -4,12 +4,14 @@ import AboutView from '../views/AboutView.vue'
 import Error404 from '../views/ErrorView.vue'
 import SelectRoleView from "@/views/SelectRoleView";
 import RegisterView from "../views/RegisterView";
+import LoginView from "../views/LoginView";
 
 const routes = [
   {path: '/', name: 'home', component: HomeView},
   {path: '/about', name: 'about', component: AboutView},
   {path: '/signUp', name: 'role', component: SelectRoleView},
   {path: '/register', name: 'register', component: RegisterView},
+  {path: '/login', name: 'login', component: LoginView},
   {path: "/:catchAll(.*)*", component: Error404},
 ]
 
