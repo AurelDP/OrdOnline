@@ -12,8 +12,13 @@
         :text2="'Modifier'"
         :src2="'/'"
     >
+      <Prescription/>
     </WhiteBoard>
-    <WhiteBoard></WhiteBoard>
+    <WhiteBoard
+        title="Historique des statuts"
+    >
+      <PrescriptionStatus/>
+    </WhiteBoard>
   </AdaptFooterBackground>
 </template>
 
@@ -21,13 +26,17 @@
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
+import Prescription from "@/components/prescriptionPage/Prescription";
+import PrescriptionStatus from "@/components/prescriptionPage/PrescriptionStatus";
 
 export default {
   name: "PrescriptionView",
   components: {
+    Prescription,
     AdaptFooterBackground,
     Navbar,
-    WhiteBoard
+    WhiteBoard,
+    PrescriptionStatus
   }
 }
 </script>
