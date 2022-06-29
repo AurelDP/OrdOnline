@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import PrescriptionStatusRow from "@/components/prescriptionPage/PrescriptionStatusRow.vue";
+import PrescriptionStatusRow from "@/components/prescriptionPage/StatusRow.vue";
 
 export default {
   name: "PrescriptionStatus",
