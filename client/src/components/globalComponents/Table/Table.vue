@@ -17,18 +17,36 @@
           </span>
       </div>
     </div>
-    <div class="max-h-72 overflow-auto drop-shadow-md my-5">
-      <div class="table w-full bg-white rounded-lg md:table-fixed">
-        <div v-if="type === 'ord'" v-for="value in dataOrdo">
-          <TableRow src="/" :val1="value.date" :val2="value.doctor" :val3="value.status" :type="'ord'" class="w-full"/>
-        </div>
-        <div v-else-if="type === 'doctor'" v-for="value in dataDoctor">
-          <TableRow src="/" :val1="value.doctor" :val2="value.specialist" :val3="value.address" :type="'doctor'"/>
-        </div>
-        <div v-else v-for="value in dataPharma">
-          <TableRow src="/" :val1="value.name" :val2="value.address" :type="'pharma'"/>
-        </div>
-      </div>
+    <div class="max-h-72 overflow-auto drop-shadow-md my-5 rounded-lg bg-white">
+      <table v-if="type === 'ord'" class="w-full">
+        <TableRow
+            v-for="value in dataOrdo"
+            src="/" :val1="value.date"
+            :val2="value.doctor"
+            :val3="value.status"
+            :type="'ord'"
+            class="w-full"
+        />
+      </table>
+      <table v-else-if="type === 'doctor'" class="w-full">
+        <TableRow
+            v-for="value in dataDoctor"
+            src="/"
+            :val1="value.doctor"
+            :val2="value.specialist"
+            :val3="value.address"
+            :type="'doctor'"
+        />
+      </table>
+      <table v-else class="w-full">
+        <TableRow
+            v-for="value in dataPharma"
+            src="/"
+            :val1="value.name"
+            :val2="value.address"
+            :type="'pharma'"
+        />
+      </table>
     </div>
   </div>
 </template>

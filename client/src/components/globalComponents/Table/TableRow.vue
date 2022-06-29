@@ -1,14 +1,9 @@
 <template>
-
-  <div class="table-row w-full border-b-2 hover:bg-ord-green-600">
-
-    <div class="table-cell p-3 whitespace-nowrap overflow-hidden">{{ val1 }}</div>
-
-    <div class="table-cell p-3 whitespace-nowrap overflow-hidden">{{ val2 }}</div>
-
-    <div v-if="type === 'ord' || type === 'doctor'" class="table-cell py-3 px-8 whitespace-nowrap text-right overflow-hidden">{{ val3 }}</div>
-  </div>
-
+  <tr class="border-b-2 hover:bg-ord-green-600 hover:cursor-pointer" @click="goTo">
+    <td class="p-3 whitespace-nowrap">{{ val1 }}</td>
+    <td class="p-3 whitespace-nowrap">{{ val2 }}</td>
+    <td v-if="type === 'ord' || type === 'doctor'" class="py-3 px-8 whitespace-nowrap text-right">{{ val3 }}</td>
+  </tr>
 </template>
 
 <script>
@@ -20,6 +15,11 @@ export default {
     val2: String,
     val3: String,
     type: String,
+  },
+  methods: {
+    goTo() {
+      this.$router.push(this.src);
+    }
   }
 }
 
