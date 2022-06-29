@@ -8,7 +8,7 @@
       >
         <p>{{ textStatut }}</p>
       </div>
-      <h1 class="ord-text-title text-center">{{ title }}</h1>
+      <h1 class="ord-text-title text-center mb-10">{{ title }}</h1>
       <slot/>
       <div v-if="button1 === true || button2 === true" class="flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2">
         <Button v-if="button1 === true"
