@@ -11,6 +11,8 @@
         :class2="'ord-button-green hover:ord-button-green-hover'"
         :text2="'Modifier'"
         :src2="'/'"
+        :statut="true"
+        :textStatut="'Terminée'"
     >
       <Prescription/>
     </WhiteBoard>

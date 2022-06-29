@@ -1,17 +1,14 @@
 <template>
-  <div class="bg-ord-red float-right bg-gray-200 py-1 px-5 shadow-lg">
-    <p>Terminée</p>
-  </div>
-  <div class="my-10 md:text-base text-sm">
-    <h2 class="text-2xl">Médecin</h2>
+  <div class="my-10">
+    <h2 class="ord-text-subtitle">Médecin</h2>
     <p class="my-5 px-5 border-l-2 border-ord-green-400">Patrick Chaumont, 4 Rue Charles Péguy, Palaiseau, 91120</p>
   </div>
-  <div class="my-10 md:text-base text-sm">
-    <h2 class="text-2xl">Patient</h2>
+  <div class="my-10">
+    <h2 class="ord-text-subtitle">Patient</h2>
     <p class="my-5 px-5 border-l-2 border-ord-green-400">Jean Dupont, [âge si renseigné], [poids si renseigné]</p>
   </div>
-  <div class="my-10 md:text-base text-sm">
-    <h2 class="text-2xl">Traitements (2)</h2>
+  <div class="my-10">
+    <h2 class="ord-text-subtitle">Traitements (2)</h2>
     <ul>
       <li class="my-5 py-1 border-b-2">
         <div class="flex flex-wrap">
@@ -43,8 +40,8 @@
       </li>
     </ul>
   </div>
-  <div class="my-10 md:text-base text-sm">
-    <h2 class="text-2xl">Conseils médicaux</h2>
+  <div class="my-10">
+    <h2 class="ord-text-subtitle">Conseils médicaux</h2>
     <p class="my-5 px-5 border-l-2 border-ord-green-400">Aucuns</p>
   </div>
 </template>
