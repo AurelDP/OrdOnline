@@ -14,8 +14,8 @@
         v-for="treatment in treatments"
         :name="treatment.name"
         :description="treatment.description"
-        :isNotSubstitutable="treatment.isNotSubstitutable"
-        :isNotReimbursable="treatment.isNotReimbursable"
+        :isSubstitutable="treatment.isSubstitutable"
+        :isReimbursable="treatment.isReimbursable"
         :renewal="treatment.renewal"
         :isDelivered="treatment.isDelivered"
       ></Treatment>
@@ -38,16 +38,16 @@ export default {
         {
           name: "Doliprane paracétamol 500mg 16 gélules",
           description: "Description du traitement si besoin",
-          isNotSubstitutable: true,
-          isNotReimbursable: false,
+          isSubstitutable: false,
+          isReimbursable: true,
           renewal: "Modalités de renouvellement si besoin",
           isDelivered: true
         },
         {
           name: "Bétaméthasone Biogaran 30g 0.05% crème",
           description: "2 fois/jour pendant 2 semaines, puis espacer les prises (1/jours, 1/2jours, 1/3 jours) jusqu'à arrêt complet",
-          isNotSubstitutable: false,
-          isNotReimbursable: false,
+          isSubstitutable: true,
+          isReimbursable: true,
           renewal: "",
           isDelivered: false
         }

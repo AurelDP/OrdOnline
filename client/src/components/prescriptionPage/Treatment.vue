@@ -3,10 +3,10 @@
     <div class="flex flex-wrap">
       <p class="w-full md:w-1/2">{{ name }}</p>
       <div class="flex w-full md:w-1/2">
-        <p v-if="isNotSubstitutable === true">Non Substituable</p>
-        <p v-else>Substituable</p>
-        <p v-if="isNotSubstitutable === true">, Non Remboursable</p>
-        <p v-else>, Remboursable</p>
+        <p v-if="isSubstitutable === true">Substituable</p>
+        <p v-else>Non Substituable</p>
+        <p v-if="isReimbursable === true">, Remboursable</p>
+        <p v-else>, Non Remboursable</p>
       </div>
     </div>
     <p>{{ description }}</p>
@@ -26,8 +26,8 @@ export default {
   props: {
     name: String,
     description: String,
-    isNotSubstitutable: Boolean,
-    isNotReimbursable: Boolean,
+    isSubstitutable: Boolean,
+    isReimbursable: Boolean,
     renewal: String,
     isDelivered: Boolean
   },
