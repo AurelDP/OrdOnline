@@ -1,5 +1,5 @@
 <template>
-  <div class="my-10">
+  <div class="mt-10">
     <h2 class="ord-text-subtitle">Médecin</h2>
     <p class="my-5 px-5 border-l-2 border-ord-green-400">Patrick Chaumont, 4 Rue Charles Péguy, Palaiseau, 91120</p>
   </div>
