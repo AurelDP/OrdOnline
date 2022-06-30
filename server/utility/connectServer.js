@@ -1,16 +1,12 @@
-const { Client } = require('pg');
+const mysql = require('mysql');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const config = {
+const mySQLClient = mysql.createConnection({
     user: process.env.USER,
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
-    port: process.env.PORT,
-    ssl: true,
-}
+});
 
-const getPgClient = () => new Client(config);
-
-module.exports = getPgClient;
+module.exports =  mySQLClient
