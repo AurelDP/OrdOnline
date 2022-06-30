@@ -10,34 +10,15 @@
   <div class="my-10">
     <h2 class="ord-text-subtitle">Traitements (2)</h2>
     <ul>
-      <li class="my-5 py-1 border-b-2">
-        <div class="flex flex-wrap">
-          <p class="w-full md:w-1/2">Doliprane paracétamol 500mg 16 gélules</p>
-          <p class="w-full md:w-1/2 md:text-right">Substituable, Remboursable</p>
-        </div>
-        <p>[Description du traitement si besoin]</p>
-        <div class="flex flex-wrap">
-          <p class="w-full md:w-1/2">[Modalités de renouvellement si besoin]</p>
-          <div class="w-full md:w-1/2 md:text-right">
-            <label for="delivered" class="mr-5">Delivré</label>
-            <input type="checkbox" id="delivered" name="delivered" checked/>
-          </div>
-        </div>
-      </li>
-      <li class="my-5 py-1 border-b-2">
-        <div class="flex flex-wrap">
-          <p class="w-full md:w-1/2">Bétaméthasone Biogaran 30g 0.05% crème</p>
-          <p class="w-full md:w-1/2 md:text-right">Non substituable, Remboursable</p>
-        </div>
-        <p>2 fois/jour pendant 2 semaines, puis espacer les prises (1/jours, 1/2jours, 1/3 jours) jusqu'à arrêt complet</p>
-        <div class="flex flex-wrap">
-          <p class="w-full md:w-1/2"></p>
-          <div class="w-full md:w-1/2 md:text-right">
-            <label for="delivered" class="mr-5">Delivré</label>
-            <input type="checkbox" id="delivered" name="delivered" checked/>
-          </div>
-        </div>
-      </li>
+      <Treatment
+        v-for="treatment in treatments"
+        :name="treatment.name"
+        :description="treatment.description"
+        :isSubstitutable="treatment.isSubstitutable"
+        :isReimbursable="treatment.isReimbursable"
+        :renewal="treatment.renewal"
+        :isDelivered="treatment.isDelivered"
+      ></Treatment>
     </ul>
   </div>
   <div class="my-10">
@@ -47,8 +28,32 @@
 </template>
 
 <script>
+import Treatment from "@/components/prescriptionPage/Treatment";
 export default {
-  name: "Prescription"
+  name: "Prescription",
+  components: {Treatment},
+  data() {
+    return {
+      treatments: [
+        {
+          name: "Doliprane paracétamol 500mg 16 gélules",
+          description: "Description du traitement si besoin",
+          isSubstitutable: false,
+          isReimbursable: true,
+          renewal: "Modalités de renouvellement si besoin",
+          isDelivered: true
+        },
+        {
+          name: "Bétaméthasone Biogaran 30g 0.05% crème",
+          description: "2 fois/jour pendant 2 semaines, puis espacer les prises (1/jours, 1/2jours, 1/3 jours) jusqu'à arrêt complet",
+          isSubstitutable: true,
+          isReimbursable: true,
+          renewal: "",
+          isDelivered: false
+        }
+      ]
+    }
+  }
 }
 </script>
 

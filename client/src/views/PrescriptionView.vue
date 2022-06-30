@@ -29,7 +29,7 @@ import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBack
 import Navbar from "@/components/globalComponents/Navbar";
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import Prescription from "@/components/prescriptionPage/Prescription";
-import PrescriptionStatus from "@/components/prescriptionPage/PrescriptionStatus";
+import PrescriptionStatus from "@/components/prescriptionPage/StatutesHistory";
 
 export default {
   name: "PrescriptionView",
