@@ -10,7 +10,7 @@ const mySQLClient = mysql.createConnection({
     ssl: true
 });
 
-console.log(mySQLClient);
+console.log(process.env.DATABASE);
 
 const tryToConnect = () => {
     mySQLClient.connect(function(err) {
