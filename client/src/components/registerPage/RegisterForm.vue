@@ -3,7 +3,7 @@
     <div class="flex flex-wrap -mx-3 -mb-6 py-5">
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
-          class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+          class="ord-input"
           id="grid-last-name"
           type="text"
           placeholder="Nom"
@@ -14,7 +14,7 @@
       </div>
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-first-name"
             type="text"
             placeholder="Prénom"
@@ -27,7 +27,7 @@
     <div class="flex flex-wrap -mx-3 -mb-6 py-5">
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-mail"
             type="email"
             placeholder="Adresse email"
@@ -38,7 +38,7 @@
       </div>
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-phone-number"
             type="text"
             placeholder="Numéro de téléphone"
@@ -51,7 +51,7 @@
     <div class="flex flex-wrap -mx-3 -mb-6 py-5">
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-password"
             type="password"
             placeholder="Mot de passe"
@@ -62,7 +62,7 @@
       </div>
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-password-confirm"
             type="password"
             placeholder="Confirmation mot de passe"
@@ -75,7 +75,7 @@
     <div class="flex flex-wrap -mx-3 -mb-6 py-5">
       <div class="w-full min-w-40 md:w-1/4 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-street-number"
             type="text"
             placeholder="N° rue"
@@ -86,7 +86,7 @@
       </div>
       <div class="w-full min-w-40 md:w-1/4 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-street-name"
             type="text"
             placeholder="Nom de rue"
@@ -97,7 +97,7 @@
       </div>
       <div class="w-full min-w-40 md:w-1/4 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-postal-code"
             type="text"
             placeholder="Code postal"
@@ -108,7 +108,7 @@
       </div>
       <div class="w-full min-w-40 md:w-1/4 px-3">
         <input
-            class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+            class="ord-input"
             id="grid-city"
             type="text"
             placeholder="Commune"

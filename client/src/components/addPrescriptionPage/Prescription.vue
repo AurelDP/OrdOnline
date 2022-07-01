@@ -6,7 +6,7 @@
       :src1="'/'"
       :class1="'ord-button-green hover:ord-button-green-hover'"
   >
-    <div class="flex justify-between">
+    <div class="flex justify-between flex-wrap">
       <h2 class=" ord-text-subtitle">Traitements</h2>
       <Button
           class="ord-button-green hover:ord-button-green-hover"
@@ -26,7 +26,7 @@
                @updateRenewal="updateTreatmentRenewal"
     />
     <textarea
-        class="resize-none border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
+        class="resize-none ord-input"
         id="coneilsMedicaux"
         placeholder="Conseils médicaux"
         rows="3"
@@ -79,11 +79,8 @@ export default {
     },
     updateTreatmentName(id, name) {
       for (let i = 0; i < this.treatmentList.length; i++) {
-        if (this.treatmentList[i].id === id) {
-          console.log(this.treatmentList[i].name);
+        if (this.treatmentList[i].id === id)
           this.treatmentList[i].name = name;
-          console.log(this.treatmentList[i].name);
-        }
       }
     },
     updateTreatmentDescription(id, description) {
