@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const DATABASE_NAME = process.env.DATABASE;
-const TABLE_NAME = "AccesOrdo";
+const TABLE_NAME = "Ordonnance";
 
 const TABLE_PATH = DATABASE_NAME + "." + TABLE_NAME;
 
@@ -23,19 +23,21 @@ const getTitle = async email => {
 }
 
 const getAll = async () => {
-    const client = utility.tryToConnect();
+    const client = utility.mySQLClient;
     const sqlQuery = "SELECT * FROM " + TABLE_PATH;
 
     try {
-        client.query(sqlQuery, (err, res) => {
-            if (err) throw err;
-            console.log(res.rows);
-            client.end();
-            return res.rows;
+        client.getConnection(function (err, connection) {
+            connection.query(sqlQuery, function(err, rows)
+            {
+                if (err) throw err;
+
+                console.log(rows[0]);
+                connection.release();
+            });
         });
     } catch(err) {
         console.log(err.stack);
-        client.end();
         return null;
     }
 }

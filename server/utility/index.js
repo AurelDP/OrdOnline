@@ -2,24 +2,15 @@ const mysql = require('mysql');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const mySQLClient = mysql.createConnection({
-    user: process.env.USER,
+const mySQLClient = mysql.createPool({
+    user: process.env.USERNAME,
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
+    port: process.env.PORT,
     ssl: true
 });
 
-console.log(process.env.DATABASE);
-
-const tryToConnect = () => {
-    mySQLClient.connect(function(err) {
-        if (err) throw err;
-    });
-
-    return mySQLClient;
-};
-
 module.exports = {
-    tryToConnect
+    mySQLClient
 }
