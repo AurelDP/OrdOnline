@@ -16,13 +16,14 @@
       />
     </div>
     <Treatment v-for="treatment in treatmentList"
-                :id="treatment.id"
-                @deleteTreatment="deleteTreatment"
-                @updateName="updateTreatmentName"
-                @updateDescription="updateTreatmentDescription"
-                @updateIsSubstitutable="updateTreatmentIsSubstitutable"
-                @updateIsReimbursable="updateTreatmentIsReimbursable"
-                @updateRenewal="updateTreatmentRenewal"
+               :key="treatment.id"
+               :id="treatment.id"
+               @deleteTreatment="deleteTreatment"
+               @updateName="updateTreatmentName"
+               @updateDescription="updateTreatmentDescription"
+               @updateIsSubstitutable="updateTreatmentIsSubstitutable"
+               @updateIsReimbursable="updateTreatmentIsReimbursable"
+               @updateRenewal="updateTreatmentRenewal"
     />
     <textarea
         class="resize-none border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
