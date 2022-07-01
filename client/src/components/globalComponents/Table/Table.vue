@@ -62,7 +62,7 @@
       <h1 class="ord-text-subtitle-bold text-ord-lightred text-center">
         Aucune donnée pour le moment
       </h1>
-      <img src="@/assets/iconError404.svg" class="h-60 w-60 mx-auto opacity-70 mt-20" alt="Pas de données"/>
+      <img src="@/assets/no_data.svg" class="h-60 w-60 mx-auto opacity-70 mt-20" alt="Pas de données"/>
     </div>
   </div>
 </template>
