@@ -28,7 +28,7 @@
       Once we create the query there will be only one value 'data'.
       Replace 'dataOrdo' by 'data' in v-if to see when there is no content
     -->
-    <div v-if="dataOrdo.length !== 0" class="max-h-72 overflow-auto drop-shadow-md my-5 rounded-lg bg-white">
+    <div v-if="data.length !== 0" class="max-h-60 overflow-auto drop-shadow-md my-5 rounded-lg bg-white">
       <table v-if="type === 'ord'" class="w-full">
         <TableRow
             v-for="value in dataOrdo"
@@ -59,7 +59,7 @@
       </table>
     </div>
     <div v-else class="p-10 drop-shadow-md my-5 rounded-lg bg-white">
-      <h1 class="font-bold text-ord-green-100 text-3xl text-center">
+      <h1 class="ord-text-subtitle text-ord-lightred text-center">
         Aucune donnée pour le moment
       </h1>
       <img src="@/assets/iconError404.svg" class="h-60 w-60 mx-auto opacity-70 mt-20" alt="Image erreur 404"/>
