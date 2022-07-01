@@ -1,6 +1,5 @@
 <template>
-  <div class="flex gap-5 my-10">
-    <div class="w-1 bg-ord-green-100"/>
+  <div class="border-l-2 border-l-ord-green-100 pl-2 flex my-10">
     <div class="flex-1">
       <div class="flex gap-2">
         <input
