@@ -54,4 +54,12 @@
     .ord-text-subtitle-bold {
         @apply text-2xl font-bold;
     }
+
+    .ord-green-border-left {
+        @apply border-l-2 border-l-ord-green-100 pl-3
+    }
+
+    .ord-input {
+        @apply border-b-2 border-gray-400 focus:outline-none focus:border-ord-green-100 w-full;
+    }
 }

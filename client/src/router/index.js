@@ -2,11 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import Error404 from '../views/ErrorView.vue'
-import SelectRoleView from "@/views/SelectRoleView";
+import SelectRoleView from "../views/SelectRoleView";
 import RegisterView from "../views/RegisterView";
 import AddPrescriptionView from '../views/AddPrescriptionView.vue'
-import PrescriptionView from "@/views/PrescriptionView";
-import CustomerSpaceView from "@/views/CustomerSpaceView";
+import PrescriptionView from "../views/PrescriptionView";
+import CustomerSpaceView from "../views/CustomerSpaceView";
 import LoginView from "../views/LoginView";
 
 const routes = [
@@ -17,7 +17,7 @@ const routes = [
   {path: "/addPrescription", component: AddPrescriptionView},
   {path: '/prescription', name: 'prescription', component: PrescriptionView},
   {path: '/customer-space', name: 'customer', component: CustomerSpaceView},
-  {path: '/login', name: 'login', component: LoginView},
+  {path: '/signIn', name: 'login', component: LoginView},
   {path: "/:catchAll(.*)*", component: Error404},
 ]
 
