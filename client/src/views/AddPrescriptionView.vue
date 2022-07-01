@@ -1,7 +1,7 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
-    <Ordonnance/>
+    <Prescription/>
   </AdaptFooterBackground>
 </template>
 
@@ -9,14 +9,14 @@
 // @ is an alias to /src
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
-import Ordonnance from "@/components/ordonnance/Ordonnance";
+import Prescription from "@/components/addPrescriptionPage/Prescription";
 
 export default {
-  name: 'OrdonanceView',
+  name: 'AddPrescriptionView',
   components: {
     AdaptFooterBackground,
     Navbar,
-    Ordonnance
+    Prescription
   }
 }
 </script>
