@@ -3,10 +3,6 @@
     <Navbar/>
     <WhiteBoard
         title="Informations Patient"
-        :button1="true"
-        :class1="'ord-button-green hover:ord-button-green-hover'"
-        :text1="'Confirmer'"
-        :src1="'/'"
     >
       <RegisterForm/>
     </WhiteBoard>
