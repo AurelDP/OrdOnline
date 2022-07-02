@@ -1,5 +1,5 @@
 <template>
-  <form class="m-5">
+  <form class="m-5" @submit="register">
     <div class="flex flex-wrap -mx-3 -mb-6 py-5">
       <div class="w-full min-w-56 md:w-1/2 px-3">
         <input
@@ -118,6 +118,14 @@
         <div class="text-ord-red" v-show="cityIsNotValid">Le nom de la commune n'est pas valide.</div>
       </div>
     </div>
+    <div class="flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2">
+      <button
+          class="bg-ord-green-100 hover:bg-ord-green-200 text-white px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+      >
+        Confirmer
+      </button>
+    </div>
   </form>
 </template>
 
@@ -146,6 +154,11 @@ export default {
       streetNameIsNotValid: false,
       postalCodeIsNotValid: false,
       cityIsNotValid: false,
+    }
+  },
+  methods: {
+    register() {
+      this.$router.push("/");
     }
   },
   watch: {
