@@ -130,6 +130,7 @@
 </template>
 
 <script>
+const BASE_URL = "http://localhost:8081/";
 export default {
   name: "RegisterForm",
   data() {
@@ -157,8 +158,35 @@ export default {
     }
   },
   methods: {
-    register() {
-      this.$router.push("/");
+    register(e) {
+      fetch(BASE_URL + "users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({
+          lastName: this.lastName,
+          firstName: this.firstName,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+          password: this.password,
+          passwordConfirm: this.passwordConfirm,
+          streetNumber: this.streetNumber,
+          streetName: this.streetName,
+          postalCode: this.postalCode,
+          city: this.city,
+        })
+      })
+          .then(res => res.json())
+          .then(res => {
+            if (res.result === "success") {
+              this.$router.push("/");
+            } else {
+              console.log(res.result);
+            }
+          })
+      e.preventDefault();
     }
   },
   watch: {
