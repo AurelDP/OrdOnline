@@ -9,7 +9,7 @@
           <Button class="ord-button-green hover:ord-button-green-hover mr-3 md:flex hidden" text="Ajouter" :src=src />
           <ButtonIcon class="ord-button-green hover:ord-button-green-hover mr-3 md:hidden flex" :icon="'fa-plus'" :src=src />
         </span>
-        <span v-if="research === true">
+        <span v-if="research === true" class="my-auto">
           <div class="flex flex-row ord-input focus-within:border-ord-green-100">
             <input
                 class="focus:outline-none"
