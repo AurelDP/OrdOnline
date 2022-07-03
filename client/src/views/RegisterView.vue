@@ -2,28 +2,48 @@
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
     <WhiteBoard
-        title="Informations Patient"
+        :title="title"
     >
-      <RegisterFormPatient v-if="type === 'patient'"/>
+      <RegisterForm :type="type"/>
     </WhiteBoard>
   </AdaptFooterBackground>
 </template>
 
 <script>
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
-import RegisterFormPatient from "@/components/registerPage/RegisterFormPatient";
+import RegisterForm from "@/components/registerPage/RegisterForm";
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
 
 export default {
   name: "RegisterView",
-  components: {RegisterFormPatient, WhiteBoard, AdaptFooterBackground, Navbar},
+  components: {RegisterForm, WhiteBoard, AdaptFooterBackground, Navbar},
   props: {
     type: String,
   },
+  data() {
+    return {
+      title: '',
+    };
+  },
   created() {
-    if (this.type !== "patient" && this.type !== "doctor" && this.type !== "pharma" && this.type !== "healthService")
-      this.$router.push({ name: 'error' });
+    switch (this.type) {
+      case "patient":
+        this.title = "Inscription Patient";
+        break;
+      case "doctor":
+        this.title = "Inscription Médecin";
+        break;
+      case "pharma":
+        this.title = "Inscription Pharmacien";
+        break;
+      case "healthService":
+        this.title = "Inscription Service de Santé";
+        break;
+      default:
+        this.$router.push({ name: 'error' });
+        break;
+    }
   }
 }
 </script>
