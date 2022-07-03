@@ -1,15 +1,18 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
-    <WhiteBoard
-        title="Connexion"
-        :button1="true"
-        :class1="'ord-button-green hover:ord-button-green-hover'"
-        :text1="'Continuer'"
-        :src1="'/'"
-    >
-      <LoginForm/>
-    </WhiteBoard>
+    <div class="flex justify-center">
+      <WhiteBoard
+          title="Connexion"
+          :button1="true"
+          :class1="'ord-button-green hover:ord-button-green-hover'"
+          :text1="'Continuer'"
+          :src1="'/'"
+          class="md:max-w-150"
+      >
+        <LoginForm/>
+      </WhiteBoard>
+    </div>
   </AdaptFooterBackground>
 </template>
 
@@ -26,5 +29,9 @@ export default {
 </script>
 
 <style scoped>
-
+@media (min-width: 758px) {
+  .md\:max-w-150 {
+    max-width: 70rem;
+  }
+}
 </style>
