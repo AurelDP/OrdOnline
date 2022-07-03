@@ -22,6 +22,11 @@
       />
       <div class="text-ord-red" v-show="passwordIsNotValid">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</div>
     </div>
+    <div class="flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2">
+      <button class="bg-ord-green-100 hover:bg-ord-green-200 text-white px-4 rounded focus:outline-none focus:shadow-none" type="submit">
+        Continuer
+      </button>
+    </div>
   </form>
 </template>
 
