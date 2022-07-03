@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="flex flex-wrap py-3 justify-between items-center">
+    <div class="flex flex-wrap mb-5 justify-between items-center">
       <span :class=classTitle class="mr-3">
         {{ title }}
       </span>
-      <div v-if="btn === true || research === true" class="flex flex-row my-5">
+      <div v-if="btn === true || research === true" class="flex flex-row">
         <span v-if="btn === true">
           <Button class="ord-button-green hover:ord-button-green-hover mr-3 md:flex hidden" text="Ajouter" :src=src />
           <ButtonIcon class="ord-button-green hover:ord-button-green-hover mr-3 md:hidden flex" :icon="'fa-plus'" :src=src />
@@ -29,7 +29,7 @@
       Once we create the query there will be only one value 'data'.
       Replace 'dataOrdo' by 'data' in v-if to see when there is no content
     -->
-    <div v-if="dataOrdo.length !== 0" class="max-h-60 overflow-auto shadow-no-offset my-5 rounded-lg bg-white">
+    <div v-if="dataOrdo.length !== 0" class="max-h-60 overflow-auto shadow-no-offset rounded-lg bg-white">
       <table v-if="type === 'my_prescription'" class="w-full">
         <TableRow
             v-for="value in dataOrdo"

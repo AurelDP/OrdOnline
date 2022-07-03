@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div class="relative md:p-14 sm:p-10 p-6 my-20 md:mx-44 sm:mx-24 mx-12 bg-white shadow-lg">
+    <div class="relative md:p-14 sm:p-10 p-6 my-20 md:mx-44 sm:mx-24 mx-6 bg-white shadow-lg">
       <div
           v-if="statut === true"
           :class=classStatut

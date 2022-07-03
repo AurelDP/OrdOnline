@@ -1,14 +1,11 @@
 <template>
-  <div class="mt-10">
-    <h2 class="ord-text-subtitle">Médecin</h2>
-    <p class="my-5 ord-green-border-left">Patrick Chaumont, 4 Rue Charles Péguy, Palaiseau, 91120</p>
-  </div>
-  <div class="my-10">
-    <h2 class="ord-text-subtitle">Patient</h2>
-    <p class="my-5 ord-green-border-left">Jean Dupont, [âge si renseigné], [poids si renseigné]</p>
-  </div>
-  <div class="my-10">
-    <h2 class="ord-text-subtitle">Traitements (2)</h2>
+  <InfoBox :title="'Médecin'" :borderLeft="true">
+    <p>Patrick Chaumont, 4 Rue Charles Péguy, Palaiseau, 91120</p>
+  </InfoBox>
+  <InfoBox :title="'Patient'" :borderLeft="true">
+    <p>Jean Dupont, [âge si renseigné], [poids si renseigné]</p>
+  </InfoBox>
+  <InfoBox :title="'Traitements (2)'">
     <ul>
       <Treatment
         v-for="treatment in treatments"
@@ -18,20 +15,24 @@
         :isReimbursable="treatment.isReimbursable"
         :renewal="treatment.renewal"
         :isDelivered="treatment.isDelivered"
-      ></Treatment>
+      />
     </ul>
-  </div>
-  <div class="my-10">
-    <h2 class="ord-text-subtitle">Conseils médicaux</h2>
-    <p class="my-5 ord-green-border-left">Aucuns</p>
-  </div>
+  </InfoBox>
+  <InfoBox :title="'Conseils médicaux'" :borderLeft="true">
+    <p>Aucuns</p>
+  </InfoBox>
 </template>
 
 <script>
 import Treatment from "@/components/prescriptionPage/Treatment";
+import InfoBox from "@/components/globalComponents/InfoBox";
+
 export default {
   name: "Prescription",
-  components: {Treatment},
+  components: {
+    Treatment,
+    InfoBox,
+  },
   data() {
     return {
       treatments: [
