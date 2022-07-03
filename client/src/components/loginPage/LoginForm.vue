@@ -1,5 +1,5 @@
 <template>
-  <form class="m-5">
+  <form class="m-5" @submit="login">
     <div class="flex flex-wrap -mx-3 -mb-6 py-5">
       <input
           class="border-b-2 border-gray-400 w-full focus:outline-none focus:border-ord-green-100"
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+const BASE_URL = "http://localhost:8081/";
+
 export default {
   name: "LoginForm",
   data() {
@@ -40,6 +42,30 @@ export default {
       emailIsNotValid: false,
       passwordIsNotValid: false,
     };
+  },
+  methods: {
+    login(e) {
+      fetch(BASE_URL + "users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.password,
+        })
+      })
+      .then(response => response.json())
+      .then(response => {
+        if (response.result === "success") {
+          this.$router.push("/");
+        } else {
+          console.log(response.result);
+        }
+      })
+      e.preventDefault();
+    }
   },
   watch: {
     email: function() {
