@@ -28,7 +28,7 @@
       Once we create the query there will be only one value 'data'.
       Replace 'dataOrdo' by 'data' in v-if to see when there is no content
     -->
-    <div v-if="dataOrdo.length !== 0" class="max-h-60 overflow-auto drop-shadow-md my-5 rounded-lg bg-white">
+    <div v-if="dataOrdo.length !== 0" class="max-h-60 overflow-auto shadow-no-offset my-5 rounded-lg bg-white">
       <table v-if="type === 'my_prescription'" class="w-full">
         <TableRow
             v-for="value in dataOrdo"
@@ -135,3 +135,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.shadow-no-offset {
+  box-shadow: 0 0 7px rgb(0 0 0 / 0.3), 0 0 15px rgb(0 0 0 / 0.1);
+}
+</style>
