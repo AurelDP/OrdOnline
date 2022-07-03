@@ -7,7 +7,7 @@
       :class1="'ord-button-green hover:ord-button-green-hover'"
   >
     <div class="flex justify-between flex-wrap">
-      <h2 class=" ord-text-subtitle">Traitements</h2>
+      <h3 class="ord-text-subtitle mb-5">Traitements</h3>
       <Button
           class="ord-button-green hover:ord-button-green-hover md:flex hidden"
           :text="'Ajouter'"
