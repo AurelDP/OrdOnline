@@ -5,7 +5,6 @@ import Error404 from '../views/ErrorView.vue'
 import SelectRoleView from "@/views/SelectRoleView";
 import RegisterView from "../views/RegisterView";
 import PrescriptionView from "@/views/PrescriptionView";
-import InfoPatientView from "@/views/InfoPatientView";
 import CustomerSpaceView from "@/views/CustomerSpaceView";
 import LoginView from "../views/LoginView";
 
@@ -15,8 +14,7 @@ const routes = [
   {path: '/signUp', name: 'role', component: SelectRoleView},
   {path: '/register', name: 'register', component: RegisterView},
   {path: '/prescription', name: 'prescription', component: PrescriptionView},
-  {path: '/infoPatient', name: 'infoPatient', component: InfoPatientView},
-  {path: '/customer-space', name: 'customer', component: CustomerSpaceView},
+  {path: '/customerSpace', name: 'customer', component: CustomerSpaceView},
   {path: '/login', name: 'login', component: LoginView},
   {path: "/:catchAll(.*)*", component: Error404},
 ]
