@@ -1,12 +1,13 @@
 <template>
   <div>
     <div class="flex flex-wrap py-3 justify-between items-center">
-      <span :class=classTitle>
+      <span :class=classTitle class="mr-3">
         {{ title }}
       </span>
       <div v-if="btn === true || research === true" class="flex flex-row my-5">
         <span v-if="btn === true">
-          <Button class="ord-button ord-button-green hover:ord-button-green-hover mr-3" text="Ajouter" :src=src />
+          <Button class="ord-button-green hover:ord-button-green-hover mr-3 md:flex hidden" text="Ajouter" :src=src />
+          <ButtonIcon class="ord-button-green hover:ord-button-green-hover mr-3 md:hidden flex" :icon="'fa-plus'" :src=src />
         </span>
         <span v-if="research === true">
           <div class="flex flex-row border-b-2 border-gray-400 focus-within:border-ord-green-100">
@@ -80,6 +81,7 @@
 <script>
 
 import Button from "@/components/globalComponents/Button";
+import ButtonIcon from "@/components/globalComponents/ButtonIcon";
 import TableRow from "@/components/globalComponents/Table/TableRow";
 
 export default {
@@ -87,6 +89,7 @@ export default {
   components: {
     Button,
     TableRow,
+    ButtonIcon
   },
 
   props: {

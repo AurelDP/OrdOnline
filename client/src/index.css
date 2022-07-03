@@ -7,6 +7,10 @@
         @apply rounded-lg h-7 w-40 flex items-center justify-center font-semibold;
     }
 
+    .ord-button-icon {
+        @apply rounded-full h-7 w-7 flex items-center justify-center;
+    }
+
     .ord-button-green {
         @apply bg-ord-green-100 text-white;
     }
