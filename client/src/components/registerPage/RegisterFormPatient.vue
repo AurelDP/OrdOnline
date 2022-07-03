@@ -118,21 +118,26 @@
         <div class="text-ord-red" v-show="cityIsNotValid">Le nom de la commune n'est pas valide.</div>
       </div>
     </div>
-    <div class="flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2">
-      <button
-          class="bg-ord-green-100 hover:bg-ord-green-200 text-white px-4 rounded focus:outline-none focus:shadow-outline"
+    <div class="ord-whiteboard-buttons">
+      <Button
+          :class="'ord-button-green hover:ord-button-green-hover'"
+          :text="'Confirmer'"
+          :src="'/'"
           type="submit"
-      >
-        Confirmer
-      </button>
+      />
     </div>
   </form>
 </template>
 
 <script>
+import Button from '../globalComponents/Button.vue'
+
 const BASE_URL = "http://localhost:8081/";
 export default {
-  name: "RegisterForm",
+  name: "RegisterFormPatient",
+  components: {
+    Button
+  },
   data() {
     return {
       lastName: "",
