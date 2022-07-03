@@ -9,8 +9,14 @@
     <div class="flex justify-between flex-wrap">
       <h2 class=" ord-text-subtitle">Traitements</h2>
       <Button
-          class="ord-button-green hover:ord-button-green-hover"
+          class="ord-button-green hover:ord-button-green-hover md:flex hidden"
           :text="'Ajouter'"
+          :src="''"
+          @click="addTreatement"
+      />
+      <ButtonIcon
+          class="ord-button-green hover:ord-button-green-hover md:hidden flex"
+          :icon="'fa-plus'"
           :src="''"
           @click="addTreatement"
       />
@@ -51,6 +57,7 @@ let count = 1
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import Treatment from "@/components/addPrescriptionPage/Treatment";
 import Button from "@/components/globalComponents/Button";
+import ButtonIcon from "@/components/globalComponents/ButtonIcon";
 
 export default {
   name: 'Prescription',
@@ -58,6 +65,7 @@ export default {
     Treatment,
     WhiteBoard,
     Button,
+    ButtonIcon
   },
   data() {
     return {
