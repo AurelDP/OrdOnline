@@ -11,7 +11,7 @@
             placeholder="Nom"
             v-model="lastName"
             :class="{ 'border-ord-red focus:border-ord-red': lastNameIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="lastNameIsNotValid">Le nom doit doit contenir uniquement des lettres et
           commencer par une majuscule.
@@ -25,7 +25,7 @@
             placeholder="Prénom"
             v-model="firstName"
             :class="{ 'border-ord-red focus:border-ord-red': firstNameIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="firstNameIsNotValid">Le prénom doit contenir uniquement des lettres et
           commencer par une majuscule.
@@ -43,7 +43,7 @@
             placeholder="Nom"
             v-model="lastName"
             :class="{ 'border-ord-red focus:border-ord-red': lastNameIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="lastNameIsNotValid">Le nom doit doit contenir uniquement des lettres et
           commencer par une majuscule.
@@ -57,7 +57,7 @@
             placeholder="Prénom"
             v-model="firstName"
             :class="{ 'border-ord-red focus:border-ord-red': firstNameIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="firstNameIsNotValid">Le prénom doit contenir uniquement des lettres et
           commencer par une majuscule.
@@ -71,7 +71,7 @@
             placeholder="Numéro RPPS"
             v-model="rppsNumber"
             :class="{ 'border-ord-red focus:border-ord-red': rppsNumberIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="rppsNumberIsNotValid">Le numéro RPPS doit contenir exactement 11 chiffres.
         </div>
@@ -88,7 +88,7 @@
             placeholder="Numéro RPPS"
             v-model="rppsNumber"
             :class="{ 'border-ord-red focus:border-ord-red': rppsNumberIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="rppsNumberIsNotValid">Le numéro RPPS doit contenir exactement 11 chiffres.
         </div>
@@ -101,7 +101,7 @@
             placeholder="Domaine"
             v-model="domain"
             :class="{ 'border-ord-red focus:border-ord-red': domainIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="domainIsNotValid">Le domaine n'est pas valide.
         </div>
@@ -114,7 +114,7 @@
             placeholder="Nom pharmacie"
             v-model="namePharma"
             :class="{ 'border-ord-red focus:border-ord-red': namePharmaIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="namePharmaIsNotValid">Le nom de la pharmacie n'est pas valide.
         </div>
@@ -130,7 +130,7 @@
             placeholder="Adresse email"
             v-model="email"
             :class="{ 'border-ord-red focus:border-ord-red': emailIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="emailIsNotValid">L'adresse email n'est pas valide.</div>
       </div>
@@ -142,7 +142,7 @@
             placeholder="Numéro de téléphone"
             v-model="phoneNumber"
             :class="{ 'border-ord-red focus:border-ord-red': phoneNumberIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="phoneNumberIsNotValid">Le numéro de téléphone doit contenir 10 chiffres.</div>
       </div>
@@ -156,7 +156,7 @@
             placeholder="Mot de passe"
             v-model="password"
             :class="{ 'border-ord-red focus:border-ord-red': passwordIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="passwordIsNotValid">Le mot de passe doit contenir au moins 8 caractères, une
           majuscule, une minuscule, un chiffre et un caractère spécial.
@@ -170,7 +170,7 @@
             placeholder="Confirmation mot de passe"
             v-model="passwordConfirm"
             :class="{ 'border-ord-red focus:border-ord-red': passwordConfirmIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="passwordConfirmIsNotValid">Le mot de passe de confirmation ne correspond pas
           au mot de passe.
@@ -187,7 +187,7 @@
             placeholder="N° rue"
             v-model="streetNumber"
             :class="{ 'border-ord-red focus:border-ord-red': streetNumberIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="streetNumberIsNotValid">Le numéro de rue n'est pas valide.</div>
       </div>
@@ -199,7 +199,7 @@
             placeholder="Nom de rue"
             v-model="streetName"
             :class="{ 'border-ord-red focus:border-ord-red': streetNameIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="streetNameIsNotValid">Le nom de rue n'est pas valide.</div>
       </div>
@@ -211,7 +211,7 @@
             placeholder="Code postal"
             v-model="postalCode"
             :class="{ 'border-ord-red focus:border-ord-red': postalCodeIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="postalCodeIsNotValid">Le code postal doit contenir 5 chiffres.</div>
       </div>
@@ -223,7 +223,7 @@
             placeholder="Commune"
             v-model="city"
             :class="{ 'border-ord-red focus:border-ord-red': cityIsNotValid }"
-            requiredd
+            required
         />
         <div class="text-ord-red" v-show="cityIsNotValid">Le nom de la commune n'est pas valide.</div>
       </div>
@@ -234,15 +234,26 @@
       </button>
     </div>
   </form>
+  
   <Modal
       v-show="showModalError"
       @closeModal="closeModalError"
       :icon="'fa-warning'"
       :iconClass="'text-ord-red'"
-      :textModal="'Email or password is already used, please try again'"
+      :textModal="'Adresse mail ou numéro de téléphone déjà utilisé'"
       :text1="'Ok'"
       :nameEmit1="'closeModal'"
       :class1="'ord-button-red hover:ord-button-red-hover'"
+  />
+  <Modal
+      v-show="showModalSuccess"
+      @closeModal="closeModalSuccess"
+      :icon="'fa-check'"
+      :iconClass="'text-ord-green-100'"
+      :textModal="'Compte créé avec succès'"
+      :text1="'Continuer'"
+      :nameEmit1="'closeModal'"
+      :class1="'ord-button-green hover:ord-button-green-hover'"
   />
 </template>
 
@@ -287,6 +298,7 @@ export default {
       domainIsNotValid: false,
       namePharmaIsNotValid: false,
       showModalError: false,
+      showModalSuccess: false,
     }
   },
   methods: {
@@ -317,7 +329,7 @@ export default {
           .then(res => res.json())
           .then(res => {
             if (res.result === "success") {
-              this.$router.push("/signIn");
+              this.showModalSuccess = true;
             } else if (res.result === "emailOrPhoneNumberAlreadyExists") {
               this.showModalError = true;
             } else {
@@ -328,6 +340,10 @@ export default {
     },
     closeModalError() {
       this.showModalError = false;
+    },
+    closeModalSuccess() {
+      this.showModalSuccess = false;
+      this.$router.push("/signIn");
     },
   },
   watch: {
