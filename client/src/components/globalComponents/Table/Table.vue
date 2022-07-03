@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="flex flex-wrap mb-5 justify-between items-center">
-      <span :class=classTitle class="mr-3">
+    <div class="flex flex-wrap gap-5 mb-5 justify-between items-center">
+      <span :class=classTitle>
         {{ title }}
       </span>
-      <div v-if="btn === true || research === true" class="flex flex-row">
+      <div v-if="btn === true || research === true" class="flex flex-row flex-wrap">
         <span v-if="btn === true">
           <Button class="ord-button-green hover:ord-button-green-hover mr-3 md:flex hidden" text="Ajouter" :src=src />
           <ButtonIcon class="ord-button-green hover:ord-button-green-hover mr-3 md:hidden flex" :icon="'fa-plus'" :src=src />
         </span>
         <span v-if="research === true">
-          <div class="flex flex-row border-b-2 border-gray-400 focus-within:border-ord-green-100">
+          <div class="flex flex-row ord-input focus-within:border-ord-green-100">
             <input
-                class="w-full focus:outline-none"
+                class="focus:outline-none"
                 type="text"
                 placeholder="Rechercher"
             />
