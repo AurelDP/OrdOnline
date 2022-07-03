@@ -4,6 +4,8 @@
         :buttons="true"
         :text1="'Inscription'"
         :text2="'Connexion'"
+        :icon1="'fa-user-plus'"
+        :icon2="'fa-arrow-right-to-bracket'"
         :src1="'/signUp'"
         :src2="'/signIn'"
     />
