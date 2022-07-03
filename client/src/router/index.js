@@ -14,13 +14,13 @@ const routes = [
   {path: '/', component: HomeView},
   {path: '/about', component: AboutView},
   {path: '/signUp', component: SelectRoleView},
-  {path: '/register', component: RegisterView},
+  {path: '/register/:type', component: RegisterView, props: true},
   {path: "/addPrescription", component: AddPrescriptionView},
   {path: '/prescription', component: PrescriptionView},
   {path: '/patientSpace', component: PatientSpaceView},
   {path: '/signIn', component: LoginView},
   {path: '/patientRecord', component: PatientRecordView},
-  {path: "/:catchAll(.*)*", component: Error404},
+  {path: "/:catchAll(.*)*", name: 'error', component: Error404},
 ]
 
 const router = createRouter({

@@ -4,28 +4,27 @@
     <WhiteBoard
         title="Informations Patient"
     >
-      <RegisterForm/>
-      <div class="ord-whiteboard-buttons">
-        <Button
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Confirmer'"
-            :src="'/'"
-        />
-      </div>
+      <RegisterFormPatient v-if="type === 'patient'"/>
     </WhiteBoard>
   </AdaptFooterBackground>
 </template>
 
 <script>
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
-import RegisterForm from "@/components/registerPage/RegisterForm";
+import RegisterFormPatient from "@/components/registerPage/RegisterFormPatient";
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
-import Button from "@/components/globalComponents/Button";
 
 export default {
   name: "RegisterView",
-  components: {RegisterForm, WhiteBoard, AdaptFooterBackground, Navbar, Button}
+  components: {RegisterFormPatient, WhiteBoard, AdaptFooterBackground, Navbar},
+  props: {
+    type: String,
+  },
+  created() {
+    if (this.type !== "patient" && this.type !== "doctor" && this.type !== "pharma" && this.type !== "healthService")
+      this.$router.push({ name: 'error' });
+  }
 }
 </script>
 

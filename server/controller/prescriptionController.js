@@ -1,12 +1,14 @@
 const prescriptionRepository = require('../repository/prescriptionRepository');
 
 async function add(req, res) {
-    const conseilsMedicaux = req.body.medicalAdvices;
-    const IDmedecin = req.body.IDmedecin;
-    const IDpatient = req.body.IDpatient;
-    const traitements = req.body.treatmentList;
-    const result = await prescriptionRepository.add(conseilsMedicaux, IDmedecin, IDpatient, traitements);
-    res.send(result);
+    const prescription = req.body
+    let isSuccess;
+    try {
+        isSuccess = await prescriptionRepository.addPrescription(prescription);
+    } catch (error) {
+        isSuccess = "error";
+    }
+    res.send({result: isSuccess});
 }
 
 module.exports = {

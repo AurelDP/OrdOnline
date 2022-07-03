@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const pool = mysql.createPool({
-    user: process.env.USERNAME,
+    user: process.env.DBUSER,
     host: process.env.HOST,
     database: process.env.DATABASE,
     password: process.env.PASSWORD,

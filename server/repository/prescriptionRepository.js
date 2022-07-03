@@ -1,27 +1,26 @@
 const utility = require("../utility/index");
-const dotenv = require('dotenv');
-dotenv.config();
+const treatmentRepository = require("./treatmentRepository");
 
-const DATABASE_NAME = process.env.DATABASE;
-const TABLE_NAME = "Ordonnance";
-
-const TABLE_PATH = DATABASE_NAME + "." + TABLE_NAME;
-
-const add = async (conseilsMedicaux, IDmedecin, IDpatient, traitements) => {
-    const client = utility.mySQLClient;
+const add = async (pool, medicalAdvices, IDmedecin, IDpatient) => {
     const dateOrdonnance = new Date().toJSON().slice(0, 10);
-    const sqlQuery = `INSERT INTO ${TABLE_PATH} (conseilsMedicaux, dateOrdonnance, IDmedecin, IDpatient) VALUES('${conseilsMedicaux}', '${dateOrdonnance}', ${IDmedecin}, ${IDpatient});`;
+    const sqlQuery = `INSERT INTO Ordonnance (conseilsMedicaux, dateOrdonnance, IDmedecin, IDpatient)
+                        VALUES('${medicalAdvices}', '${dateOrdonnance}', ${IDmedecin}, ${IDpatient});`;
+    return await pool.promise().query(sqlQuery);
+}
 
+const addPrescription = async (prescription) => {
+    const pool = utility.pool;
     try {
-        const results = await client.promise().query(sqlQuery);
-        console.log(results);
-        return results;
+        const savePrescriptionResult = await add(pool, prescription.medicalAdvices, prescription.IDmedecin, prescription.IDpatient);
+        const prescriptionId = savePrescriptionResult[0].insertId;
+        await treatmentRepository.add(pool, prescription.treatments, prescriptionId);
+        return "success";
     } catch (err) {
-        console.log(err.stack);
-        return null;
+        console.log(err);
+        throw new err;
     }
 }
 
 module.exports = {
-    add
+    addPrescription
 }

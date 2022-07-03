@@ -2,8 +2,6 @@ const utility = require("../utility/index");
 const accountRepository = require("../repository/accountRepository");
 const addressRepository = require("../repository/addressRepository");
 const bcrypt = require("bcrypt");
-const dotenv = require('dotenv');
-dotenv.config();
 
 async function save(pool, lastName, firstName, addressId, accountId) {
     const insertUserQuery = `INSERT INTO Patient (nomPatient, prenomPatient, IDadresse, IDcompte)
@@ -43,6 +41,7 @@ const register = async user => {
         await save(pool, user.lastName, user.firstName, addressId, accountId);
         return "success";
     } catch (error) {
+        console.log(error);
         throw error;
     }
 }

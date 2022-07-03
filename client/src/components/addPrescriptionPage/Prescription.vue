@@ -93,7 +93,11 @@ export default {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        if (data.result === "success") {
+          this.$router.push("/");
+        } else {
+          console.log(data.result);
+        }
       })
     },
     addTreatement() {
