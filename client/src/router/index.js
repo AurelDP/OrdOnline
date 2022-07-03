@@ -8,6 +8,7 @@ import AddPrescriptionView from '../views/AddPrescriptionView.vue'
 import PrescriptionView from "../views/PrescriptionView";
 import CustomerSpaceView from "../views/CustomerSpaceView";
 import LoginView from "../views/LoginView";
+import PatientRecordView from "@/views/PatientRecordView";
 
 const routes = [
   {path: '/', name: 'home', component: HomeView},
@@ -16,8 +17,9 @@ const routes = [
   {path: '/register', name: 'register', component: RegisterView},
   {path: "/addPrescription", component: AddPrescriptionView},
   {path: '/prescription', name: 'prescription', component: PrescriptionView},
-  {path: '/customer-space', name: 'customer', component: CustomerSpaceView},
+  {path: '/customerSpace', name: 'customer', component: CustomerSpaceView},
   {path: '/signIn', name: 'login', component: LoginView},
+  {path: '/patientRecord', name: 'patient', component: PatientRecordView},
   {path: "/:catchAll(.*)*", component: Error404},
 ]
 

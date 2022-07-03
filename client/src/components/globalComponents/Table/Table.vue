@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="flex flex-wrap py-3 justify-between items-center">
-      <span class="ord-text-title mr-2">
+      <span :class=classTitle>
         {{ title }}
       </span>
       <div v-if="btn === true || research === true" class="flex flex-row my-5">
         <span v-if="btn === true">
-          <Button class="ord-button ord-button-green hover:ord-button-green-hover mr-3" text="Ajouter" src="/"/>
+          <Button class="ord-button ord-button-green hover:ord-button-green-hover mr-3" text="Ajouter" :src=src />
         </span>
         <span v-if="research === true">
           <div class="flex flex-row border-b-2 border-gray-400 focus-within:border-ord-green-100">
@@ -29,32 +29,42 @@
       Replace 'dataOrdo' by 'data' in v-if to see when there is no content
     -->
     <div v-if="dataOrdo.length !== 0" class="max-h-60 overflow-auto drop-shadow-md my-5 rounded-lg bg-white">
-      <table v-if="type === 'ord'" class="w-full">
+      <table v-if="type === 'my_prescription'" class="w-full">
         <TableRow
             v-for="value in dataOrdo"
-            src="/" :val1="value.date"
+            src="/"
+            :val1="value.date"
             :val2="value.doctor"
             :val3="value.status"
-            :type="'ord'"
+            :type="'my_prescription'"
         />
       </table>
-      <table v-else-if="type === 'doctor'" class="w-full">
+      <table v-else-if="type === 'my_doctor'" class="w-full">
         <TableRow
             v-for="value in dataDoctor"
             src="/"
             :val1="value.doctor"
             :val2="value.specialist"
             :val3="value.address"
-            :type="'doctor'"
+            :type="'my_doctor'"
         />
       </table>
-      <table v-else class="w-full">
+      <table v-else-if="type === 'my_pharmacy'" class="w-full">
         <TableRow
             v-for="value in dataPharma"
             src="/"
             :val1="value.name"
             :val2="value.address"
-            :type="'pharma'"
+            :type="'my_pharmacy'"
+        />
+      </table>
+      <table v-else class="w-full">
+        <TableRow
+            v-for="value in dataOrdo"
+            src="/"
+            :val1="value.date"
+            :val2="value.status"
+            :type="'prescriptions'"
         />
       </table>
     </div>
@@ -81,6 +91,8 @@ export default {
 
   props: {
     title: String,
+    src: String,
+    classTitle: String,
     btn: Boolean,
     research: Boolean,
     type: String,
@@ -107,6 +119,16 @@ export default {
         {name: 'Pharmacie de Lozère', address: '4 rue charles Peguy, Palaiseau, 91120'},
         {name: 'Pharmacie de Villebon-sur-Yvette', address: '1344 avenue des platanes, Villebon-sur-Yvette, 91140'},
         {name: 'Grande pharmacie de Villebon', address: '41 avenue Charles de Gaulle, Villebon-sur-Yvette, 91140'},
+      ],
+      dataPrescription: [
+        {date: '14/06/2022', status: 'En attente'},
+        {date: '13/06/2022', status: 'En cours'},
+        {date: '10/05/2022', status: 'En attente'},
+        {date: '09/01/2022', status: 'Terminée'},
+        {date: '07/09/2021', status: 'Terminée'},
+        {date: '29/05/2021', status: 'Terminée'},
+        {date: '18/04/2021', status: 'Terminée'},
+        {date: '02/01/2021', status: 'Terminée'},
       ],
       data: []
     }
