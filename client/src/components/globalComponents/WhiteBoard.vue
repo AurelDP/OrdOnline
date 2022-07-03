@@ -10,18 +10,6 @@
       </div>
       <h1 class="ord-text-title text-center mb-10">{{ title }}</h1>
       <slot/>
-      <div v-if="button1 === true || button2 === true" class="flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2">
-        <Button v-if="button1 === true"
-          :class=class1
-          :text=text1
-          :src=src1
-        />
-        <Button v-if="button2 === true"
-            :class=class2
-            :text=text2
-            :src=src2
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -33,14 +21,6 @@ export default {
   name: "WhiteBoard",
   props: {
     title: String,
-    button1: Boolean,
-    button2: Boolean,
-    text1: String,
-    text2: String,
-    src1: String,
-    src2: String,
-    class1: String,
-    class2: String,
     statut: Boolean,
     classStatut: String,
     textStatut: String,
