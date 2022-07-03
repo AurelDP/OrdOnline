@@ -1,12 +1,15 @@
-const getPgClient = require('./connectServer');
+const mysql = require('mysql2');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const tryToConnect = () => {
-    const newClient = getPgClient();
-    newClient.connect();
-
-    return newClient;
-};
+const pool = mysql.createPool({
+    user: process.env.DBUSER,
+    password: process.env.PASSWORD,
+    host: process.env.HOST,
+    database: process.env.DATABASE,
+    port: process.env.PORT
+});
 
 module.exports = {
-    tryToConnect
+    pool
 }
