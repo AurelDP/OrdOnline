@@ -22,7 +22,7 @@ import Navbar from "@/components/globalComponents/Navbar";
 import Table from "@/components/globalComponents/Table/Table";
 
 export default {
-  name: "CustomerSpace",
+  name: "PatientSpace",
   components: {
     AdaptFooterBackground,
     Table,

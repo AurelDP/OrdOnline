@@ -6,20 +6,20 @@ import SelectRoleView from "../views/SelectRoleView";
 import RegisterView from "../views/RegisterView";
 import AddPrescriptionView from '../views/AddPrescriptionView.vue'
 import PrescriptionView from "../views/PrescriptionView";
-import CustomerSpaceView from "../views/CustomerSpaceView";
+import PatientSpaceView from "../views/PatientSpaceView";
 import LoginView from "../views/LoginView";
 import PatientRecordView from "@/views/PatientRecordView";
 
 const routes = [
-  {path: '/', name: 'home', component: HomeView},
-  {path: '/about', name: 'about', component: AboutView},
-  {path: '/signUp', name: 'role', component: SelectRoleView},
-  {path: '/register', name: 'register', component: RegisterView},
+  {path: '/', component: HomeView},
+  {path: '/about', component: AboutView},
+  {path: '/signUp', component: SelectRoleView},
+  {path: '/register', component: RegisterView},
   {path: "/addPrescription", component: AddPrescriptionView},
-  {path: '/prescription', name: 'prescription', component: PrescriptionView},
-  {path: '/customerSpace', name: 'customer', component: CustomerSpaceView},
-  {path: '/signIn', name: 'login', component: LoginView},
-  {path: '/patientRecord', name: 'patient', component: PatientRecordView},
+  {path: '/prescription', component: PrescriptionView},
+  {path: '/patientSpace', component: PatientSpaceView},
+  {path: '/signIn', component: LoginView},
+  {path: '/patientRecord', component: PatientRecordView},
   {path: "/:catchAll(.*)*", component: Error404},
 ]
 
