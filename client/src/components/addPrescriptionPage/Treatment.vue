@@ -1,5 +1,5 @@
 <template>
-  <div class="ord-green-border-left flex my-10">
+  <div class="ord-green-border-left flex mb-5">
     <div class="w-full">
       <div class="flex gap-2">
         <input
