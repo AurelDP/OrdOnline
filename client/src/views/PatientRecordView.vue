@@ -2,15 +2,9 @@
   <AdaptFooterBackground :background-gradient="true">
     <Navbar/>
     <div>
-      <WhiteBoard :button1="true"
-                  :button2="true"
-                  :title="PatientRecords.firstName + ' ' + PatientRecords.lastName"
-                  class1="ord-button-green hover:ord-button-green-hover"
-                  class2="ord-button-red hover:ord-button-red-hover"
-                  src1="/"
-                  src2="/"
-                  text1="Retour"
-                  text2="Supprimer">
+      <WhiteBoard
+        :title="PatientRecords.firstName + ' ' + PatientRecords.lastName"
+      >
 
         <InfoBox :title="'Informations personnelles'" :borderLeft="true">
           <div class="flex flex-wrap md:gap-12 sm:gap-8 gap-4">
@@ -60,6 +54,18 @@
         <Table :btn="true" :src="'/'" :research="true" :title="'Ordonnances'" :type="'prescriptions'"
                class-title="ord-text-subtitle py-4"/>
 
+        <div class="ord-whiteboard-buttons">
+          <Button
+              :class="'ord-button-green hover:ord-button-green-hover'"
+              :text="'Retour'"
+              :src="'/'"
+          />
+          <Button
+              :class="'ord-button-red hover:ord-button-red-hover'"
+              :text="'Supprimer'"
+              :src="'/'"
+          />
+        </div>
       </WhiteBoard>
     </div>
   </AdaptFooterBackground>
@@ -71,6 +77,7 @@ import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import Navbar from "@/components/globalComponents/Navbar";
 import Table from "@/components/globalComponents/Table/Table";
 import InfoBox from "@/components/globalComponents/InfoBox";
+import Button from "@/components/globalComponents/Button";
 
 export default {
   name: "PatientRecordView",
@@ -80,6 +87,7 @@ export default {
     WhiteBoard,
     Table,
     InfoBox,
+    Button
   },
 
   data() {

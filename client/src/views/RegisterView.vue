@@ -3,12 +3,15 @@
     <Navbar/>
     <WhiteBoard
         title="Informations Patient"
-        :button1="true"
-        :class1="'ord-button-green hover:ord-button-green-hover'"
-        :text1="'Confirmer'"
-        :src1="'/'"
     >
       <RegisterForm/>
+      <div class="ord-whiteboard-buttons">
+        <Button
+            :class="'ord-button-green hover:ord-button-green-hover'"
+            :text="'Confirmer'"
+            :src="'/'"
+        />
+      </div>
     </WhiteBoard>
   </AdaptFooterBackground>
 </template>
@@ -18,10 +21,11 @@ import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import RegisterForm from "@/components/registerPage/RegisterForm";
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
+import Button from "@/components/globalComponents/Button";
 
 export default {
   name: "RegisterView",
-  components: {RegisterForm, WhiteBoard, AdaptFooterBackground, Navbar}
+  components: {RegisterForm, WhiteBoard, AdaptFooterBackground, Navbar, Button}
 }
 </script>
 

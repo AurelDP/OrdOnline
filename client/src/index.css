@@ -66,4 +66,8 @@
     .ord-input {
         @apply border-b-2 border-gray-400 focus:outline-none focus:border-ord-green-100 w-full;
     }
+
+    .ord-whiteboard-buttons {
+        @apply flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2;
+    }
 }
