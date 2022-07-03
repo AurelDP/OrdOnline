@@ -1,10 +1,6 @@
 <template>
   <WhiteBoard
       :title="'Nouvelle ordonnance'"
-      :button1="true"
-      :text1="'Confirmer'"
-      :src1="'/'"
-      :class1="'ord-button-green hover:ord-button-green-hover'"
   >
     <div class="flex justify-between flex-wrap">
       <h3 class="ord-text-subtitle mb-5">Traitements</h3>
@@ -38,6 +34,14 @@
         rows="3"
         v-model="medicalAdvices"
     />
+    <div class="ord-whiteboard-buttons">
+      <Button
+          class="ord-button-green hover:ord-button-green-hover"
+          :text="'Confirmer'"
+          :src="'/addPrescription'"
+          @click="addPrescription"
+      />
+    </div>
   </WhiteBoard>
 </template>
 
@@ -74,6 +78,24 @@ export default {
     }
   },
   methods: {
+    addPrescription() {
+      fetch('http://localhost:8081/prescription/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          IDmedecin: 1,
+          IDpatient: 2,
+          medicalAdvices: this.medicalAdvices,
+          treatments: this.treatmentList
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+      })
+    },
     addTreatement() {
       item.id = count;
       this.treatmentList.push(Object.assign({}, item));
