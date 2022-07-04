@@ -27,6 +27,7 @@
 
 <script>
 import Button from './Button.vue'
+
 export default {
   name: "Modal",
   components: {
@@ -55,4 +56,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

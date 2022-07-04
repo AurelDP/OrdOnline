@@ -1,12 +1,10 @@
-const home = require('../repository/home');
+const homeRepository = require('../repository/homeRepository');
 
-async function getTitle(req, res) {
-    const email = req.body;
-
-    const title = await home.getTitle(email);
-    res.send({result: title});
+async function getAll(req, res) {
+    const result = await homeRepository.getAll();
+    res.send({result: result});
 }
 
 module.exports = {
-    getTitle
+    getAll
 }
