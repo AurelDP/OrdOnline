@@ -9,6 +9,8 @@
         :icon2=icon2
         :src1=src1
         :src2=src2
+        @button1Click="this.$emit('button1Click')"
+        @button2Click="this.$emit('button2Click')"
     />
   </nav>
 </template>
@@ -30,7 +32,7 @@ export default {
     icon1: String,
     icon2: String,
     src1: String,
-    src2: String
+    src2: String,
   }
 }
 </script>

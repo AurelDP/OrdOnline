@@ -10,7 +10,8 @@ const add = async (pool, medicalAdvices, IDmedecin, IDpatient) => {
 
 const addPrescription = async (prescription) => {
     const pool = utility.pool;
-    try {
+    console.log("Ok ?");
+   /* try {
         const savePrescriptionResult = await add(pool, prescription.medicalAdvices, prescription.IDmedecin, prescription.IDpatient);
         const prescriptionId = savePrescriptionResult[0].insertId;
         await treatmentRepository.add(pool, prescription.treatments, prescriptionId);
@@ -18,7 +19,7 @@ const addPrescription = async (prescription) => {
     } catch (err) {
         console.log(err);
         throw new err;
-    }
+    }*/
 }
 
 module.exports = {

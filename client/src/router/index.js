@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import Error404 from '../views/ErrorView.vue'
@@ -11,21 +11,30 @@ import LoginView from "../views/LoginView";
 import PatientRecordView from "@/views/PatientRecordView";
 
 const routes = [
-  {path: '/', component: HomeView},
-  {path: '/about', component: AboutView},
-  {path: '/signUp', component: SelectRoleView},
-  {path: '/register/:type', component: RegisterView, props: true},
-  {path: "/addPrescription", component: AddPrescriptionView},
-  {path: '/prescription', component: PrescriptionView},
-  {path: '/patientSpace', component: PatientSpaceView},
-  {path: '/signIn', component: LoginView},
-  {path: '/patientRecord', component: PatientRecordView},
-  {path: "/:catchAll(.*)*", name: 'error', component: Error404},
+    {path: '/', name: 'home', component: HomeView},
+    {path: '/about', name: 'about', component: AboutView},
+    {path: '/signUp', name: 'signup', component: SelectRoleView},
+    {path: '/register/:type', name: 'register', component: RegisterView, props: true},
+    {path: '/addPrescription', name: 'addprescription', component: AddPrescriptionView},
+    {path: '/prescription', name: 'prescription', component: PrescriptionView},
+    {path: '/patientSpace', name: 'userspace', component: PatientSpaceView},
+    {path: '/signIn', name: 'signin', component: LoginView},
+    {path: '/patientRecord', name: 'patientrecord', component: PatientRecordView},
+    {path: '/:catchAll(.*)*', name: 'error', component: Error404},
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
+    history: createWebHistory(),
+    routes
+})
+
+router.beforeEach((to, from, next) => {
+    const namesNotProtected = ["home", "about", "signup", "signin", "error", "register"];
+
+    if (!namesNotProtected.includes(to.name) && localStorage.getItem("WebToken") === null)
+        next({name: 'error'});
+    else
+        next();
 })
 
 export default router

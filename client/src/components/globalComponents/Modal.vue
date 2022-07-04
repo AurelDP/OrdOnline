@@ -7,14 +7,14 @@
         <h3 class="ord-text-subtitle mt-5">{{ textModal }}</h3>
         <div class="ord-whiteboard-buttons">
           <Button
-              @click="clickBtn1"
+              @click="this.$emit('button1Click')"
               :text="text1"
               :src="''"
               :class="class1"
           />
           <Button
               v-if="text2"
-              @click="clickBtn2"
+              @click="this.$emit('button2Click')"
               :text="text2"
               :src="''"
               :class="class2"
@@ -38,20 +38,10 @@ export default {
     iconClass: String,
     textModal: String,
     text1: String,
-    nameEmit1: String,
     class1: String,
     text2: String,
-    nameEmit2: String,
     class2: String,
-  },
-  methods: {
-    clickBtn1() {
-      this.$emit(this.nameEmit1);
-    },
-    clickBtn2() {
-      this.$emit(this.nameEmit2);
-    },
-  },
+  }
 }
 </script>
 

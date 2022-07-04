@@ -31,22 +31,20 @@
 
   <Modal
       v-show="showModalError"
-      @closeModal="closeModalError"
+      @button1Click="closeModalError"
       :icon="'fa-warning'"
       :iconClass="'text-ord-red'"
       :textModal="'Adresse mail ou mot de passe incorrect'"
       :text1="'Ok'"
-      :nameEmit1="'closeModal'"
       :class1="'ord-button-red hover:ord-button-red-hover'"
   />
   <Modal
       v-show="showModalSuccess"
-      @closeModal="closeModalSuccess"
+      @button1Click="closeModalSuccess"
       :icon="'fa-check'"
       :iconClass="'text-ord-green-100'"
       :textModal="'Connexion avec succès'"
       :text1="'Continuer'"
-      :nameEmit1="'closeModal'"
       :class1="'ord-button-green hover:ord-button-green-hover'"
   />
 </template>
@@ -85,7 +83,8 @@ export default {
       })
       .then(response => response.json())
       .then(response => {
-        if (response.result === "success") {
+        if (response.result !== "Invalid email or password" && response.result !== "error") {
+          localStorage.setItem("WebToken", response.result.WebToken);
           this.showModalSuccess = true;
         } else {
           this.showModalError = true;

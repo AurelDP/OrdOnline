@@ -237,22 +237,20 @@
   
   <Modal
       v-show="showModalError"
-      @closeModal="closeModalError"
+      @button1Click="closeModalError"
       :icon="'fa-warning'"
       :iconClass="'text-ord-red'"
       :textModal="'Adresse mail ou numéro de téléphone déjà utilisé'"
       :text1="'Ok'"
-      :nameEmit1="'closeModal'"
       :class1="'ord-button-red hover:ord-button-red-hover'"
   />
   <Modal
       v-show="showModalSuccess"
-      @closeModal="closeModalSuccess"
+      @button1Click="closeModalSuccess"
       :icon="'fa-check'"
       :iconClass="'text-ord-green-100'"
       :textModal="'Compte créé avec succès'"
       :text1="'Continuer'"
-      :nameEmit1="'closeModal'"
       :class1="'ord-button-green hover:ord-button-green-hover'"
   />
 </template>

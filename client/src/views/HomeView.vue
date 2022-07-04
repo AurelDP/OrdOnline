@@ -1,6 +1,6 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="false">
-    <Navbar
+    <Navbar v-if="!isConnected"
         :buttons="true"
         :text1="'Inscription'"
         :text2="'Connexion'"
@@ -9,8 +9,18 @@
         :src1="'/signUp'"
         :src2="'/signIn'"
     />
+    <Navbar v-if="isConnected"
+        :buttons="true"
+        :text1="'Mon espace'"
+        :text2="'Déconnexion'"
+        :icon1="'fa-user'"
+        :icon2="'fa-arrow-right-from-bracket'"
+        :src1="'/patientSpace'"
+        :src2="'/'"
+        @button2Click="disconnect"
+    />
     <HomeBody
-      :isConnected="false"
+      :isConnected="isConnected"
     />
   </AdaptFooterBackground>
 </template>
@@ -27,6 +37,21 @@ export default {
     AdaptFooterBackground,
     Navbar,
     HomeBody
+  },
+  data() {
+    return {
+      isConnected: false
+    }
+  },
+  methods: {
+    disconnect() {
+      localStorage.removeItem("WebToken");
+      this.isConnected = false;
+    }
+  },
+  created() {
+      if (localStorage.getItem('WebToken') !== null)
+        this.isConnected = true;
   }
 }
 </script>

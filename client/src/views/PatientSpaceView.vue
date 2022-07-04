@@ -8,6 +8,7 @@
         :icon2="'fa-arrow-right-from-bracket'"
         :src1="'/'"
         :src2="'/'"
+        @button2Click="disconnect"
     />
     <div class="md:px-24 sm:px-16 px-8 py-10">
       <Table :btn="false" :research="true" src="/" class-title="ord-text-title mr-2" :title="'Mes ordonnances'" :type="'my_prescription'" class="mb-10"/>
@@ -18,7 +19,6 @@
 </template>
 
 <script>
-
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
 import Table from "@/components/globalComponents/Table/Table";
@@ -29,6 +29,11 @@ export default {
     AdaptFooterBackground,
     Table,
     Navbar,
+  },
+  methods: {
+    disconnect() {
+      localStorage.removeItem("WebToken");
+    }
   }
 }
 </script>
