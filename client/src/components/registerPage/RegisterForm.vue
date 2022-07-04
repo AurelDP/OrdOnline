@@ -374,7 +374,7 @@ export default {
     },
 
     streetName: function () {
-      this.streetNameIsNotValid = !/^[A-Z][a-zA-Z\u00E0-\u00FC]+(?:[\s-][a-zA-Z\u00E0-\u00FC]+)*$/.test(this.streetName);
+      this.streetNameIsNotValid = !/^[A-Z][a-zA-Z'\u00E0-\u00FC]+(?:[\s-][a-zA-Z'\u00E0-\u00FC]+)*$/.test(this.streetName);
     },
 
     postalCode: function () {
@@ -390,11 +390,11 @@ export default {
     },
 
     domain: function () {
-      this.domainIsNotValid = !/^[A-Z][a-zA-Z\u00E0-\u00FC]+(?:[\s-][a-zA-Z\u00E0-\u00FC]+)*$/.test(this.domain);
+      this.domainIsNotValid = !/^[A-Z][a-zA-Z'\u00E0-\u00FC]+(?:[\s-][a-zA-Z'\u00E0-\u00FC]+)*$/.test(this.domain);
     },
 
     namePharma: function () {
-      this.namePharmaIsNotValid = !/^[A-Z][a-zA-Z\u00E0-\u00FC]+(?:[\s-][a-zA-Z\u00E0-\u00FC]+)*$/.test(this.namePharma);
+      this.namePharmaIsNotValid = !/^[A-Z][a-zA-Z'\u00E0-\u00FC]+(?:[\s-][a-zA-Z'\u00E0-\u00FC]+)*$/.test(this.namePharma);
     },
   },
 }

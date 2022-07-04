@@ -37,7 +37,7 @@ const register = async user => {
         const accountId = saveAccountResult[0].insertId;
         let addressId = '';
         if (user.type !== "healthService") {
-            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, user.streetName, user.postalCode, user.city);
+            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, user.streetName.replace("'", "\\'"), user.postalCode, user.city);
             addressId = saveAddressResult[0].insertId;
         }
         switch (user.type) {
@@ -45,10 +45,10 @@ const register = async user => {
                 await patientRepository.save(pool, user.lastName, user.firstName, addressId, accountId);
                 break;
             case "doctor":
-                await doctorRepository.save(pool, user.lastName, user.firstName, user.domain, user.rppsNumber, addressId, accountId);
+                await doctorRepository.save(pool, user.lastName, user.firstName, user.domain.replace("'", "\\'"), user.rppsNumber, addressId, accountId);
                 break;
             case "pharma":
-                await pharmaRepository.save(pool, user.namePharma, user.rppsNumber, addressId, accountId);
+                await pharmaRepository.save(pool, user.namePharma.replace("'", "\\'"), user.rppsNumber, addressId, accountId);
                 break;
             case "healthService":
                 await healthServiceRepository.save(pool, user.lastName, user.firstName, user.rppsNumber, accountId);
