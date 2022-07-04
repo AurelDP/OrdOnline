@@ -303,7 +303,7 @@ export default {
   },
   methods: {
     register(e) {
-      fetch(BASE_URL + "users", {
+      fetch(BASE_URL + "users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

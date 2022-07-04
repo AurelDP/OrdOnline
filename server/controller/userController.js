@@ -1,5 +1,11 @@
 const userRepository = require('../repository/userRepository');
 
+async function login(req, res) {
+    const user = req.body;
+    const result = await userRepository.login(user);
+    res.send({result: result});
+}
+
 async function saveUser(req, res) {
     const user = req.body;
     let isSuccess;
@@ -12,5 +18,6 @@ async function saveUser(req, res) {
 }
 
 module.exports = {
-    saveUser
+    saveUser,
+    login
 }
