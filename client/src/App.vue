@@ -3,11 +3,11 @@
 </template>
 
 <script>
+/*
 window.onload = () => {
-  console.log("App.vue loaded");
   if (localStorage.getItem('WebToken') !== null) {
     localStorage.removeItem('WebToken');
-    console.log("WebToken removed");
   }
 };
+*/
 </script>

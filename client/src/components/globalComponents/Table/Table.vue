@@ -29,9 +29,10 @@
       Once we create the query there will be only one value 'data'.
       Replace 'dataOrdo' by 'data' in v-if to see when there is no content
     -->
-    <div v-if="dataOrdo.length !== 0" class="max-h-60 overflow-auto shadow-no-offset rounded-lg bg-white">
+    <div class="max-h-60 overflow-auto shadow-no-offset rounded-lg bg-white">
       <table v-if="type === 'my_prescription'" class="w-full">
         <TableRow
+            v-if="dataOrdo.length !== 0"
             v-for="value in dataOrdo"
             src="/"
             :val1="value.date"
@@ -39,9 +40,12 @@
             :val3="value.status"
             :type="'my_prescription'"
         />
+        <NoDataTable v-else/>
       </table>
+
       <table v-else-if="type === 'my_doctor'" class="w-full">
         <TableRow
+            v-if="dataDoctor.length !== 0"
             v-for="value in dataDoctor"
             src="/"
             :val1="value.doctor"
@@ -49,31 +53,32 @@
             :val3="value.address"
             :type="'my_doctor'"
         />
+        <NoDataTable v-else/>
       </table>
+
       <table v-else-if="type === 'my_pharmacy'" class="w-full">
         <TableRow
+            v-if="dataPharma.length !== 0"
             v-for="value in dataPharma"
             src="/"
             :val1="value.name"
             :val2="value.address"
             :type="'my_pharmacy'"
         />
+        <NoDataTable v-else/>
       </table>
+
       <table v-else class="w-full">
         <TableRow
+            v-if="dataPrescription.length !== 0"
             v-for="value in dataOrdo"
             src="/"
             :val1="value.date"
             :val2="value.status"
             :type="'prescriptions'"
         />
+        <NoDataTable v-else/>
       </table>
-    </div>
-    <div v-else class="p-10 drop-shadow-md my-5 rounded-lg bg-white">
-      <h1 class="ord-text-subtitle-bold text-ord-lightred text-center">
-        Aucune donnée pour le moment
-      </h1>
-      <img src="@/assets/no_data.svg" class="h-60 w-60 mx-auto opacity-70 mt-20" alt="Pas de données"/>
     </div>
   </div>
 </template>
@@ -83,13 +88,15 @@
 import Button from "@/components/globalComponents/Button";
 import ButtonIcon from "@/components/globalComponents/ButtonIcon";
 import TableRow from "@/components/globalComponents/Table/TableRow";
+import NoDataTable from "@/components/globalComponents/Table/NoDataTable";
 
 export default {
   name: "Table",
   components: {
     Button,
     TableRow,
-    ButtonIcon
+    ButtonIcon,
+    NoDataTable
   },
 
   props: {
