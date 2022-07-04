@@ -3,18 +3,22 @@
     <Navbar/>
     <WhiteBoard
         title="Ordonnance"
-        :button1="true"
-        :class1="'ord-button-green hover:ord-button-green-hover'"
-        :text1="'Retour'"
-        :src1="'/'"
-        :button2="true"
-        :class2="'ord-button-green hover:ord-button-green-hover'"
-        :text2="'Modifier'"
-        :src2="'/'"
         :statut="true"
         :textStatut="'Terminée'"
     >
       <Prescription/>
+      <div class="ord-whiteboard-buttons">
+        <Button
+            :class="'ord-button-green hover:ord-button-green-hover'"
+            :text="'Retour'"
+            :src="'/'"
+        />
+        <Button
+            :class="'ord-button-green hover:ord-button-green-hover'"
+            :text="'Modifier'"
+            :src="'/'"
+        />
+      </div>
     </WhiteBoard>
     <WhiteBoard
         title="Historique des statuts"
@@ -29,7 +33,8 @@ import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBack
 import Navbar from "@/components/globalComponents/Navbar";
 import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import Prescription from "@/components/prescriptionPage/Prescription";
-import PrescriptionStatus from "@/components/prescriptionPage/PrescriptionStatus";
+import PrescriptionStatus from "@/components/prescriptionPage/StatutesHistory";
+import Button from "@/components/globalComponents/Button";
 
 export default {
   name: "PrescriptionView",
@@ -38,7 +43,8 @@ export default {
     AdaptFooterBackground,
     Navbar,
     WhiteBoard,
-    PrescriptionStatus
+    PrescriptionStatus,
+    Button
   }
 }
 </script>

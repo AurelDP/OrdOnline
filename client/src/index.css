@@ -7,6 +7,10 @@
         @apply rounded-lg h-7 w-40 flex items-center justify-center font-semibold;
     }
 
+    .ord-button-icon {
+        @apply rounded-full h-9 w-9 flex items-center justify-center;
+    }
+
     .ord-button-green {
         @apply bg-ord-green-100 text-white;
     }
@@ -31,6 +35,10 @@
         @apply bg-ord-lightred text-white;
     }
 
+    .ord-px-body-adapt {
+        @apply md:px-14 sm:px-14 px-8;
+    }
+
     .ord-px-adapt {
         @apply md:px-10 sm:px-6 px-6;
     }
@@ -45,5 +53,21 @@
 
     .ord-text-subtitle {
         @apply text-2xl;
+    }
+
+    .ord-text-subtitle-bold {
+        @apply text-2xl font-bold;
+    }
+
+    .ord-green-border-left {
+        @apply border-l-2 border-l-ord-green-100 pl-3
+    }
+
+    .ord-input {
+        @apply border-b-2 border-gray-400 focus:outline-none focus:border-ord-green-100 w-full;
+    }
+
+    .ord-whiteboard-buttons {
+        @apply flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2;
     }
 }

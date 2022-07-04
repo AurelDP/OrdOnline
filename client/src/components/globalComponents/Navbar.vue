@@ -5,8 +5,12 @@
         v-if="buttons === true"
         :text1=text1
         :text2=text2
+        :icon1=icon1
+        :icon2=icon2
         :src1=src1
         :src2=src2
+        @button1Click="this.$emit('button1Click')"
+        @button2Click="this.$emit('button2Click')"
     />
   </nav>
 </template>
@@ -25,8 +29,10 @@ export default {
     buttons: Boolean,
     text1: String,
     text2: String,
+    icon1: String,
+    icon2: String,
     src1: String,
-    src2: String
+    src2: String,
   }
 }
 </script>
