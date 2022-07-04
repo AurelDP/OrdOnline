@@ -8,6 +8,7 @@
           placeholder="Adresse mail"
           v-model="email"
           :class="{ 'border-ord-red focus:border-ord-red': emailIsNotValid }"
+          required
       />
       <div class="text-ord-red" v-show="emailIsNotValid">L'adresse email n'est pas valide.</div>
     </div>
@@ -19,6 +20,7 @@
           placeholder="Mot de passe"
           v-model="password"
           :class="{ 'border-ord-red focus:border-ord-red': passwordIsNotValid }"
+          required
       />
       <div class="text-ord-red" v-show="passwordIsNotValid">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.</div>
     </div>
