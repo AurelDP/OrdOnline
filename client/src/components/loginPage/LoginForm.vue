@@ -28,19 +28,46 @@
       </button>
     </div>
   </form>
+
+  <Modal
+      v-show="showModalError"
+      @closeModal="closeModalError"
+      :icon="'fa-warning'"
+      :iconClass="'text-ord-red'"
+      :textModal="'Adresse mail ou mot de passe incorrect.'"
+      :text1="'Ok'"
+      :nameEmit1="'closeModal'"
+      :class1="'ord-button-red hover:ord-button-red-hover'"
+  />
+  <Modal
+      v-show="showModalSuccess"
+      @closeModal="closeModalSuccess"
+      :icon="'fa-check'"
+      :iconClass="'text-ord-green-100'"
+      :textModal="'Connexion avec succès'"
+      :text1="'Continuer'"
+      :nameEmit1="'closeModal'"
+      :class1="'ord-button-green hover:ord-button-green-hover'"
+  />
 </template>
 
 <script>
+import Modal from '../globalComponents/Modal.vue'
 const BASE_URL = "http://localhost:8081/";
 
 export default {
   name: "LoginForm",
+  components: {
+    Modal
+  },
   data() {
     return {
       email: "",
       password: "",
       emailIsNotValid: false,
       passwordIsNotValid: false,
+      showModalError: false,
+      showModalSuccess: false,
     };
   },
   methods: {
@@ -59,13 +86,20 @@ export default {
       .then(response => response.json())
       .then(response => {
         if (response.result === "success") {
-          this.$router.push("/");
+          this.showModalSuccess = true;
         } else {
-          console.log(response.result);
+          this.showModalError = true;
         }
       })
       e.preventDefault();
-    }
+    },
+    closeModalError() {
+      this.showModalError = false;
+    },
+    closeModalSuccess() {
+      this.showModalSuccess = false;
+      this.$router.push("/");
+    },
   },
   watch: {
     email: function() {
