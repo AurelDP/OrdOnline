@@ -7,13 +7,6 @@
           class="md:max-w-150"
       >
         <LoginForm/>
-        <div class="ord-whiteboard-buttons">
-          <Button
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Continuer'"
-            :src="'/'"
-          />
-        </div>
       </WhiteBoard>
     </div>
   </AdaptFooterBackground>
