@@ -6,7 +6,6 @@ dotenv.config();
 
 const login = async user => {
     const pool = utility.pool;
-    const passwordHash = await bcrypt.hash(user.password, 10);
 
     try {
         const loginQuery = `SELECT * FROM Compte WHERE mailCompte = '${user.email}'`;
@@ -16,14 +15,12 @@ const login = async user => {
         if (rows.length === 0) {
             return 'Invalid email or password';
         } else {
-            bcrypt.compare(passwordHash, rows[0].motDePasseCompte, (err, result) => {
-                if (result) {
-                    console.log('Login successful');
-                    return "success";
-                } else {
-                    return 'Invalid email or password';
-                }
-            });
+            const valid = await bcrypt.compare(user.password, rows[0].motDePasseCompte);
+            if (valid) {
+                return "success";
+            } else {
+                return 'Invalid email or password';
+            }
         }
     } catch (error) {
         throw error;
