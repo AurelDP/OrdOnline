@@ -19,5 +19,5 @@ async function saveUser(req, res) {
 
 module.exports = {
     saveUser,
-    login
+    login,
 }

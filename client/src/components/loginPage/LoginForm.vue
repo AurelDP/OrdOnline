@@ -87,6 +87,7 @@ export default {
       .then(response => {
         if (response.result !== "Invalid email or password" && response.result !== "error") {
           localStorage.setItem("WebToken", response.result.WebToken);
+          localStorage.setItem("Role", response.result.Role);
           this.showModalSuccess = true;
         } else {
           this.showModalError = true;

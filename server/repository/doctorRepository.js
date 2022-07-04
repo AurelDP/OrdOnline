@@ -4,6 +4,12 @@ async function save(pool, lastName, firstName, domain, rppsNumber, addressId, ac
     return await pool.promise().query(insertUserQuery);
 }
 
+async function find(pool, id) {
+    const query = `SELECT * FROM Médecin WHERE ('${id}' = IDcompte);`;
+    return await pool.promise().query(query);
+}
+
 module.exports = {
-    save
+    save,
+    find
 }

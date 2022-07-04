@@ -22,6 +22,30 @@ async function findByPhoneNumber(pool, phoneNumber) {
     return result[0];
 }
 
+async function findRole(id) {
+    const pool = utility.pool;
+
+    try {
+        const isPatient = await patientRepository.find(pool, id);
+        const isDoctor = await doctorRepository.find(pool, id);
+        const isPharma = await pharmaRepository.find(pool, id);
+        const isHealthService = await healthServiceRepository.find(pool, id);
+
+        if (isPatient[0].length !== 0)
+            return "patient";
+        if (isDoctor[0].length !== 0)
+            return "doctor";
+        if (isPharma[0].length !== 0)
+            return "pharma";
+        if (isHealthService[0].length !== 0)
+            return "healthService";
+
+    } catch (error) {
+        console.log(error);
+        return "error";
+    }
+}
+
 const register = async user => {
     const pool = utility.pool;
     const passwordHash = await bcrypt.hash(user.password, 10);
@@ -75,8 +99,12 @@ const login = async user => {
             const valid = await bcrypt.compare(user.password, rows[0].motDePasseCompte);
 
             const userInfo = {};
+            userInfo.Role = await findRole(rows[0].IDcompte);
             userInfo.WebToken = jwt.sign(
-                {userID: rows[0].IDcompte},
+                {
+                    userID: rows[0].IDcompte,
+                    userRole: userInfo.Role
+                },
                 process.env.TOKEN_KEY,
                 {expiresIn: '2h'}
             );
@@ -94,5 +122,6 @@ const login = async user => {
 
 module.exports = {
     register,
-    login
+    login,
+    findRole
 }
