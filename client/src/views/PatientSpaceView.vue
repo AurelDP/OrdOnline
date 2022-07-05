@@ -6,7 +6,7 @@
         :text2="'Déconnexion'"
         :icon1="'fa-info'"
         :icon2="'fa-arrow-right-from-bracket'"
-        :src1="'/'"
+        :src1="'/infoUser'"
         :src2="'/'"
         @button2Click="disconnect"
     />
