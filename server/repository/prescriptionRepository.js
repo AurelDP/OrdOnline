@@ -22,6 +22,27 @@ const addPrescription = async (prescription) => {
     }*/
 }
 
+const findById = async (prescriptionId) => {
+    const pool = utility.pool;
+
+    try {
+        const sqlQuery = `SELECT * FROM Ordonnance 
+            JOIN Patient ON Patient.IDpatient = Ordonnance.IDpatient 
+            JOIN Médecin ON Médecin.IDmedecin = Ordonnance.IDmedecin
+            WHERE Ordonnance.IDordonnance = ${prescriptionId};`;
+        const [rows] = await pool.promise().query(sqlQuery);
+
+        const prescription = {"patient": {"lastName": rows[0].nomPatient, "firstName": rows[0].prenomPatient}, "doctor": {"lastName": rows[0].nomMedecin, "firstName": rows[0].prenomMedecin}, "medicalAdvices": rows[0].conseilsMedicaux, "date": rows[0].dateOrdonnance, "treatments": []};
+        prescription["treatments"] = await treatmentRepository.findByPrescriptionId(prescriptionId);
+
+        return prescription;
+    } catch (err) {
+        console.log(err);
+        throw new err;
+    }
+}
+
 module.exports = {
-    addPrescription
+    addPrescription,
+    findById
 }

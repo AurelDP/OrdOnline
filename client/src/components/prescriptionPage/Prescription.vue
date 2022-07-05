@@ -1,25 +1,25 @@
 <template>
   <InfoBox :title="'Médecin'" :borderLeft="true">
-    <p>Patrick Chaumont, 4 Rue Charles Péguy, Palaiseau, 91120</p>
+    <p>{{ this.doctor.lastName }} {{ this.doctor.firstName }}</p>
   </InfoBox>
   <InfoBox :title="'Patient'" :borderLeft="true">
-    <p>Jean Dupont, [âge si renseigné], [poids si renseigné]</p>
+    <p>{{ this.patient.lastName }} {{ this.patient.firstName }}, [âge si renseigné], [poids si renseigné]</p>
   </InfoBox>
-  <InfoBox :title="'Traitements (2)'">
+  <InfoBox :title="'Traitements (' + this.treatments.length + ')'">
     <ul>
       <Treatment
         v-for="treatment in treatments"
         :name="treatment.name"
         :description="treatment.description"
-        :isSubstitutable="treatment.isSubstitutable"
-        :isReimbursable="treatment.isReimbursable"
-        :renewal="treatment.renewal"
-        :isDelivered="treatment.isDelivered"
+        :isSubstitutable="treatment.substitutable"
+        :isReimbursable="treatment.reimbursable"
+        :renewal="treatment.renew"
+        :isDelivered="treatment.isDelivery"
       />
     </ul>
   </InfoBox>
   <InfoBox :title="'Conseils médicaux'" :borderLeft="true">
-    <p>Aucuns</p>
+    <p>{{ this.medicalAdvices }}</p>
   </InfoBox>
 </template>
 
@@ -27,6 +27,7 @@
 import Treatment from "@/components/prescriptionPage/Treatment";
 import InfoBox from "@/components/globalComponents/InfoBox";
 
+const BASE_URL = "http://localhost:8081/";
 export default {
   name: "Prescription",
   components: {
@@ -35,25 +36,45 @@ export default {
   },
   data() {
     return {
-      treatments: [
-        {
-          name: "Doliprane paracétamol 500mg 16 gélules",
-          description: "Description du traitement si besoin",
-          isSubstitutable: false,
-          isReimbursable: true,
-          renewal: "Modalités de renouvellement si besoin",
-          isDelivered: true
-        },
-        {
-          name: "Bétaméthasone Biogaran 30g 0.05% crème",
-          description: "2 fois/jour pendant 2 semaines, puis espacer les prises (1/jours, 1/2jours, 1/3 jours) jusqu'à arrêt complet",
-          isSubstitutable: true,
-          isReimbursable: true,
-          renewal: "",
-          isDelivered: false
-        }
-      ]
+      name: "",
+      description: "",
+      medicalAdvices: "",
+      patient: {
+        lastName: "",
+        firstName: "",
+      },
+      doctor: {
+        lastName: "",
+        firstName: "",
+      },
+      treatments: [],
+      statuses: []
     }
+  },
+  methods: {
+    getPrescription() {
+      fetch(BASE_URL + "prescription/11", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+          .then(response => response.json())
+          .then(data => {
+            this.name = data.result.name;
+            this.description = data.result.description;
+            this.patient = data.result.patient;
+            this.doctor = data.result.doctor;
+            this.treatments = data.result.treatments;
+            this.medicalAdvices = data.result.medicalAdvices;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+  },
+  created() {
+    this.getPrescription();
   }
 }
 </script>

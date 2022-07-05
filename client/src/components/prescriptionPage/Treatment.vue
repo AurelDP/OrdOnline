@@ -3,9 +3,9 @@
     <div class="flex flex-wrap justify-between">
       <p class="mr-4 font-bold">{{ name }}</p>
       <p class="italic">
-        <span v-if="isSubstitutable === true">Substituable</span>
+        <span v-if="isSubstitutable === 1">Substituable</span>
         <span v-else>Non Substituable</span>
-        <span v-if="isReimbursable === true">, Remboursable</span>
+        <span v-if="isReimbursable === 1">, Remboursable</span>
         <span v-else>, Non Remboursable</span>
       </p>
     </div>
@@ -26,10 +26,10 @@ export default {
   props: {
     name: String,
     description: String,
-    isSubstitutable: Boolean,
-    isReimbursable: Boolean,
+    isSubstitutable: Number,
+    isReimbursable: Number,
     renewal: String,
-    isDelivered: Boolean
+    isDelivered: Number
   },
 }
 </script>
