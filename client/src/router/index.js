@@ -32,8 +32,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const namesNotProtected = ["home", "about", "signup", "signin", "error", "register"];
+    const namesProtected = ["patientrecord"];
 
     if (!namesNotProtected.includes(to.name) && localStorage.getItem("WebToken") === null)
+        next({name: 'error'});
+    else if (namesProtected.includes(to.name) && (localStorage.getItem("Role") === 'patient' || localStorage.getItem("Role") === 'healthService'))
         next({name: 'error'});
     else
         next();
