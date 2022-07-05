@@ -2,9 +2,8 @@ const utility = require("../utility/index");
 const treatmentRepository = require("./treatmentRepository");
 
 const add = async (pool, medicalAdvices, IDmedecin, IDpatient) => {
-    const dateOrdonnance = new Date().toJSON().slice(0, 10);
     const sqlQuery = `INSERT INTO Ordonnance (conseilsMedicaux, dateOrdonnance, IDmedecin, IDpatient)
-                        VALUES('${medicalAdvices}', '${dateOrdonnance}', ${IDmedecin}, ${IDpatient});`;
+                        VALUES('${medicalAdvices}', NOW(), ${IDmedecin}, ${IDpatient});`;
     return await pool.promise().query(sqlQuery);
 }
 

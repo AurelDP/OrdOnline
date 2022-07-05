@@ -140,7 +140,7 @@ const getInfo = async (id, role) => {
                 user.city = address[0][0].communeAdresse;
                 user.weight = temp[0][0].poids;
                 user.securityNumber = temp[0][0].numeroSecu;
-                user.birthDate = temp[0][0].dateDeNaissance;
+                user.birthDate = globalMethods.convertMySQLDate(temp[0][0].dateDeNaissance);
                 user.name = temp[0][0].nomPatient + " " + temp[0][0].prenomPatient;
                 return user;
             case "doctor":

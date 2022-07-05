@@ -6,6 +6,7 @@
     <form class="m-5" @submit="saveData">
       <div class="flex flex-wrap -mx-3 -mb-6 py-5">
         <div class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-password" class="text-italic font-semibold">Nouveau mot de passe</label>
           <input
               class="ord-input"
               id="grid-password"
@@ -19,6 +20,7 @@
           </div>
         </div>
         <div class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-password-confirm" class="text-italic font-semibold">Confirmation du mot de passe</label>
           <input
               class="ord-input"
               id="grid-password-confirm"
@@ -35,6 +37,7 @@
 
       <div v-if="this.role !== 'healthService'" class="flex flex-wrap -mx-3 -mb-6 py-5">
         <div class="w-full min-w-40 md:w-1/4 px-3">
+          <label for="grid-street-number" class="text-italic font-semibold">Numéro de rue</label>
           <input
               class="ord-input"
               id="grid-street-number"
@@ -47,6 +50,7 @@
           <div class="text-ord-red" v-show="streetNumberIsNotValid">Le numéro de rue n'est pas valide.</div>
         </div>
         <div class="w-full min-w-40 md:w-1/4 px-3">
+          <label for="grid-street-name" class="text-italic font-semibold">Nom de rue</label>
           <input
               class="ord-input"
               id="grid-street-name"
@@ -59,6 +63,7 @@
           <div class="text-ord-red" v-show="streetNameIsNotValid">Le nom de rue n'est pas valide.</div>
         </div>
         <div class="w-full min-w-40 md:w-1/4 px-3">
+          <label for="grid-postal-code" class="text-italic font-semibold">Code postal</label>
           <input
               class="ord-input"
               id="grid-postal-code"
@@ -71,6 +76,7 @@
           <div class="text-ord-red" v-show="postalCodeIsNotValid">Le code postal doit contenir 5 chiffres.</div>
         </div>
         <div class="w-full min-w-40 md:w-1/4 px-3">
+          <label for="grid-city" class="text-italic font-semibold">Commune</label>
           <input
               class="ord-input"
               id="grid-city"
@@ -86,6 +92,7 @@
 
       <div class="flex flex-wrap -mx-3 -mb-6 py-5">
         <div class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-phone-number" class="text-italic font-semibold">Numéro de téléphone</label>
           <input
               class="ord-input"
               id="grid-phone-number"
@@ -100,6 +107,7 @@
         </div>
         <div v-if="this.role !== 'patient'"
              class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-rpps" class="text-italic font-semibold">Numéro RPPS</label>
           <input
               class="ord-input"
               id="grid-rpps"
@@ -113,8 +121,8 @@
             chiffres.
           </div>
         </div>
-        <div v-else
-             class="w-full min-w-56 md:w-1/2 px-3">
+        <div v-else class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-securityNumber" class="text-italic font-semibold">Numéro de Sécurité Sociale</label>
           <input
               class="ord-input"
               id="grid-securityNumber"
@@ -131,6 +139,7 @@
 
       <div v-if="this.role === 'doctor'" class="flex flex-wrap -mx-3 -mb-6 py-5">
         <div class="w-full min-w-56 px-3">
+          <label for="grid-domain" class="text-italic font-semibold">Domaine</label>
           <input
               class="ord-input"
               id="grid-domain"
@@ -147,6 +156,7 @@
 
       <div v-if="this.role === 'patient'" class="flex flex-wrap -mx-3 -mb-6 py-5">
         <div class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-birth-date" class="text-italic font-semibold">Date de naissance</label>
           <input
               class="ord-input"
               id="grid-birth-date"
@@ -159,6 +169,7 @@
           </div>
         </div>
         <div class="w-full min-w-56 md:w-1/2 px-3">
+          <label for="grid-weight" class="text-italic font-semibold">Poids (kg)</label>
           <input
               class="ord-input"
               id="grid-weight"

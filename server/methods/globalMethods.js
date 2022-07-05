@@ -4,6 +4,19 @@ function upperFirstLetterOfWords(string) {
     });
 }
 
+function convertMySQLDate(date) {
+    if (date != null && date.includes("-")) {
+        const parts = date.split('-');
+        return parts[2] + "/" + parts[1] + "/" + parts[0];
+    } else if (date != null && date.includes("/")) {
+        const parts = date.split('/');
+        return parts[2] + "-" + parts[1] + "-" + parts[0];
+    } else {
+        return null;
+    }
+}
+
 module.exports = {
-    upperFirstLetterOfWords
+    upperFirstLetterOfWords,
+    convertMySQLDate
 }
