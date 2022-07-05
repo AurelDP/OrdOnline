@@ -21,7 +21,7 @@
 <script>
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
-import Table from "@/components/globalComponents/Table/Table";
+import Table from "@/components/globalComponents/Table/TableSave";
 
 export default {
   name: "UserSpace",

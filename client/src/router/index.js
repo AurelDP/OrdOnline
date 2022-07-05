@@ -35,6 +35,8 @@ router.beforeEach((to, from, next) => {
 
     if (!namesNotProtected.includes(to.name) && localStorage.getItem("WebToken") === null)
         next({name: 'error'});
+    else if (to.name === "patientrecord" && !(localStorage.getItem("Role") === 'doctor' || localStorage.getItem("Role") === 'healthService'))
+        next({name: 'error'});
     else
         next();
 })

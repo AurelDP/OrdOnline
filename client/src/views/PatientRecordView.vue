@@ -3,67 +3,76 @@
     <Navbar/>
     <div>
       <WhiteBoard
-        :title="PatientRecords.firstName + ' ' + PatientRecords.lastName"
+          :title="firstName + ' ' + lastName"
       >
 
-        <InfoBox :title="'Informations personnelles'" :borderLeft="true">
+        <InfoBox :borderLeft="true" :title="'Informations personnelles'">
           <div class="flex flex-wrap md:gap-12 sm:gap-8 gap-4">
-            <ul class="overflow-scrol">
+            <ul class="overflow-scroll">
               <li class="font-bold pb-2">Prénom</li>
-              <li>{{ PatientRecords.firstName }}</li>
+              <li>{{ firstName }}</li>
             </ul>
-            <ul class="overflow-scrol">
+            <ul class="overflow-scroll">
               <li class="font-bold pb-2">Nom</li>
-              <li>{{ PatientRecords.lastName }}</li>
+              <li>{{ lastName }}</li>
             </ul>
-            <ul class="overflow-scrol">
+            <ul class="overflow-scroll">
               <li class="font-bold pb-2">Mail</li>
-              <li>{{ PatientRecords.email }}</li>
+              <li>{{ email }}</li>
             </ul>
-            <ul class="overflow-scrol">
+            <ul class="overflow-scroll">
               <li class="font-bold pb-2">Téléphone</li>
-              <li>{{ PatientRecords.phone }}</li>
+              <li>{{ phone }}</li>
             </ul>
-            <ul class="overflow-scrol">
+            <ul class="overflow-scroll">
               <li class="font-bold pb-2">Addresse</li>
-              <li>{{ PatientRecords.address }}</li>
+              <li>{{ address }}</li>
             </ul>
           </div>
         </InfoBox>
 
-        <InfoBox :title="'Informations Médicales'" :borderLeft="true">
+        <InfoBox :borderLeft="true" :title="'Informations Médicales'">
           <div class="flex flex-wrap md:gap-12 sm:gap-8 gap-4">
-            <ul class="overflow-scrol">
+            <ul class="overflow-scroll">
               <li class="font-bold pb-2">Date de naissance</li>
-              <li v-if="PatientRecords.birthDate !== null">{{ PatientRecords.birthDate }}</li>
+              <li v-if="birthDate !== null">{{ birthDate }}</li>
+              <li v-else>N/A</li>
+            </ul>
+            <ul class="overflow-scrolll">
+              <li class="font-bold pb-2">Poids</li>
+              <li v-if="weight !== null">{{ weight }}</li>
               <li v-else>N/A</li>
             </ul>
             <ul class="overflow-scroll">
-              <li class="font-bold pb-2">Poids</li>
-              <li v-if="PatientRecords.weight !== null">{{ PatientRecords.weight }}</li>
-              <li v-else>N/A</li>
-            </ul>
-            <ul class="overflow-scrol">
               <li class="font-bold pb-2">Numéro de sécurité sociale</li>
-              <li v-if="PatientRecords.socialSecNb !== null">{{ PatientRecords.socialSecNb }}</li>
+              <li v-if="socialSecNb !== null">{{ socialSecNb }}</li>
               <li v-else>N/A</li>
             </ul>
           </div>
         </InfoBox>
 
-        <Table :btn="true" :src="'/'" :research="true" :title="'Ordonnances'" :type="'prescriptions'"
-               class-title="ord-text-subtitle py-4"/>
+        <Table
+            :button="true"
+            :btnText="'Ajouter'"
+            @buttonClick="console.log('clicked')"
+            :research="true"
+            :title="'Ordonnances'"
+            class-title="ord-text-subtitle py-4"
+            :data="dataOrdo"
+            :key="dataOrdo"
+            @getClickValue="clickedPrescriptionID"
+        />
 
         <div class="ord-whiteboard-buttons">
           <Button
               :class="'ord-button-green hover:ord-button-green-hover'"
-              :text="'Retour'"
               :src="'/'"
+              :text="'Retour'"
           />
           <Button
               :class="'ord-button-red hover:ord-button-red-hover'"
-              :text="'Supprimer'"
               :src="'/'"
+              :text="'Supprimer'"
           />
         </div>
       </WhiteBoard>
@@ -79,6 +88,8 @@ import Table from "@/components/globalComponents/Table/Table";
 import InfoBox from "@/components/globalComponents/InfoBox";
 import Button from "@/components/globalComponents/Button";
 
+const BASE_URL = 'http://localhost:8081/';
+
 export default {
   name: "PatientRecordView",
   components: {
@@ -92,18 +103,71 @@ export default {
 
   data() {
     return {
-      PatientRecords:
-          {
-            firstName: "Aurélien",
-            lastName: "Duval",
-            email: "aurel1100@gmail.fr",
-            phone: "06 06 06 06 06",
-            address: "42 avenue des tournesols, Palaiseau, 91120",
-            birthDate: null,
-            weight: null,
-            socialSecNb: null
-          }
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      address: "",
+      birthDate: "",
+      weight: "",
+      socialSecNb: "",
+      dataOrdo: [],
     }
+  },
+  methods: {
+    clickedPrescriptionID(value) {
+      sessionStorage.setItem('prescriptionID', value);
+      this.$router.push('/prescription');
+    },
+    getRecord() {
+      fetch(BASE_URL + "patient/getRecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        },
+        body: JSON.stringify({
+          idPatient: 1,
+        })
+      })
+          .then(response => response.json())
+          .then(response => {
+            let res = response.result;
+            this.firstName = res.prenomPatient;
+            this.lastName = res.nomPatient;
+            this.email = res.mailCompte;
+            this.phone = [res.telCompte.slice(0, 2), " ", res.telCompte.slice(2, 4), " ", res.telCompte.slice(4, 6), " ", res.telCompte.slice(6, 8), " ", res.telCompte.slice(8, 10)].join('');
+            this.address = res.numeroAdresse + ' ' + res.rueAdresse + ', ' + res.codePostal + ', ' + res.communeAdresse;
+            this.birthDate = res.dateDeNaissance;
+            this.weight = res.poids;
+            this.socialSecNb = res.numeroSecu;
+          });
+    },
+    getPrescriptions() {
+      fetch(BASE_URL + "patient/getPrescriptions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        },
+        body: JSON.stringify({
+          idPatient: 1,
+        })
+      })
+          .then(response => response.json())
+          .then(response => {
+            if (response.result !== "error")
+              this.dataOrdo = response.result;
+            else
+              console.log("error");
+          });
+    }
+  },
+  created() {
+    this.getRecord();
+    this.getPrescriptions();
   }
 }
 </script>
