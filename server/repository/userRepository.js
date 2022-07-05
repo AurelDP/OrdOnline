@@ -160,7 +160,7 @@ const getInfo = async (id, role) => {
                 user.streetName = address[0][0].rueAdresse;
                 user.postalCode = address[0][0].codePostal;
                 user.city = address[0][0].communeAdresse;
-                user.rppsNumber = temp[0][0].numeroRPPSpharma;
+                user.rppsNumber = temp[0][0].numeroRPPSpharmacien;
                 return user;
             case "healthService":
                 temp = await healthServiceRepository.find(pool, id);

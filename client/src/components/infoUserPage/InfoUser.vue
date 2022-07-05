@@ -314,6 +314,7 @@ export default {
         .then(res => res.json())
         .then(res => {
           if (res.result !== "error") {
+            console.log(res.result);
             this.streetNumber = res.result.streetNumber;
             this.streetName = res.result.streetName;
             this.postalCode = res.result.postalCode;
