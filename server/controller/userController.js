@@ -17,7 +17,24 @@ async function saveUser(req, res) {
     res.send({result: isSuccess});
 }
 
+async function saveInfo(req, res) {
+    const userID = req.authUser.userID;
+    const userRole = req.authUser.userRole;
+    const user = req.body;
+    //const result = await userRepository.saveInfo(user, userID, userRole);
+    //res.send({result: result});
+}
+
+async function getInfo(req, res) {
+    const userID = req.authUser.userID;
+    const userRole = req.authUser.userRole;
+    const result = await userRepository.getInfo(userID, userRole);
+    res.send({result: result});
+}
+
 module.exports = {
     saveUser,
     login,
+    saveInfo,
+    getInfo
 }

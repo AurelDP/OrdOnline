@@ -120,8 +120,70 @@ const login = async user => {
     }
 }
 
+const getInfo = async (id, role) => {
+    const pool = utility.pool;
+
+    try {
+        const phone = await getPhoneNumber(pool, id);
+        let user = {};
+        let temp;
+        let address;
+        switch (role) {
+            case "patient":
+                temp = await patientRepository.find(pool, id);
+                address = await addressRepository.getInfo(pool, id, role);
+                user.phoneNumber = phone.telCompte;
+                user.streetNumber = address[0][0].numeroAdresse;
+                user.streetName = address[0][0].rueAdresse;
+                user.postalCode = address[0][0].codePostal;
+                user.city = address[0][0].communeAdresse;
+                user.weight = temp[0][0].poids;
+                user.securityNumber = temp[0][0].numeroSecu;
+                user.birthDate = temp[0][0].dateDeNaissance;
+                return user;
+            case "doctor":
+                temp = await doctorRepository.find(pool, id);
+                address = await addressRepository.getInfo(pool, id, role);
+                user.phoneNumber = phone.telCompte;
+                user.streetNumber = address[0][0].numeroAdresse;
+                user.streetName = address[0][0].rueAdresse;
+                user.postalCode = address[0][0].codePostal;
+                user.city = address[0][0].communeAdresse;
+                user.rppsNumber = temp[0][0].numeroRPPSmedecin;
+                user.domain = temp[0][0].domaineMedecin;
+                return user;
+            case "pharma":
+                temp = await pharmaRepository.find(pool, id);
+                address = await addressRepository.getInfo(pool, id, role);
+                user.phoneNumber = phone.telCompte;
+                user.streetNumber = address[0][0].numeroAdresse;
+                user.streetName = address[0][0].rueAdresse;
+                user.postalCode = address[0][0].codePostal;
+                user.city = address[0][0].communeAdresse;
+                user.rppsNumber = temp[0][0].numeroRPPSpharma;
+                return user;
+            case "healthService":
+                temp = await healthServiceRepository.find(pool, id);
+                user.rppsNumber = temp[0][0].numeroRPPSsante;
+                user.phoneNumber = phone.telCompte;
+                return user;
+        }
+    } catch (error) {
+        console.log(error);
+        return "error";
+    }
+}
+
+const getPhoneNumber = async (pool, id) => {
+    const phoneNumberQuery = `SELECT telCompte FROM Compte WHERE IDcompte = ${id}`;
+    const promise = pool.promise();
+    const [rows] = await promise.query(phoneNumberQuery);
+    return rows[0];
+}
+
 module.exports = {
     register,
     login,
-    findRole
+    findRole,
+    getInfo,
 }

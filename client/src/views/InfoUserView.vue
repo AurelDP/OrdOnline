@@ -1,5 +1,5 @@
 <template>
-  <AdaptFooterBackground :backgroundGradient="false">
+  <AdaptFooterBackground :backgroundGradient="true">
     <Navbar
         :buttons="true"
         :text1="'Mon espace'"
