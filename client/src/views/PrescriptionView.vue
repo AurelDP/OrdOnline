@@ -45,6 +45,14 @@ export default {
     WhiteBoard,
     PrescriptionStatus,
     Button
+  },
+  data() {
+    return {
+      prescriptionID: "",
+    }
+  },
+  created() {
+    this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : "";
   }
 }
 </script>

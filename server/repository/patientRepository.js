@@ -31,8 +31,64 @@ const getRecord = async (id, role) => {
     }
 }
 
+const getPrescriptions = async (patientAccountID, userRole, userID) => {
+    const pool = utility.pool;
+    const healthServiceQuery = `SELECT
+                                    o.IDordonnance,
+                                    o.dateOrdonnance,
+                                    m.nomMedecin,
+                                    s.nouveauStatut
+                                FROM Ordonnance AS o
+                                JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
+                                JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
+                                JOIN Patient AS p ON p.IDpatient = o.IDpatient
+                                WHERE p.IDcompte = ${patientAccountID}
+                                AND s.dateStatut = (
+                                    SELECT
+                                        MAX(s2.dateStatut)
+                                    FROM HistoriqueStatuts AS s2
+                                    WHERE s2.IDordonnance = o.IDordonnance
+                                );`;
+    const doctorQuery = `SELECT
+                            o.IDordonnance,
+                            o.dateOrdonnance,
+                            m.nomMedecin,
+                            s.nouveauStatut
+                        FROM Ordonnance AS o
+                        JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
+                        JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
+                        JOIN Patient AS p ON p.IDpatient = o.IDpatient
+                        WHERE p.IDcompte = ${patientAccountID}
+                        AND m.IDcompte = ${userID}
+                        AND s.dateStatut = (
+                            SELECT
+                                MAX(s2.dateStatut)
+                            FROM HistoriqueStatuts AS s2
+                            WHERE s2.IDordonnance = o.IDordonnance
+                        );`;
+
+    try {
+        let res;
+
+        if (userRole === "doctor")
+            res = await pool.promise().query(doctorQuery);
+        else if (userRole === 'healthService')
+            res = await pool.promise().query(healthServiceQuery);
+
+        for (let i = 0; i < res[0].length; i++) {
+            res[0][i].dateOrdonnance = res[0][i].dateOrdonnance.toLocaleDateString();
+            res[0][i].nomMedecin = "Docteur " + res[0][i].nomMedecin;
+        }
+        return res[0];
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
 module.exports = {
     save,
     find,
     getRecord,
+    getPrescriptions
 }

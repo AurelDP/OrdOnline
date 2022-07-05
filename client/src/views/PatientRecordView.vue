@@ -59,7 +59,8 @@
             :title="'Ordonnances'"
             class-title="ord-text-subtitle py-4"
             :data="dataOrdo"
-            @getClickValue="checkValue"
+            :key="dataOrdo"
+            @getClickValue="clickedPrescriptionID"
         />
 
         <div class="ord-whiteboard-buttons">
@@ -87,6 +88,8 @@ import Table from "@/components/globalComponents/Table/Table";
 import InfoBox from "@/components/globalComponents/InfoBox";
 import Button from "@/components/globalComponents/Button";
 
+const BASE_URL = 'http://localhost:8081/';
+
 export default {
   name: "PatientRecordView",
   components: {
@@ -108,47 +111,63 @@ export default {
       birthDate: "",
       weight: "",
       socialSecNb: "",
-      dataOrdo: [
-        {date: '14/06/2022', doctor: 'Docteur Chaumont avec un long texte', status: 'En attente'},
-        {date: '13/06/2022', doctor: 'Docteur Chomeur', status: 'En cours'},
-        {date: '10/05/2022', doctor: 'Docteur Chaumont', status: 'En attente'},
-        {date: '09/01/2022', doctor: 'Docteur Moutarde', status: 'Terminée'},
-        {date: '07/09/2021', doctor: 'Docteur Marmite', status: 'Terminée'},
-        {date: '29/05/2021', doctor: 'Docteur Enrico', status: 'Terminée'},
-        {date: '18/04/2021', doctor: 'Docteur Mbappe', status: 'Terminée'},
-        {date: '02/01/2021', doctor: 'Docteur Strange', status: 'Terminée'},
-      ],
+      dataOrdo: [],
     }
   },
   methods: {
-    checkValue(value) {
-
+    clickedPrescriptionID(value) {
+      sessionStorage.setItem('prescriptionID', value);
+      this.$router.push('/prescription');
+    },
+    getRecord() {
+      fetch(BASE_URL + "patient/getRecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        },
+        body: JSON.stringify({
+          idPatient: 1,
+        })
+      })
+          .then(response => response.json())
+          .then(response => {
+            let res = response.result;
+            this.firstName = res.prenomPatient;
+            this.lastName = res.nomPatient;
+            this.email = res.mailCompte;
+            this.phone = [res.telCompte.slice(0, 2), " ", res.telCompte.slice(2, 4), " ", res.telCompte.slice(4, 6), " ", res.telCompte.slice(6, 8), " ", res.telCompte.slice(8, 10)].join('');
+            this.address = res.numeroAdresse + ' ' + res.rueAdresse + ', ' + res.codePostal + ', ' + res.communeAdresse;
+            this.birthDate = res.dateDeNaissance;
+            this.weight = res.poids;
+            this.socialSecNb = res.numeroSecu;
+          });
+    },
+    getPrescriptions() {
+      fetch(BASE_URL + "patient/getPrescriptions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        },
+        body: JSON.stringify({
+          idPatient: 1,
+        })
+      })
+          .then(response => response.json())
+          .then(response => {
+            if (response.result !== "error")
+              this.dataOrdo = response.result;
+            else
+              console.log("error");
+          });
     }
   },
   created() {
-    fetch("http://localhost:8081/patient/getRecord", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Allow-Control-Allow-Origin": "*",
-        "Authorization": localStorage.getItem("WebToken"),
-      },
-      body: JSON.stringify({
-        id: 1,
-      })
-    })
-        .then(response => response.json())
-        .then(response => {
-          let res = response.result;
-          this.firstName = res.prenomPatient;
-          this.lastName = res.nomPatient;
-          this.email = res.mailCompte;
-          this.phone = [res.telCompte.slice(0, 2), " ", res.telCompte.slice(2, 4), " ", res.telCompte.slice(4, 6), " ", res.telCompte.slice(6, 8), " ", res.telCompte.slice(8, 10)].join('');
-          this.address = res.numeroAdresse + ' ' + res.rueAdresse + ', ' + res.codePostal + ', ' + res.communeAdresse;
-          this.birthDate = res.dateDeNaissance;
-          this.weight = res.poids;
-          this.socialSecNb = res.numeroSecu;
-        })
+    this.getRecord();
+    this.getPrescriptions();
   }
 }
 </script>

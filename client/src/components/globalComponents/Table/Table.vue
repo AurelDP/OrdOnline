@@ -30,13 +30,13 @@
             v-if="dataDisplayed.length !== 0"
             v-for="value in dataDisplayed"
             class="border-b-2 hover:bg-ord-green-600 hover:cursor-pointer"
-            @click="this.$emit('getClickValue', value);"
+            @click="this.$emit('getClickValue', value[Object.keys(value)[0]]);"
         >
-          <td class="p-3 whitespace-nowrap">{{ value[Object.keys(value)[0]] }}</td>
           <td class="p-3 whitespace-nowrap">{{ value[Object.keys(value)[1]] }}</td>
-          <td v-if="value[Object.keys(value)[2]] === 'En attente'" class="p-3 pr-8 whitespace-nowrap text-right text-ord-lightred">{{ value[Object.keys(value)[2]] }}</td>
-          <td v-else-if="value[Object.keys(value)[2]] === 'En cours'" class="p-3 pr-8 whitespace-nowrap text-right text-ord-green-100">{{ value[Object.keys(value)[2]] }}</td>
-          <td v-else class="p-3 pr-8 whitespace-nowrap text-right">{{ value[Object.keys(value)[2]] }}</td>
+          <td class="p-3 whitespace-nowrap">{{ value[Object.keys(value)[2]] }}</td>
+          <td v-if="value[Object.keys(value)[3]] === 'En attente'" class="p-3 pr-8 whitespace-nowrap text-right text-ord-lightred">{{ value[Object.keys(value)[3]] }}</td>
+          <td v-else-if="value[Object.keys(value)[3]] === 'En cours'" class="p-3 pr-8 whitespace-nowrap text-right text-ord-green-100">{{ value[Object.keys(value)[3]] }}</td>
+          <td v-else class="p-3 pr-8 whitespace-nowrap text-right">{{ value[Object.keys(value)[3]] }}</td>
         </tr>
         <NoDataTable v-else/>
       </table>
@@ -75,13 +75,13 @@ export default {
     search() {
       this.dataDisplayed = this.data.filter(
         (value) =>
-          value[Object.keys(value)[0]]
-            .toLowerCase()
-            .includes(this.searchString.toLowerCase()) ||
           value[Object.keys(value)[1]]
             .toLowerCase()
             .includes(this.searchString.toLowerCase()) ||
           value[Object.keys(value)[2]]
+            .toLowerCase()
+            .includes(this.searchString.toLowerCase()) ||
+          value[Object.keys(value)[3]]
               .toLowerCase()
               .includes(this.searchString.toLowerCase())
       );
