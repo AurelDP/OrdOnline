@@ -1,25 +1,30 @@
 <template>
   <InfoBox :title="'Médecin'" :borderLeft="true">
-    <p>Patrick Chaumont, 4 Rue Charles Péguy, Palaiseau, 91120</p>
+    <p>{{ this.prescription.doctor.lastName }} {{ this.prescription.doctor.firstName }}, {{ this.prescription.doctor.address }}</p>
   </InfoBox>
   <InfoBox :title="'Patient'" :borderLeft="true">
-    <p>Jean Dupont, [âge si renseigné], [poids si renseigné]</p>
+    <p>{{ this.prescription.patient.lastName }} {{ this.prescription.patient.firstName }}</p>
+    <p v-if="this.prescription.patient.age !== null">{{ this.prescription.patient.age }} ans</p>
+    <p v-if="this.prescription.patient.weight !== null">{{ this.prescription.patient.weight }} kg</p>
   </InfoBox>
-  <InfoBox :title="'Traitements (2)'">
+  <InfoBox :title="'Traitements (' + this.prescription.treatments.length + ')'">
     <ul>
       <Treatment
-        v-for="treatment in treatments"
+        v-for="treatment in prescription.treatments"
+        :id="treatment.id"
         :name="treatment.name"
         :description="treatment.description"
-        :isSubstitutable="treatment.isSubstitutable"
-        :isReimbursable="treatment.isReimbursable"
-        :renewal="treatment.renewal"
-        :isDelivered="treatment.isDelivered"
+        :isSubstitutable="treatment.substitutable"
+        :isReimbursable="treatment.reimbursable"
+        :renewal="treatment.renew"
+        :isDelivered="treatment.isDelivery"
+        :role="role"
+        @delivery="actualiseDelivery"
       />
     </ul>
   </InfoBox>
   <InfoBox :title="'Conseils médicaux'" :borderLeft="true">
-    <p>Aucuns</p>
+    <p>{{ this.prescription.medicalAdvices }}</p>
   </InfoBox>
 </template>
 
@@ -27,32 +32,37 @@
 import Treatment from "@/components/prescriptionPage/Treatment";
 import InfoBox from "@/components/globalComponents/InfoBox";
 
+const BASE_URL = "http://localhost:8081/";
 export default {
   name: "Prescription",
   components: {
     Treatment,
     InfoBox,
   },
-  data() {
-    return {
-      treatments: [
-        {
-          name: "Doliprane paracétamol 500mg 16 gélules",
-          description: "Description du traitement si besoin",
-          isSubstitutable: false,
-          isReimbursable: true,
-          renewal: "Modalités de renouvellement si besoin",
-          isDelivered: true
-        },
-        {
-          name: "Bétaméthasone Biogaran 30g 0.05% crème",
-          description: "2 fois/jour pendant 2 semaines, puis espacer les prises (1/jours, 1/2jours, 1/3 jours) jusqu'à arrêt complet",
-          isSubstitutable: true,
-          isReimbursable: true,
-          renewal: "",
-          isDelivered: false
-        }
-      ]
+  props: {
+    prescription: {
+      name: String,
+      description: String,
+      medicalAdvices: String,
+      patient: {
+        lastName: String,
+        firstName: String,
+        age: Number,
+        weight: Number,
+      },
+      doctor: {
+        lastName: String,
+        firstName: String,
+        address: String,
+      },
+      treatments: [],
+      statuses: []
+    },
+    role: String
+  },
+  methods: {
+    actualiseDelivery(delivery) {
+      this.$emit("delivery", delivery);
     }
   }
 }
