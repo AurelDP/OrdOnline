@@ -24,7 +24,7 @@ import Navbar from "@/components/globalComponents/Navbar";
 import Table from "@/components/globalComponents/Table/Table";
 
 export default {
-  name: "PatientSpace",
+  name: "UserSpace",
   components: {
     AdaptFooterBackground,
     Table,
