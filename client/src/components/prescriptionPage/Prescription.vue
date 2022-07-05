@@ -1,9 +1,11 @@
 <template>
   <InfoBox :title="'Médecin'" :borderLeft="true">
-    <p>{{ this.doctor.lastName }} {{ this.doctor.firstName }}</p>
+    <p>{{ this.doctor.lastName }} {{ this.doctor.firstName }}, {{ this.doctor.address }}</p>
   </InfoBox>
   <InfoBox :title="'Patient'" :borderLeft="true">
-    <p>{{ this.patient.lastName }} {{ this.patient.firstName }}, [âge si renseigné], [poids si renseigné]</p>
+    <p>{{ this.patient.lastName }} {{ this.patient.firstName }}</p>
+    <p v-if="this.patient.age !== null">{{ this.patient.age }} ans</p>
+    <p v-if="this.patient.weight !== null">{{ this.patient.weight }} kg</p>
   </InfoBox>
   <InfoBox :title="'Traitements (' + this.treatments.length + ')'">
     <ul>
@@ -42,10 +44,13 @@ export default {
       patient: {
         lastName: "",
         firstName: "",
+        age: Number,
+        weight: Number,
       },
       doctor: {
         lastName: "",
         firstName: "",
+        address: "",
       },
       treatments: [],
       statuses: []

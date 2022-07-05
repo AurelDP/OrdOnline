@@ -29,11 +29,16 @@ const findById = async (prescriptionId) => {
         const sqlQuery = `SELECT * FROM Ordonnance 
             JOIN Patient ON Patient.IDpatient = Ordonnance.IDpatient 
             JOIN Médecin ON Médecin.IDmedecin = Ordonnance.IDmedecin
+            JOIN Adresse ON Médecin.IDadresse = Adresse.IDadresse
             WHERE Ordonnance.IDordonnance = ${prescriptionId};`;
         const [rows] = await pool.promise().query(sqlQuery);
 
-        const prescription = {"patient": {"lastName": rows[0].nomPatient, "firstName": rows[0].prenomPatient}, "doctor": {"lastName": rows[0].nomMedecin, "firstName": rows[0].prenomMedecin}, "medicalAdvices": rows[0].conseilsMedicaux, "date": rows[0].dateOrdonnance, "treatments": []};
+        const prescription = {"patient": {"lastName": rows[0].nomPatient, "firstName": rows[0].prenomPatient, "age": null, "weight": rows[0].poids}, "doctor": {"lastName": rows[0].nomMedecin, "firstName": rows[0].prenomMedecin, "address": rows[0].numeroAdresse.toString() + " " + rows[0].rueAdresse + ", " + rows[0].communeAdresse + ", " + rows[0].codePostal}, "medicalAdvices": rows[0].conseilsMedicaux, "date": rows[0].dateOrdonnance, "treatments": []};
         prescription["treatments"] = await treatmentRepository.findByPrescriptionId(prescriptionId);
+
+        if (rows[0].dateDeNaissance !== null) {
+            prescription["patient"].age = new Date().getFullYear() - (rows[0].dateDeNaissance).getFullYear();
+        }
 
         return prescription;
     } catch (err) {
