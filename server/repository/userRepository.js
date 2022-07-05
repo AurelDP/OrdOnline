@@ -5,6 +5,7 @@ const patientRepository = require("../repository/patientRepository");
 const doctorRepository = require("../repository/doctorRepository");
 const pharmaRepository = require("../repository/pharmaRepository");
 const healthServiceRepository = require("../repository/healthServiceRepository");
+const globalMethods = require("../methods/globalMethods");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -61,7 +62,7 @@ const register = async user => {
         const accountId = saveAccountResult[0].insertId;
         let addressId = '';
         if (user.type !== "healthService") {
-            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, user.streetName.replace("'", "\\'"), user.postalCode, user.city);
+            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, globalMethods.upperFirstLetterOfWords(user.streetName.replace("'", "\\'")), user.postalCode, globalMethods.upperFirstLetterOfWords(user.city));
             addressId = saveAddressResult[0].insertId;
         }
         switch (user.type) {
@@ -69,10 +70,10 @@ const register = async user => {
                 await patientRepository.save(pool, user.lastName, user.firstName, addressId, accountId);
                 break;
             case "doctor":
-                await doctorRepository.save(pool, user.lastName, user.firstName, user.domain.replace("'", "\\'"), user.rppsNumber, addressId, accountId);
+                await doctorRepository.save(pool, user.lastName, user.firstName, globalMethods.upperFirstLetterOfWords(user.domain.replace("'", "\\'")), user.rppsNumber, addressId, accountId);
                 break;
             case "pharma":
-                await pharmaRepository.save(pool, user.namePharma.replace("'", "\\'"), user.rppsNumber, addressId, accountId);
+                await pharmaRepository.save(pool, globalMethods.upperFirstLetterOfWords(user.namePharma.replace("'", "\\'")), user.rppsNumber, addressId, accountId);
                 break;
             case "healthService":
                 await healthServiceRepository.save(pool, user.lastName, user.firstName, user.rppsNumber, accountId);
@@ -140,6 +141,7 @@ const getInfo = async (id, role) => {
                 user.weight = temp[0][0].poids;
                 user.securityNumber = temp[0][0].numeroSecu;
                 user.birthDate = temp[0][0].dateDeNaissance;
+                user.name = temp[0][0].nomPatient + " " + temp[0][0].prenomPatient;
                 return user;
             case "doctor":
                 temp = await doctorRepository.find(pool, id);
@@ -151,6 +153,7 @@ const getInfo = async (id, role) => {
                 user.city = address[0][0].communeAdresse;
                 user.rppsNumber = temp[0][0].numeroRPPSmedecin;
                 user.domain = temp[0][0].domaineMedecin;
+                user.name = temp[0][0].nomMedecin + " " + temp[0][0].prenomMedecin;
                 return user;
             case "pharma":
                 temp = await pharmaRepository.find(pool, id);
@@ -161,11 +164,13 @@ const getInfo = async (id, role) => {
                 user.postalCode = address[0][0].codePostal;
                 user.city = address[0][0].communeAdresse;
                 user.rppsNumber = temp[0][0].numeroRPPSpharmacien;
+                user.name = temp[0][0].nomPharmacie;
                 return user;
             case "healthService":
                 temp = await healthServiceRepository.find(pool, id);
                 user.rppsNumber = temp[0][0].numeroRPPSsante;
                 user.phoneNumber = phone.telCompte;
+                user.name = temp[0][0].nomSante + " " + temp[0][0].prenomSante;
                 return user;
         }
     } catch (error) {

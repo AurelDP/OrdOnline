@@ -294,15 +294,6 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem("Role") === "patient")
-      this.title = "Informations Patient"
-    else if (localStorage.getItem("Role") === "doctor")
-      this.title = "Informations Médecin"
-    else if (localStorage.getItem("Role") === "pharma")
-      this.title = "Informations Pharmacie"
-    else if (localStorage.getItem("Role") === "healthService")
-      this.title = "Informations Service de Santé"
-
     fetch(BASE_URL + "users/getInfo", {
       method: "GET",
       headers: {
@@ -314,7 +305,7 @@ export default {
         .then(res => res.json())
         .then(res => {
           if (res.result !== "error") {
-            console.log(res.result);
+            this.title = res.result.name;
             this.streetNumber = res.result.streetNumber;
             this.streetName = res.result.streetName;
             this.postalCode = res.result.postalCode;
