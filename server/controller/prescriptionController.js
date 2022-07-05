@@ -14,13 +14,14 @@ async function add(req, res) {
 
 async function findById(req, res) {
     const prescriptionId = req.params.prescriptionId;
-    let prescription;
+    let result;
+
     try {
-        prescription = await prescriptionRepository.findById(prescriptionId);
+        result = await prescriptionRepository.findById(prescriptionId, 5);
     } catch (error) {
-        prescription = "error";
+        result = "error";
     }
-    res.send({result: prescription});
+    res.send(result);
 }
 
 async function findStatusesById(req, res) {
@@ -34,8 +35,32 @@ async function findStatusesById(req, res) {
     res.send({statuses});
 }
 
+async function closeById(req, res) {
+    const prescriptionId = req.params.prescriptionId;
+    let isSuccess;
+    try {
+        isSuccess = await prescriptionRepository.closeById(prescriptionId);
+    } catch (error) {
+        isSuccess = "error";
+    }
+    res.send({result: isSuccess});
+}
+
+async function actualiseById(req, res) {
+    const treatmentId = req.params.treatmentId;
+    let isSuccess;
+    try {
+        isSuccess = await prescriptionRepository.actualiseById(treatmentId);
+    } catch (error) {
+        isSuccess = "error";
+    }
+    res.send({result: isSuccess});
+}
+
 module.exports = {
     add,
     findById,
-    findStatusesById
+    findStatusesById,
+    closeById,
+    actualiseById
 }

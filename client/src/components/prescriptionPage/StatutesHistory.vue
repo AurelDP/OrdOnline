@@ -5,6 +5,7 @@
         <PrescriptionStatusRow
           :date="status.date"
           :status="status.status"
+          :location="status.pharma"
         />
       </tbody>
     </table>

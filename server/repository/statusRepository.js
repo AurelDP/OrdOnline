@@ -9,7 +9,7 @@ const findByPrescriptionId= async (prescriptionId) => {
         const statuses = [];
 
         for (const row in rows2) {
-            statuses.push({"date": rows2[row].dateStatut, "status": rows2[row].statut});
+            statuses.push({"date": rows2[row].dateStatut, "status": rows2[row].nouveauStatut, "pharma": rows2[row].IDpharmacien === null ? "Aucune" : rows2[row].IDpharmacien});
         }
 
         return statuses;

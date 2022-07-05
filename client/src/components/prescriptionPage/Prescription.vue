@@ -1,27 +1,30 @@
 <template>
   <InfoBox :title="'Médecin'" :borderLeft="true">
-    <p>{{ this.doctor.lastName }} {{ this.doctor.firstName }}, {{ this.doctor.address }}</p>
+    <p>{{ this.prescription.doctor.lastName }} {{ this.prescription.doctor.firstName }}, {{ this.prescription.doctor.address }}</p>
   </InfoBox>
   <InfoBox :title="'Patient'" :borderLeft="true">
-    <p>{{ this.patient.lastName }} {{ this.patient.firstName }}</p>
-    <p v-if="this.patient.age !== null">{{ this.patient.age }} ans</p>
-    <p v-if="this.patient.weight !== null">{{ this.patient.weight }} kg</p>
+    <p>{{ this.prescription.patient.lastName }} {{ this.prescription.patient.firstName }}</p>
+    <p v-if="this.prescription.patient.age !== null">{{ this.prescription.patient.age }} ans</p>
+    <p v-if="this.prescription.patient.weight !== null">{{ this.prescription.patient.weight }} kg</p>
   </InfoBox>
-  <InfoBox :title="'Traitements (' + this.treatments.length + ')'">
+  <InfoBox :title="'Traitements (' + this.prescription.treatments.length + ')'">
     <ul>
       <Treatment
-        v-for="treatment in treatments"
+        v-for="treatment in prescription.treatments"
+        :id="treatment.id"
         :name="treatment.name"
         :description="treatment.description"
         :isSubstitutable="treatment.substitutable"
         :isReimbursable="treatment.reimbursable"
         :renewal="treatment.renew"
         :isDelivered="treatment.isDelivery"
+        :role="role"
+        @delivery="actualiseDelivery"
       />
     </ul>
   </InfoBox>
   <InfoBox :title="'Conseils médicaux'" :borderLeft="true">
-    <p>{{ this.medicalAdvices }}</p>
+    <p>{{ this.prescription.medicalAdvices }}</p>
   </InfoBox>
 </template>
 
@@ -36,50 +39,31 @@ export default {
     Treatment,
     InfoBox,
   },
-  data() {
-    return {
-      name: "",
-      description: "",
-      medicalAdvices: "",
+  props: {
+    prescription: {
+      name: String,
+      description: String,
+      medicalAdvices: String,
       patient: {
-        lastName: "",
-        firstName: "",
+        lastName: String,
+        firstName: String,
         age: Number,
         weight: Number,
       },
       doctor: {
-        lastName: "",
-        firstName: "",
-        address: "",
+        lastName: String,
+        firstName: String,
+        address: String,
       },
       treatments: [],
       statuses: []
-    }
+    },
+    role: String
   },
   methods: {
-    getPrescription() {
-      fetch(BASE_URL + "prescription/11", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-          .then(response => response.json())
-          .then(data => {
-            this.name = data.result.name;
-            this.description = data.result.description;
-            this.patient = data.result.patient;
-            this.doctor = data.result.doctor;
-            this.treatments = data.result.treatments;
-            this.medicalAdvices = data.result.medicalAdvices;
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    },
-  },
-  created() {
-    this.getPrescription();
+    actualiseDelivery(delivery) {
+      this.$emit("delivery", delivery);
+    }
   }
 }
 </script>

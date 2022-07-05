@@ -1,5 +1,6 @@
 const utility = require("../utility/index");
 const treatmentRepository = require("./treatmentRepository");
+const userRepository = require("./userRepository");
 
 const add = async (pool, medicalAdvices, IDmedecin, IDpatient) => {
     const dateOrdonnance = new Date().toJSON().slice(0, 10);
@@ -22,9 +23,8 @@ const addPrescription = async (prescription) => {
     }*/
 }
 
-const findById = async (prescriptionId) => {
+const findById = async (prescriptionId, userId) => {
     const pool = utility.pool;
-
     try {
         const sqlQuery = `SELECT * FROM Ordonnance 
             JOIN Patient ON Patient.IDpatient = Ordonnance.IDpatient 
@@ -35,12 +35,38 @@ const findById = async (prescriptionId) => {
 
         const prescription = {"patient": {"lastName": rows[0].nomPatient, "firstName": rows[0].prenomPatient, "age": null, "weight": rows[0].poids}, "doctor": {"lastName": rows[0].nomMedecin, "firstName": rows[0].prenomMedecin, "address": rows[0].numeroAdresse.toString() + " " + rows[0].rueAdresse + ", " + rows[0].communeAdresse + ", " + rows[0].codePostal}, "medicalAdvices": rows[0].conseilsMedicaux, "date": rows[0].dateOrdonnance, "treatments": []};
         prescription["treatments"] = await treatmentRepository.findByPrescriptionId(prescriptionId);
-
         if (rows[0].dateDeNaissance !== null) {
             prescription["patient"].age = new Date().getFullYear() - (rows[0].dateDeNaissance).getFullYear();
         }
 
-        return prescription;
+        const role = await userRepository.findRole(userId);
+        return {"prescription": prescription, "role": role};
+    } catch (err) {
+        console.log(err);
+        throw new err;
+    }
+}
+
+const closeById = async (prescriptionId) => {
+    const pool = utility.pool;
+
+    try {
+        const sqlQuery = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), 'Fermée', ${prescriptionId});`;
+        console.log(sqlQuery);
+        await pool.promise().query(sqlQuery);
+        return "success";
+    } catch (err) {
+        console.log(err);
+        throw new err;
+    }
+}
+
+const actualiseById = async (treatmentId) => {
+    const pool = utility.pool;
+
+    try {
+        const sqlQuery = `UPDATE Traitement SET estDelivre = !estDelivre WHERE Traitement.IDtraitement = ${treatmentId};`;
+        await pool.promise().query(sqlQuery);
     } catch (err) {
         console.log(err);
         throw new err;
@@ -49,5 +75,7 @@ const findById = async (prescriptionId) => {
 
 module.exports = {
     addPrescription,
-    findById
+    findById,
+    closeById,
+    actualiseById
 }
