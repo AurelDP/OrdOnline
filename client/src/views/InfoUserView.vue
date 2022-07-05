@@ -1,15 +1,6 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="false">
-    <Navbar v-if="!isConnected"
-        :buttons="true"
-        :text1="'Inscription'"
-        :text2="'Connexion'"
-        :icon1="'fa-user-plus'"
-        :icon2="'fa-arrow-right-to-bracket'"
-        :src1="'/signUp'"
-        :src2="'/signIn'"
-    />
-    <Navbar v-if="isConnected"
+    <Navbar
         :buttons="true"
         :text1="'Mon espace'"
         :text2="'Déconnexion'"
@@ -19,9 +10,7 @@
         :src2="'/'"
         @button2Click="disconnect"
     />
-    <HomeBody
-      :isConnected="isConnected"
-    />
+    <InfoUser/>
   </AdaptFooterBackground>
 </template>
 
@@ -29,29 +18,19 @@
 // @ is an alias to /src
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
-import HomeBody from "@/components/homePage/HomeBody";
+import InfoUser from "@/components/infoUserPage/InfoUser";
 
 export default {
-  name: 'HomeView',
+  name: 'InfoUserView',
   components: {
     AdaptFooterBackground,
     Navbar,
-    HomeBody
-  },
-  data() {
-    return {
-      isConnected: false
-    }
+    InfoUser
   },
   methods: {
     disconnect() {
       localStorage.removeItem("WebToken");
-      this.isConnected = false;
     }
-  },
-  created() {
-      if (localStorage.getItem('WebToken') !== null)
-        this.isConnected = true;
   }
 }
 </script>

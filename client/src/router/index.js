@@ -6,9 +6,10 @@ import SelectRoleView from "../views/SelectRoleView";
 import RegisterView from "../views/RegisterView";
 import AddPrescriptionView from '../views/AddPrescriptionView.vue'
 import PrescriptionView from "../views/PrescriptionView";
-import PatientSpaceView from "../views/PatientSpaceView";
+import UserSpaceView from "../views/UserSpaceView";
 import LoginView from "../views/LoginView";
 import PatientRecordView from "@/views/PatientRecordView";
+import InfoUserView from "@/views/InfoUserView";
 
 const routes = [
     {path: '/', name: 'home', component: HomeView},
@@ -17,7 +18,8 @@ const routes = [
     {path: '/register/:type', name: 'register', component: RegisterView, props: true},
     {path: '/addPrescription', name: 'addprescription', component: AddPrescriptionView},
     {path: '/prescription', name: 'prescription', component: PrescriptionView},
-    {path: '/patientSpace', name: 'userspace', component: PatientSpaceView},
+    {path: '/userSpace', name: 'userspace', component: UserSpaceView},
+    {path: '/infoUser', name: 'infouser', component: InfoUserView},
     {path: '/signIn', name: 'signin', component: LoginView},
     {path: '/patientRecord', name: 'patientrecord', component: PatientRecordView},
     {path: '/:catchAll(.*)*', name: 'error', component: Error404},

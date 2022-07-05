@@ -6,7 +6,7 @@
         :text2="'Déconnexion'"
         :icon1="'fa-info'"
         :icon2="'fa-arrow-right-from-bracket'"
-        :src1="'/'"
+        :src1="'/infoUser'"
         :src2="'/'"
         @button2Click="disconnect"
     />
@@ -24,7 +24,7 @@ import Navbar from "@/components/globalComponents/Navbar";
 import Table from "@/components/globalComponents/Table/Table";
 
 export default {
-  name: "PatientSpace",
+  name: "UserSpace",
   components: {
     AdaptFooterBackground,
     Table,
