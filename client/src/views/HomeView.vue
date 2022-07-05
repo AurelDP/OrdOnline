@@ -15,7 +15,7 @@
         :text2="'Déconnexion'"
         :icon1="'fa-user'"
         :icon2="'fa-arrow-right-from-bracket'"
-        :src1="'/patientSpace'"
+        :src1="'/userSpace'"
         :src2="'/'"
         @button2Click="disconnect"
     />
