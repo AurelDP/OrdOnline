@@ -11,7 +11,7 @@ async function find(pool, id) {
     return await pool.promise().query(query);
 }
 
-const getRecord = async (id) => {
+const getRecord = async (id, role) => {
     const pool = utility.pool;
     const query = `SELECT nomPatient, prenomPatient, dateDeNaissance, numeroSecu, poids, numeroAdresse, rueAdresse, communeAdresse, codePostal, mailCompte, telCompte 
                     FROM Patient, Adresse, Compte
@@ -20,11 +20,14 @@ const getRecord = async (id) => {
                     AND Compte.IDcompte = '${id}';`;
 
     try {
-        const res = await pool.promise().query(query);
-        return res[0];
+        if (role === "doctor" || role === "healthService") {
+            const res = await pool.promise().query(query);
+            return res[0][0];
+        } else
+            return "error";
     } catch (err) {
-        console.log(err.stack);
-        return null;
+        console.log(err);
+        return "error";
     }
 }
 
