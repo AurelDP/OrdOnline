@@ -1,6 +1,6 @@
 <template>
   <div class="self-center">
-    <div v-bind:class="taille">
+    <div v-bind:class="bubbleClass">
       <img v-bind:class="imageSize" v-bind:src="path" alt="Secure image">
     </div>
     <h1 class="mt-6 ord-text-subtitle-bold text-center">
@@ -21,12 +21,12 @@ export default {
 
   data(){
     return {
-      taille:""
+      bubbleClass:""
     }
   },
 
   created() {
-    this.taille = "flex items-center justify-center bg-ord-green-600 rounded-full shadow-xl bg-opacity-50 "+this.bubbleSize
+    this.bubbleClass = "flex items-center justify-center bg-ord-green-600 rounded-full shadow-xl bg-opacity-50 "+this.bubbleSize
   }
 }
 </script>
