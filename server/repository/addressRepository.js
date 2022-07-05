@@ -21,7 +21,13 @@ async function getInfo(pool, id, role) {
     return await pool.promise().query(query);
 }
 
+async function update(pool, id, streetNumber, streetName, postalCode, city) {
+    const updateAddressQuery = `UPDATE Adresse SET numeroAdresse = '${streetNumber}', rueAdresse = '${streetName}', codePostal = '${postalCode}', communeAdresse = '${city}' WHERE IDadresse = '${id}'`;
+    return await pool.promise().query(updateAddressQuery);
+}
+
 module.exports = {
     save,
-    getInfo
+    getInfo,
+    update
 }

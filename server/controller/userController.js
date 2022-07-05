@@ -21,8 +21,8 @@ async function saveInfo(req, res) {
     const userID = req.authUser.userID;
     const userRole = req.authUser.userRole;
     const user = req.body;
-    //const result = await userRepository.saveInfo(user, userID, userRole);
-    //res.send({result: result});
+    const result = await userRepository.saveInfo(user, userID, userRole);
+    res.send({result: result});
 }
 
 async function getInfo(req, res) {

@@ -9,7 +9,21 @@ async function find(pool, id) {
     return await pool.promise().query(query);
 }
 
+async function update(pool, id, weight, securityNumber, birthDate) {
+    if (birthDate !== null)
+        birthDate = "'" + birthDate + "'";
+    const query = `UPDATE Patient SET poids = ${weight}, numeroSecu = '${securityNumber}', dateDeNaissance = ${birthDate} WHERE IDcompte = '${id}'`;
+    return await pool.promise().query(query);
+}
+
+async function getAddressID(pool, id) {
+    const query = `SELECT IDadresse FROM Patient WHERE IDcompte = '${id}'`;
+    return await pool.promise().query(query);
+}
+
 module.exports = {
     save,
-    find
+    find,
+    update,
+    getAddressID
 }

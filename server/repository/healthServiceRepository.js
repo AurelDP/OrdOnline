@@ -9,7 +9,13 @@ async function find(pool, id) {
     return await pool.promise().query(query);
 }
 
+async function update(pool, id, rppsNumber) {
+    const query = `UPDATE ServiceDeSante SET numeroRPPSsante = '${rppsNumber}' WHERE IDcompte = '${id}'`;
+    return await pool.promise().query(query);
+}
+
 module.exports = {
     save,
-    find
+    find,
+    update
 }

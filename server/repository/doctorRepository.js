@@ -9,7 +9,19 @@ async function find(pool, id) {
     return await pool.promise().query(query);
 }
 
+async function getAddressID(pool, id) {
+    const query = `SELECT IDadresse FROM Médecin WHERE IDcompte = '${id}'`;
+    return await pool.promise().query(query);
+}
+
+async function update(pool, id, rppsNumber, domain) {
+    const query = `UPDATE Médecin SET numeroRPPSmedecin = '${rppsNumber}', domaineMedecin = '${domain}' WHERE IDcompte = '${id}'`;
+    return await pool.promise().query(query);
+}
+
 module.exports = {
     save,
-    find
+    find,
+    getAddressID,
+    update
 }

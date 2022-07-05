@@ -4,11 +4,8 @@ function upperFirstLetterOfWords(string) {
     });
 }
 
-function convertMySQLDate(date) {
-    if (date != null && date.includes("-")) {
-        const parts = date.split('-');
-        return parts[2] + "/" + parts[1] + "/" + parts[0];
-    } else if (date != null && date.includes("/")) {
+function convertToMySQLDate(date) {
+    if (date != null && date.includes("/")) {
         const parts = date.split('/');
         return parts[2] + "-" + parts[1] + "-" + parts[0];
     } else {
@@ -16,7 +13,15 @@ function convertMySQLDate(date) {
     }
 }
 
+function convertFromMySQLDate(date) {
+    if (date != null)
+        return date.toLocaleDateString();
+    else
+        return null;
+}
+
 module.exports = {
     upperFirstLetterOfWords,
-    convertMySQLDate
+    convertToMySQLDate,
+    convertFromMySQLDate
 }

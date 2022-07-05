@@ -51,18 +51,24 @@ const register = async user => {
     const pool = utility.pool;
     const passwordHash = await bcrypt.hash(user.password, 10);
 
+    user.streetName = globalMethods.upperFirstLetterOfWords(user.streetName.replace("'", "\\'"));
+    user.city = globalMethods.upperFirstLetterOfWords(user.city.replace("'", "\\'"));
+    user.domain = globalMethods.upperFirstLetterOfWords(user.domain.replace("'", "\\'"));
+    user.namePharma = globalMethods.upperFirstLetterOfWords(user.namePharma.replace("'", "\\'"));
+    user.email = user.email.toLowerCase();
+
     try {
-        const accountsWithSameEmail = await findByEmail(pool, user.email.toLowerCase());
+        const accountsWithSameEmail = await findByEmail(pool, user.email);
         const accountsWithSamePhoneNumber = await findByPhoneNumber(pool, user.phoneNumber);
         if (accountsWithSameEmail.length > 0 || accountsWithSamePhoneNumber.length > 0) {
             return "emailOrPhoneNumberAlreadyExists";
         }
 
-        const saveAccountResult = await accountRepository.save(pool, user.email.toLowerCase(), user.phoneNumber, passwordHash);
+        const saveAccountResult = await accountRepository.save(pool, user.email, user.phoneNumber, passwordHash);
         const accountId = saveAccountResult[0].insertId;
         let addressId = '';
         if (user.type !== "healthService") {
-            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, globalMethods.upperFirstLetterOfWords(user.streetName.replace("'", "\\'")), user.postalCode, globalMethods.upperFirstLetterOfWords(user.city));
+            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, user.streetName, user.postalCode, user.city);
             addressId = saveAddressResult[0].insertId;
         }
         switch (user.type) {
@@ -70,10 +76,10 @@ const register = async user => {
                 await patientRepository.save(pool, user.lastName, user.firstName, addressId, accountId);
                 break;
             case "doctor":
-                await doctorRepository.save(pool, user.lastName, user.firstName, globalMethods.upperFirstLetterOfWords(user.domain.replace("'", "\\'")), user.rppsNumber, addressId, accountId);
+                await doctorRepository.save(pool, user.lastName, user.firstName, user.domain, user.rppsNumber, addressId, accountId);
                 break;
             case "pharma":
-                await pharmaRepository.save(pool, globalMethods.upperFirstLetterOfWords(user.namePharma.replace("'", "\\'")), user.rppsNumber, addressId, accountId);
+                await pharmaRepository.save(pool, user.namePharma, user.rppsNumber, addressId, accountId);
                 break;
             case "healthService":
                 await healthServiceRepository.save(pool, user.lastName, user.firstName, user.rppsNumber, accountId);
@@ -140,7 +146,7 @@ const getInfo = async (id, role) => {
                 user.city = address[0][0].communeAdresse;
                 user.weight = temp[0][0].poids;
                 user.securityNumber = temp[0][0].numeroSecu;
-                user.birthDate = globalMethods.convertMySQLDate(temp[0][0].dateDeNaissance);
+                user.birthDate = globalMethods.convertFromMySQLDate(temp[0][0].dateDeNaissance);
                 user.name = temp[0][0].nomPatient + " " + temp[0][0].prenomPatient;
                 return user;
             case "doctor":
@@ -179,6 +185,66 @@ const getInfo = async (id, role) => {
     }
 }
 
+const saveInfo = async (user, id, role) => {
+    const pool = utility.pool;
+
+    if (user.streetName !== undefined)
+        user.streetName = globalMethods.upperFirstLetterOfWords(user.streetName.replace("'", "\\'"));
+    if (user.city !== undefined)
+        user.city = globalMethods.upperFirstLetterOfWords(user.city.replace("'", "\\'"));
+    if (user.domain !== undefined)
+        user.domain = globalMethods.upperFirstLetterOfWords(user.domain.replace("'", "\\'"));
+    if (user.namePharma !== undefined)
+        user.namePharma = globalMethods.upperFirstLetterOfWords(user.namePharma.replace("'", "\\'"));
+    if (user.birthDate !== undefined)
+        user.birthDate = globalMethods.convertToMySQLDate(user.birthDate);
+
+    if (user.weight === undefined || user.weight === "")
+        user.weight = null;
+    if (user.birthDate === undefined || user.weight === "")
+        user.birthDate = null;
+
+    try {
+        let passwordHash = '';
+        if (user.password !== '')
+            passwordHash = await bcrypt.hash(user.password, 10);
+
+        const updatePhoneResult = await accountRepository.updatePhoneNumber(pool, id, user.phoneNumber);
+        if (updatePhoneResult === "phoneNumberAlreadyExists")
+            return "phoneNumberAlreadyExists";
+
+        if (passwordHash !== '')
+            await accountRepository.updatePassword(pool, id, passwordHash);
+
+        let getAddressResult;
+
+        switch (role) {
+            case "patient":
+                await patientRepository.update(pool, id, user.weight, user.securityNumber, user.birthDate);
+                getAddressResult = await patientRepository.getAddressID(pool, id);
+                await addressRepository.update(pool, getAddressResult[0][0].IDadresse, user.streetNumber, user.streetName, user.postalCode, user.city);
+                break;
+            case "doctor":
+                await doctorRepository.update(pool, id, user.rppsNumber, user.domain);
+                getAddressResult = await doctorRepository.getAddressID(pool, id);
+                await addressRepository.update(pool, getAddressResult[0][0].IDadresse, user.streetNumber, user.streetName, user.postalCode, user.city);
+                break;
+            case "pharma":
+                await pharmaRepository.update(pool, id, user.rppsNumber);
+                getAddressResult = await pharmaRepository.getAddressID(pool, id);
+                await addressRepository.update(pool, getAddressResult[0][0].IDadresse, user.streetNumber, user.streetName, user.postalCode, user.city);
+                break;
+            case "healthService":
+                await healthServiceRepository.update(pool, id, user.rppsNumber);
+                break;
+        }
+        return "success";
+    } catch (error) {
+        console.log(error);
+        return "error";
+    }
+}
+
 const getPhoneNumber = async (pool, id) => {
     const phoneNumberQuery = `SELECT telCompte FROM Compte WHERE IDcompte = ${id}`;
     const promise = pool.promise();
@@ -191,4 +257,5 @@ module.exports = {
     login,
     findRole,
     getInfo,
+    saveInfo
 }

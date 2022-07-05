@@ -173,9 +173,7 @@
           <input
               class="ord-input"
               id="grid-weight"
-              type="number"
-              min="0"
-              max="999"
+              type="text"
               placeholder="Poids (kg)"
               v-model="weight"
               :class="{ 'border-ord-red focus:border-ord-red': weightIsNotValid }"
@@ -197,7 +195,7 @@
         @button1Click="closeModalError"
         :icon="'fa-warning'"
         :iconClass="'text-ord-red'"
-        :textModal="'Numéro de téléphone déjà utilisé'"
+        :textModal="modalErrorText"
         :text1="'Ok'"
         :class1="'ord-button-red hover:ord-button-red-hover'"
     />
@@ -256,11 +254,12 @@ export default {
       weightIsNotValid: false,
       showModalError: false,
       showModalSuccess: false,
+      modalErrorText: "",
     }
   },
   methods: {
     saveData(e) {
-      /*fetch(BASE_URL + "users/saveInfo", {
+      fetch(BASE_URL + "users/saveInfo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -268,34 +267,31 @@ export default {
           "Authorization": localStorage.getItem("WebToken")
         },
         body: JSON.stringify({
-          type: this.type,
-          lastName: this.lastName,
-          firstName: this.firstName,
-          email: this.email,
-          phoneNumber: this.phoneNumber,
           password: this.password,
-          passwordConfirm: this.passwordConfirm,
           streetNumber: this.streetNumber,
           streetName: this.streetName,
           postalCode: this.postalCode,
           city: this.city,
+          phoneNumber: this.phoneNumber,
           rppsNumber: this.rppsNumber,
+          securityNumber: this.securityNumber,
           domain: this.domain,
-          namePharma: this.namePharma,
+          birthDate: this.birthDate,
+          weight: this.weight
         })
       })
           .then(res => res.json())
           .then(res => {
             if (res.result === "success") {
               this.showModalSuccess = true;
-            } else if (res.result === "emailOrPhoneNumberAlreadyExists") {
+            } else if (res.result === "phoneNumberAlreadyExists") {
+              this.modalErrorText = "Numéro de téléphone déjà utilisé";
               this.showModalError = true;
             } else {
               console.log(res.result);
             }
           });
-      e.preventDefault();*/
-      this.showModalSuccess = true;
+      e.preventDefault();
     },
     closeModalError() {
       this.showModalError = false;
@@ -339,6 +335,8 @@ export default {
   watch: {
     password: function () {
       this.passwordIsNotValid = !/^(?=.*[A-Za-z\u00E0-\u00FC])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\u00E0-\u00FC\d@$!%*#?&]{8,}$/.test(this.password);
+      if (this.password === "")
+        this.passwordIsNotValid = false;
     },
 
     passwordConfirm: function () {
@@ -370,7 +368,9 @@ export default {
     },
 
     securityNumber: function () {
-      this.securityNumberIsNotValid = !/^\d{15}$/.test(this.rppsNumber);
+      this.securityNumberIsNotValid = !/^\d{15}$/.test(this.securityNumber);
+      if (this.securityNumber === "")
+        this.securityNumberIsNotValid = false;
     },
 
     domain: function () {
@@ -379,10 +379,14 @@ export default {
 
     birthDate: function () {
       this.birthDateIsNotValid = !/^\d{2}['/']\d{2}['/']\d{4}$/.test(this.birthDate);
+      if (this.birthDate === "")
+        this.birthDateIsNotValid = false;
     },
 
     weight: function () {
       this.weightIsNotValid = !/^\d{1,3}$/.test(this.weight);
+      if (this.weight === "")
+        this.weightIsNotValid = false;
     }
   }
 }
