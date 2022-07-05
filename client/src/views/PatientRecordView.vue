@@ -107,12 +107,15 @@ export default {
   },
   created() {
     fetch("http://localhost:8081/patient/getRecord", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Allow-Control-Allow-Origin": "*",
         "Authorization": localStorage.getItem("WebToken"),
       },
+      body: JSON.stringify({
+        id: 1,
+      })
     })
         .then(response => response.json())
         .then(response => {

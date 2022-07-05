@@ -1,8 +1,13 @@
 const patientRepository = require('../repository/patientRepository');
 
 async function getRecord(req, res) {
-    const idUser = req.authUser.userID;
-    const result = await patientRepository.getRecord(idUser);
+    const id = req.body.id;
+    let result
+    try {
+        result = await patientRepository.getRecord(id);
+    } catch (error) {
+        result = "error"
+    }
     res.send({result: result});
 }
 
