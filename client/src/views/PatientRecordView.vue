@@ -3,10 +3,10 @@
     <Navbar/>
     <div>
       <WhiteBoard
-        :title="PatientRecords.firstName + ' ' + PatientRecords.lastName"
+          :title="PatientRecords.firstName + ' ' + PatientRecords.lastName"
       >
 
-        <InfoBox :title="'Informations personnelles'" :borderLeft="true">
+        <InfoBox :borderLeft="true" :title="'Informations personnelles'">
           <div class="flex flex-wrap md:gap-12 sm:gap-8 gap-4">
             <ul class="overflow-scrol">
               <li class="font-bold pb-2">Prénom</li>
@@ -31,7 +31,7 @@
           </div>
         </InfoBox>
 
-        <InfoBox :title="'Informations Médicales'" :borderLeft="true">
+        <InfoBox :borderLeft="true" :title="'Informations Médicales'">
           <div class="flex flex-wrap md:gap-12 sm:gap-8 gap-4">
             <ul class="overflow-scrol">
               <li class="font-bold pb-2">Date de naissance</li>
@@ -51,19 +51,19 @@
           </div>
         </InfoBox>
 
-        <Table :btn="true" :src="'/'" :research="true" :title="'Ordonnances'" :type="'prescriptions'"
+        <Table :btn="true" :research="true" :src="'/'" :title="'Ordonnances'" :type="'prescriptions'"
                class-title="ord-text-subtitle py-4"/>
 
         <div class="ord-whiteboard-buttons">
           <Button
               :class="'ord-button-green hover:ord-button-green-hover'"
-              :text="'Retour'"
               :src="'/'"
+              :text="'Retour'"
           />
           <Button
               :class="'ord-button-red hover:ord-button-red-hover'"
-              :text="'Supprimer'"
               :src="'/'"
+              :text="'Supprimer'"
           />
         </div>
       </WhiteBoard>
@@ -94,16 +94,38 @@ export default {
     return {
       PatientRecords:
           {
-            firstName: "Aurélien",
-            lastName: "Duval",
-            email: "aurel1100@gmail.fr",
-            phone: "06 06 06 06 06",
-            address: "42 avenue des tournesols, Palaiseau, 91120",
-            birthDate: null,
-            weight: null,
-            socialSecNb: null
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            address: "",
+            birthDate: "",
+            weight: "",
+            socialSecNb: ""
           }
     }
+  },
+  created() {
+    fetch("http://localhost:8081/patient/getRecord", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Allow-Control-Allow-Origin": "*",
+        "Authorization": localStorage.getItem("WebToken"),
+      },
+    })
+        .then(response => response.json())
+        .then(response => {
+          let res = response.result[0];
+          this.PatientRecords.firstName = res.prenomPatient;
+          this.PatientRecords.lastName = res.nomPatient;
+          this.PatientRecords.email = res.mailCompte;
+          this.PatientRecords.phone = [res.telCompte.slice(0, 2), " ", res.telCompte.slice(2, 4), " ", res.telCompte.slice(4, 6), " ", res.telCompte.slice(6, 8), " ", res.telCompte.slice(8, 10)].join('');
+          this.PatientRecords.address = res.numeroAdresse + ' ' + res.rueAdresse + ', ' + res.codePostal + ', ' + res.communeAdresse;
+          this.PatientRecords.birthDate = res.dateDeNaissance;
+          this.PatientRecords.weight = res.poids;
+          this.PatientRecords.socialSecNb = res.numeroSecu;
+        })
   }
 }
 </script>
