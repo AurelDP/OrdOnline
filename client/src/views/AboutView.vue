@@ -5,39 +5,49 @@
     <h1 class="ord-text-title mt-10 ml-10 md:text-left sm:text-center text-center">Qui sommes nous ?</h1>
     <div class="flex flex-wrap ord-px-body-adapt md:gap-5 sm:gap-10 gap-10 my-20 place-content-center">
       <a href="https://www.linkedin.com/in/aurelien-duv/">
-        <ProfilBubble
+        <InfoBubble
           class="transition hover:scale-110"
           blackWord="Aurélien Duval"
           :path="require('../assets/About/aurelien.png')"
+          image-size="w-52 h-52"
+          bubble-size="w-56 h-56"
          />
       </a>
       <a href="https://www.linkedin.com/in/bastien-facqueur-0323b619b/">
-        <ProfilBubble
+        <InfoBubble
           class="transition hover:scale-110"
           blackWord="Bastien Facqueur"
           :path="require('../assets/About/bastien.png')"
+          image-size="w-52 h-52"
+          bubble-size="w-56 h-56"
+
         />
       </a>
       <a href="https://www.linkedin.com/in/joel-gabbai/">
-        <ProfilBubble
+        <InfoBubble
           class="transition hover:scale-110"
           blackWord="Joel Gabbai"
           :path="require('../assets/About/joel.png')"
+          image-size="w-52 h-52"
+          bubble-size="w-56 h-56"
         />
       </a>
       <a href="https://www.linkedin.com/in/kylian-sauv%C3%A9e-8822b319b/">
-        <ProfilBubble
+        <InfoBubble
           class="transition hover:scale-110"
           blackWord="Kylian Sauvee"
           :path="require('../assets/About/kylian.png')"
-          width="w-44 h-44"
+          image-size="w-52 h-52"
+          bubble-size="w-56 h-56"
         />
       </a>
       <a href="https://www.linkedin.com/in/maxime-tata-157143222/">
-        <ProfilBubble
+        <InfoBubble
           class="transition hover:scale-110"
           blackWord="Maxime Tata"
 
+          image-size="w-52 h-52"
+          bubble-size="w-56 h-56"
         />
       </a>
     </div>
@@ -50,19 +60,21 @@
     <h1 class="ord-text-title mt-10 ml-10 md:text-left sm:text-center text-center">Retrouvez ici :</h1>
     <div class="flex flex-wrap ord-px-body-adapt md:gap-48 sm:gap-10 gap-10 my-20 place-content-center">
       <a href="https://www.efrei.fr/">
-        <ProfilBubble
+        <InfoBubble
             class="transition hover:scale-110"
             blackWord="Notre école"
             :path="require('../assets/About/logo_efrei.png')"
-            width="w-44 h-44"
+            image-size="w-52 h-52"
+            bubble-size="w-56 h-56"
         />
       </a>
       <a href="https://github.com/AurelDP/OrdOnline">
-        <ProfilBubble
+        <InfoBubble
             class="transition hover:scale-110"
             blackWord="Le github du projet"
             :path="require('../assets/About/logo_github.png')"
-            width="w-44 h-44"
+            image-size="w-52 h-52"
+            bubble-size="w-56 h-56"
         />
       </a>
     </div>
@@ -72,14 +84,14 @@
 <script>
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
-import ProfilBubble from "@/components/aboutPage/profilBubble";
+import InfoBubble from "@/components/homePage/InfoBubble";
 
 export default {
   name: 'AboutView',
   components: {
+    InfoBubble,
     AdaptFooterBackground,
     Navbar,
-    ProfilBubble
   }
 }
 </script>

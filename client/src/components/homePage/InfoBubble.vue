@@ -1,7 +1,7 @@
 <template>
   <div class="self-center">
-    <div class="flex justify-center bg-ord-green-600 w-64 h-64 rounded-full shadow-xl bg-opacity-50">
-      <img class="w-48" v-bind:src="path" alt="Secure image">
+    <div v-bind:class="taille">
+      <img v-bind:class="imageSize" v-bind:src="path" alt="Secure image">
     </div>
     <h1 class="mt-6 ord-text-subtitle-bold text-center">
       {{blackWord}}<br>
@@ -14,8 +14,19 @@
 export default {
   props: {
     blackWord: String,
-    greenWord: String,
-    path: String
+    path: String,
+    imageSize : String,
+    bubbleSize : String
+  },
+
+  data(){
+    return {
+      taille:""
+    }
+  },
+
+  created() {
+    this.taille = "flex items-center justify-center bg-ord-green-600 rounded-full shadow-xl bg-opacity-50 "+this.bubbleSize
   }
 }
 </script>
