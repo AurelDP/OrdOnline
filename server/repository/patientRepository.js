@@ -172,7 +172,7 @@ async function getPharmas(userRole, userID) {
     try {
         const patientID = await getPatientID(pool, userID);
 
-        const query = `SELECT
+        const query = `SELECT DISTINCT
                             ph.nomPharmacie,
                             ad.numeroAdresse,
                             ad.rueAdresse,

@@ -123,8 +123,6 @@ export default {
       showAddPatient: false,
       showModalSuccess: false,
       showModalError: false,
-      doctorID: "",
-      showDoctorModal: false,
     };
   },
   methods: {
@@ -272,10 +270,7 @@ export default {
     },
     closeModalError() {
       this.showModalError = false;
-    },
-    closeDoctorModal() {
-      this.showDoctorModal = false;
-    },
+    }
   },
   created() {
     if (this.role === "patient") {
