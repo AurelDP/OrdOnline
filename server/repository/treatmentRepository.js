@@ -13,7 +13,7 @@ const add = async (pool, treatments, prescriptionId) => {
         const sqlQuery = `INSERT INTO Traitement (nomMedicament, descriptionTraitement, substituable, remboursable, modalitesRenouvellement, estDelivre, IDordonnance)
                        VALUES('${treatments[i].name}', '${treatments[i].description}', ${treatments[i].isSubstitutable}, ${treatments[i].isReimbursable} , '${treatments[i].renewal}', ${treatments[i].isDelivered}, ${prescriptionId});`;
         try {
-            return await pool.promise().query(sqlQuery);
+            await pool.promise().query(sqlQuery);
         } catch (err) {
             console.log(err);
         }
