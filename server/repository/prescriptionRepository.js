@@ -85,8 +85,7 @@ const findById = async (prescriptionId, userId) => {
             prescription["patient"].age = new Date().getFullYear() - (rows[0].dateDeNaissance).getFullYear();
         }
 
-        const role = await userRepository.findRole(userId);
-        return {"prescription": prescription, "role": role};
+        return {"prescription": prescription};
     } catch (err) {
         console.log(err);
         throw new err;

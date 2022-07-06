@@ -116,7 +116,6 @@ export default {
           .then(response => response.json())
           .then(data => {
             this.prescription = data.prescription;
-            this.role = data.role;
           })
           .catch(error => {
             console.log(error);
@@ -171,12 +170,12 @@ export default {
         date: new Date(),
       });
     },
-    },
     removeSessionStorage() {
       sessionStorage.removeItem("prescriptionID");
     }
   },
   created() {
+    this.role = localStorage.getItem("Role");
     this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : this.$router.push('/patientRecord');
     if (sessionStorage.getItem('prescriptionID') !== null) {
       this.getPrescription();

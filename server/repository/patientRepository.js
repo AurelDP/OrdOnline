@@ -80,6 +80,8 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     )
                                     ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(healthServiceQuery);
+        } else {
+            return "error";
         }
 
         for (const row in rows) {
