@@ -1,12 +1,13 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
-    <WhiteBoard title="Ordonnance"
-                :statut="true"
-                :textStatut="this.statuses[0].status"
+    <WhiteBoard
+        v-if="this.statuses.length > 0"
+        title="Ordonnance"
+        :statut="true"
+        :textStatut="this.statuses[0].status"
     >
       <Prescription
-          v-if="this.statuses.length > 0"
           :prescription="this.prescription"
           :role="this.role"
           :statuses="this.statuses"
@@ -16,7 +17,7 @@
         <Button
             :class="'ord-button-green hover:ord-button-green-hover'"
             :text="'Retour'"
-            :src="'/patientRecord'"
+            :src="''"
             @click="removeSessionStorage"
         />
         <Button
@@ -24,17 +25,25 @@
             :class="'ord-button-red hover:ord-button-red-hover'"
             :text="'Fermer'"
             :src="'/prescription'"
-            @click="this.closePrescription"
+            @click="closePrescription"
         />
         <Button
             v-if="this.role === 'pharma' && this.statuses[0].status !== 'Fermée'"
             :class="'ord-button-green hover:ord-button-green-hover'"
             :text="'Sauvegarder'"
             :src="'/prescription'"
-            @click="this.actualisePrescription"
+            @click="actualisePrescription"
+        />
+        <Button
+            v-if="this.role === 'patient'"
+            :class="'ord-button-green hover:ord-button-green-hover'"
+            :text="'Ajouter pharmacie'"
+            :src="''"
+            @click="addPharma"
         />
       </div>
     </WhiteBoard>
+
     <WhiteBoard
         title="Historique des statuts"
     >
@@ -42,6 +51,31 @@
           :statuses="this.statuses"
       />
     </WhiteBoard>
+
+    <AddPharma
+        v-if="showAddPharma && this.role === 'patient'"
+        @clickedCloseAddPharma="closeAddPharma"
+        @addThisPharma="addThisPharma"
+    />
+
+    <Modal
+        v-show="showModalSuccess"
+        @button1Click="closeModalSuccess"
+        :icon="'fa-check'"
+        :iconClass="'text-ord-green-100'"
+        :textModal="'Pharmacie ajoutée à l\'ordonnance'"
+        :text1="'Continuer'"
+        :class1="'ord-button-green hover:ord-button-green-hover'"
+    />
+    <Modal
+        v-show="showModalError"
+        @button1Click="closeModalError"
+        :icon="'fa-warning'"
+        :iconClass="'text-ord-red'"
+        :textModal="'Pharmacie déjà ajoutée à cette ordonnance'"
+        :text1="'Continuer'"
+        :class1="'ord-button-green hover:ord-button-green-hover'"
+    />
   </AdaptFooterBackground>
 </template>
 
@@ -52,6 +86,8 @@ import WhiteBoard from "@/components/globalComponents/WhiteBoard";
 import Prescription from "@/components/prescriptionPage/Prescription";
 import PrescriptionStatus from "@/components/prescriptionPage/StatutesHistory";
 import Button from "@/components/globalComponents/Button";
+import AddPharma from "@/components/prescriptionPage/AddPharma";
+import Modal from "@/components/globalComponents/Modal";
 
 const BASE_URL = "http://localhost:8081/";
 export default {
@@ -63,7 +99,9 @@ export default {
     Navbar,
     WhiteBoard,
     PrescriptionStatus,
-    Button
+    Button,
+    AddPharma,
+    Modal,
   },
   data() {
     return {
@@ -86,6 +124,9 @@ export default {
       },
       role: "",
       id: Number,
+      showAddPharma: false,
+      showModalSuccess: false,
+      showModalError: false,
     }
   },
   methods: {
@@ -172,6 +213,39 @@ export default {
     },
     removeSessionStorage() {
       sessionStorage.removeItem("prescriptionID");
+      this.$router.back();
+    },
+    addPharma() {
+      this.showAddPharma = true;
+    },
+    closeAddPharma() {
+      this.showAddPharma = false;
+    },
+    addThisPharma(pharmaID) {
+      fetch(BASE_URL + "pharma/addPharmaToPrescription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
+        },
+        body: JSON.stringify({
+          pharmaID: pharmaID,
+          prescriptionID: this.prescriptionID,
+        })
+      })
+          .then(response => response.json())
+          .then(data => {
+            if (data.result === "success")
+              this.showModalSuccess = true;
+            else
+              this.showModalError = true;
+          });
+    },
+    closeModalSuccess() {
+      this.showModalSuccess = false;
+    },
+    closeModalError() {
+      this.showModalError = false;
     }
   },
   created() {

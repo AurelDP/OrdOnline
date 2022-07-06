@@ -80,6 +80,25 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     )
                                     ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(healthServiceQuery);
+        } else if (userRole === "patient") {
+            const patientID = await getPatientID(pool, userID);
+            const patientQuery = `SELECT
+                                        o.IDordonnance,
+                                        o.dateOrdonnance,
+                                        m.nomMedecin,
+                                        s.nouveauStatut
+                                    FROM Ordonnance AS o
+                                    JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
+                                    JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
+                                    WHERE o.IDpatient = ${patientID}
+                                    AND s.dateStatut = (
+                                        SELECT
+                                            MAX(s2.dateStatut)
+                                        FROM HistoriqueStatuts AS s2
+                                        WHERE s2.IDordonnance = o.IDordonnance
+                                    )
+                                    ORDER BY o.IDordonnance DESC;`;
+            [rows] = await pool.promise().query(patientQuery);
         } else {
             return "error";
         }

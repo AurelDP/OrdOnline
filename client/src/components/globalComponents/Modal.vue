@@ -1,6 +1,6 @@
 <template>
   <div
-      class="flex justify-center items-center bg-ord-dark-blue bg-opacity-70 fixed top-0 left-0 z-50 w-full h-full">
+      class="ord-modal-background">
     <div class="bg-white rounded-lg shadow h-fit p-4 w-full max-w-md">
       <div class="p-6 text-center">
         <font-awesome-icon :icon="icon" class="h-12" :class="iconClass"/>

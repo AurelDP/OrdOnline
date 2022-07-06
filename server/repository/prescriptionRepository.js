@@ -1,6 +1,5 @@
 const utility = require("../utility/index");
 const treatmentRepository = require("./treatmentRepository");
-const userRepository = require("./userRepository");
 const patientRepository = require("./patientRepository");
 const doctorRepository = require("./doctorRepository");
 const statusRepository = require("./statusRepository");
@@ -127,9 +126,16 @@ const actualiseById = async (prescriptionId, status, treatmentId) => {
     }
 }
 
+const checkPatientOrdo = async (pool, patientID, prescriptionID) => {
+    const sqlQuery = `SELECT * FROM Ordonnance WHERE IDpatient = ${patientID} AND IDordonnance = ${prescriptionID};`;
+    const [rows] = await pool.promise().query(sqlQuery);
+    return rows.length !== 0;
+}
+
 module.exports = {
     addPrescription,
     findById,
     closeById,
-    actualiseById
+    actualiseById,
+    checkPatientOrdo
 }

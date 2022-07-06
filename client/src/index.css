@@ -70,4 +70,8 @@
     .ord-whiteboard-buttons {
         @apply flex flex-row mt-12 flex-wrap justify-center gap-x-7 gap-y-2;
     }
+
+    .ord-modal-background {
+        @apply flex justify-center items-center bg-ord-dark-blue bg-opacity-70 fixed top-0 left-0 z-50 w-full h-full;
+    }
 }

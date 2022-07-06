@@ -174,8 +174,10 @@ export default {
       })
           .then(response => response.json())
           .then(response => {
-            if (response.result !== "error")
+            if (response.result !== "error" && response.result !== "no prescriptions")
               this.dataOrdo = response.result;
+            else if (response.result !== "no prescriptions")
+              this.dataOrdo = [];
             else
               console.log("error");
           });
