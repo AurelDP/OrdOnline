@@ -36,7 +36,7 @@ import InfoBox from "@/components/globalComponents/InfoBox";
 
 export default {
   name: "Prescription",
-  emits: ["deliveryStatusActualisation"],
+  emits: ["deliveryStatusActualisation", "treatmentDeliveryStatusActualisation"],
   components: {
     Treatment,
     InfoBox,

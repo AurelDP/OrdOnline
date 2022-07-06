@@ -1,6 +1,7 @@
 const utility = require("../utility");
 const doctorRepository = require("./doctorRepository");
 const {secureApostrophes} = require("../methods/globalMethods");
+const linkDoctorPatientRepository = require("./linkDoctorPatient");
 
 async function save(pool, lastName, firstName, addressId, accountId) {
     const insertUserQuery = `INSERT INTO Patient (nomPatient, prenomPatient, IDadresse, IDcompte)
@@ -13,16 +14,25 @@ async function find(pool, id) {
     return await pool.promise().query(query);
 }
 
-const getRecord = async (id, role) => {
+const getRecord = async (patientID, role, userID) => {
     const pool = utility.pool;
     const query = `SELECT nomPatient, prenomPatient, dateDeNaissance, numeroSecu, poids, numeroAdresse, rueAdresse, communeAdresse, codePostal, mailCompte, telCompte 
                     FROM Patient
                     JOIN Adresse ON Adresse.IDadresse = Patient.IDadresse
                     JOIN Compte ON Compte.IDcompte = Patient.IDcompte
-                    WHERE Patient.IDpatient = '${id}';`;
+                    WHERE Patient.IDpatient = '${patientID}';`;
 
     try {
         if (role === "doctor" || role === "healthService") {
+
+            if (role === "doctor") {
+                const doctorID = await doctorRepository.getDoctorID(pool, userID);
+                const isValid = await linkDoctorPatientRepository.isPatientOfDoctor(pool, doctorID, patientID);
+
+                if (!isValid)
+                    return "error";
+            }
+
             const [res] = await pool.promise().query(query);
             if (res[0].dateDeNaissance !== null)
                 res[0].dateDeNaissance = res[0].dateDeNaissance.toLocaleDateString();
@@ -43,6 +53,11 @@ const getPrescriptions = async (patientID, userRole, userID) => {
 
         if (userRole === "doctor") {
             const doctorID = await doctorRepository.getDoctorID(pool, userID);
+
+            const isValid = await linkDoctorPatientRepository.isPatientOfDoctor(pool, doctorID, patientID);
+            if (!isValid)
+                return "error";
+
             const doctorQuery = `SELECT
                                 o.IDordonnance,
                                 o.dateOrdonnance,

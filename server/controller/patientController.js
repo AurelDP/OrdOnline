@@ -1,11 +1,12 @@
 const patientRepository = require('../repository/patientRepository');
 
 async function getRecord(req, res) {
-    const id = req.body.patientID;
+    const patientID = req.body.patientID;
     const role = req.authUser.userRole;
+    const userID = req.authUser.userID;
     let result
     try {
-        result = await patientRepository.getRecord(id, role);
+        result = await patientRepository.getRecord(patientID, role, userID);
     } catch (error) {
         result = "error"
     }

@@ -79,12 +79,6 @@
               :src="'/userSpace'"
               :text="'Retour'"
           />
-          <Button
-              v-if="role === 'doctor'"
-              :class="'ord-button-red hover:ord-button-red-hover'"
-              :src="''"
-              :text="'Supprimer'"
-          />
         </div>
       </WhiteBoard>
     </div>
@@ -149,15 +143,18 @@ export default {
       })
           .then(response => response.json())
           .then(response => {
-            let res = response.result;
-            this.firstName = res.prenomPatient;
-            this.lastName = res.nomPatient;
-            this.email = res.mailCompte;
-            this.phone = [res.telCompte.slice(0, 2), " ", res.telCompte.slice(2, 4), " ", res.telCompte.slice(4, 6), " ", res.telCompte.slice(6, 8), " ", res.telCompte.slice(8, 10)].join('');
-            this.address = res.numeroAdresse + ' ' + res.rueAdresse + ', ' + res.codePostal + ', ' + res.communeAdresse;
-            this.birthDate = res.dateDeNaissance;
-            this.weight = res.poids;
-            this.socialSecNb = res.numeroSecu;
+            if (response.result !== "error") {
+              let res = response.result;
+              this.firstName = res.prenomPatient;
+              this.lastName = res.nomPatient;
+              this.email = res.mailCompte;
+              this.phone = [res.telCompte.slice(0, 2), " ", res.telCompte.slice(2, 4), " ", res.telCompte.slice(4, 6), " ", res.telCompte.slice(6, 8), " ", res.telCompte.slice(8, 10)].join('');
+              this.address = res.numeroAdresse + ' ' + res.rueAdresse + ', ' + res.codePostal + ', ' + res.communeAdresse;
+              this.birthDate = res.dateDeNaissance;
+              this.weight = res.poids;
+              this.socialSecNb = res.numeroSecu;
+            } else
+              console.log("error");
           });
     },
     getPrescriptions() {
