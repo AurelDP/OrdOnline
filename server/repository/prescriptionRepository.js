@@ -161,10 +161,8 @@ const actualiseById = async (prescriptionId, treatmentsToActualiseIds, role, tre
                     }
                 }
 
-                if (currentStatus !== newStatus) {
-                    const insertNewStatus = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), '${newStatus}', ${prescriptionId});`;
-                    await pool.promise().query(insertNewStatus);
-                }
+                const insertNewStatus = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDpharmacien, IDordonnance) VALUES (NOW(), '${newStatus}', ${pharmaID}, ${prescriptionId});`;
+                await pool.promise().query(insertNewStatus);
 
             } catch (err) {
                 console.log(err);
