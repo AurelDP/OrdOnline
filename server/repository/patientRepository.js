@@ -149,6 +149,49 @@ async function getPatientID(pool, id) {
         return "error";
 }
 
+async function getPharmas(userRole, userID) {
+    const pool = utility.pool;
+
+    if (userRole !== "patient")
+        return "error";
+
+    try {
+        const patientID = await getPatientID(pool, userID);
+
+        const query = `SELECT
+                            ph.nomPharmacie,
+                            ad.numeroAdresse,
+                            ad.rueAdresse,
+                            ad.communeAdresse,
+                            ad.codePostal
+                        FROM Pharmacie AS ph
+                        NATURAL JOIN AccesOrdo AS a
+                        JOIN Adresse AS ad ON ad.IDadresse = ph.IDadresse
+                        JOIN Ordonnance AS o ON a.IDordonnance = o.IDordonnance
+                        JOIN Patient AS pa ON pa.IDpatient = o.IDpatient
+                        WHERE pa.IDpatient = ${patientID};`;
+
+        const [res] = await pool.promise().query(query);
+        let rows;
+
+        if (res.length === 0)
+            return "noPharmacies";
+        else {
+            rows = [];
+            for (const row in res) {
+                rows.push({
+                    "nomPharma": res[row].nomPharmacie,
+                    "adressePharma": res[row].numeroAdresse + " " + res[row].rueAdresse + ", " + res[row].communeAdresse + ", " + res[row].codePostal,
+                });
+            }
+            return rows;
+        }
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
 module.exports = {
     save,
     find,
@@ -156,5 +199,6 @@ module.exports = {
     getPrescriptions,
     update,
     getAddressID,
-    getPatientID
+    getPatientID,
+    getPharmas,
 }

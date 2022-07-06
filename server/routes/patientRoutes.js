@@ -5,5 +5,6 @@ const auth = require('../middleware/auth.js');
 
 router.post('/getRecord', auth, patientController.getRecord);
 router.post('/getPrescriptions', auth, patientController.getPrescriptions);
+router.get('/getPharmas', auth, patientController.getPharmas);
 
 module.exports = router;

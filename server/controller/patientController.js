@@ -25,7 +25,20 @@ async function getPrescriptions(req, res) {
     res.send({result: result});
 }
 
+async function getPharmas(req, res) {
+    const userRole = req.authUser.userRole;
+    const userID = req.authUser.userID;
+    let result
+    try {
+        result = await patientRepository.getPharmas(userRole, userID);
+    } catch (error) {
+        result = "error"
+    }
+    res.send({result: result});
+}
+
 module.exports = {
     getRecord,
-    getPrescriptions
+    getPrescriptions,
+    getPharmas
 }

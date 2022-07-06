@@ -28,6 +28,7 @@
             :key="dataDoctors"
         />
         <Table
+            :only2Col="true"
             :research="true"
             :title="'Mes pharmacies'"
             class-title="ord-text-subtitle-bold py-4"
@@ -117,8 +118,27 @@ export default {
           .then(response => {
             if (response.result !== "error" && response.result !== "no prescriptions")
               this.dataOrdo = response.result;
-            else if (response.result !== "no prescriptions")
+            else if (response.result === "no prescriptions")
               this.dataOrdo = [];
+            else
+              console.log("error");
+          });
+    },
+    getPharmas() {
+      fetch(BASE_URL + "patient/getPharmas", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        }
+      })
+          .then(response => response.json())
+          .then(response => {
+            if (response.result !== "error" && response.result !== "noPharmacies")
+              this.dataPharmas = response.result;
+            else if (response.result === "noPharmacies")
+              this.dataPharmas = [];
             else
               console.log("error");
           });
@@ -127,6 +147,7 @@ export default {
   created() {
     if (this.role === "patient") {
       this.getPrescriptions();
+      this.getPharmas();
     }
   }
 }
