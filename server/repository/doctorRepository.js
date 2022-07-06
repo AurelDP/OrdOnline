@@ -84,6 +84,6 @@ module.exports = {
     getAddressID,
     update,
     getDoctorID,
-    getPatients
+    getPatients,
     findDoctorIdByPrescriptionId
 }
