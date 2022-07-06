@@ -7,16 +7,7 @@
       </router-link>
       <ul class="flex flex-wrap items-center">
         <li>
-          <router-link to="/about" class="mr-4 hover:text-ord-green-600 md:mr-6">About</router-link>
-        </li>
-        <li>
-          <router-link to="" class="mr-4 hover:text-ord-green-600 md:mr-6">Privacy Policy</router-link>
-        </li>
-        <li>
-          <router-link to="" class="mr-4 hover:text-ord-green-600 md:mr-6">Licensing</router-link>
-        </li>
-        <li>
-          <router-link to="" class="hover:text-ord-green-600">Contact</router-link>
+          <router-link to="/about" class="mr-4 hover:text-ord-green-600 md:mr-6">À propos</router-link>
         </li>
       </ul>
     </div>
