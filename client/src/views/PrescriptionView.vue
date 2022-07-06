@@ -172,7 +172,6 @@ export default {
       this.getStatuses();
     },
     actualisePrescription() {
-      console.log(this.treatmentsToActualiseIds);
       fetch(BASE_URL + "prescription/" + this.prescriptionID + "/treatments/delivery", {
         method: "POST",
         headers: {

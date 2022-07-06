@@ -149,6 +149,8 @@ const actualiseById = async (prescriptionId, treatmentsToActualiseIds, role, tre
             console.log(err);
             throw new err;
         }
+    } else {
+        return "error";
     }
 }
 

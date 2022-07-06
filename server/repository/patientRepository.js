@@ -53,9 +53,9 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                             JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                             WHERE o.IDpatient = ${patientID}
                             AND o.IDmedecin = ${doctorID}
-                            AND s.dateStatut = (
+                            AND s.IDstatut = (
                                 SELECT
-                                    MAX(s2.dateStatut)
+                                    MAX(s2.IDstatut)
                                 FROM HistoriqueStatuts AS s2
                                 WHERE s2.IDordonnance = o.IDordonnance
                             )
@@ -72,9 +72,9 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                                     JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
                                     WHERE o.IDpatient = ${patientID}
-                                    AND s.dateStatut = (
+                                    AND s.IDstatut = (
                                         SELECT
-                                            MAX(s2.dateStatut)
+                                            MAX(s2.IDstatut)
                                         FROM HistoriqueStatuts AS s2
                                         WHERE s2.IDordonnance = o.IDordonnance
                                     )
@@ -91,9 +91,9 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                                     JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
                                     WHERE o.IDpatient = ${patientID}
-                                    AND s.dateStatut = (
+                                    AND s.IDstatut = (
                                         SELECT
-                                            MAX(s2.dateStatut)
+                                            MAX(s2.IDstatut)
                                         FROM HistoriqueStatuts AS s2
                                         WHERE s2.IDordonnance = o.IDordonnance
                                     )
