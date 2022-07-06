@@ -16,7 +16,15 @@ async function addPharmaToPrescription(req, res) {
     res.send({result: result});
 }
 
+async function getPrescriptions(req, res) {
+    const userRole = req.authUser.userRole;
+    const userID = req.authUser.userID;
+    const result = await pharmaRepository.getPrescriptions(userRole, userID);
+    res.send({result: result});
+}
+
 module.exports = {
     getAllByParam,
     addPharmaToPrescription,
+    getPrescriptions,
 }

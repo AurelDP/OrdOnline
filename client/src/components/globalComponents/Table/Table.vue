@@ -29,7 +29,7 @@
         <tr
             v-if="dataDisplayed.length !== 0"
             v-for="value in dataDisplayed"
-            class="border-b-2 hover:bg-ord-green-600 hover:cursor-pointer"
+            :class="trClass"
             @click="sendValue(value)"
         >
           <td class="p-3 whitespace-nowrap">{{ value[Object.keys(value)[0]] }}</td>
@@ -65,11 +65,13 @@ export default {
     button: Boolean,
     data: {},
     only2Col: Boolean,
+    disableClick: Boolean,
   },
   data() {
     return {
       searchString: "",
       dataDisplayed: this.data,
+      trClass: "",
     };
   },
   methods: {
@@ -111,6 +113,12 @@ export default {
       if (this.searchString === "")
         this.dataDisplayed = this.data;
     }
+  },
+  created() {
+    if (this.disableClick === true)
+      this.trClass = "border-b-2";
+    else
+      this.trClass = "border-b-2 hover:bg-ord-green-600 hover:cursor-pointer";
   }
 }
 </script>

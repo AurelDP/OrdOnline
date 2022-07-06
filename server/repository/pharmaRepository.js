@@ -104,6 +104,59 @@ const findPharmaIDByPrescriptionId = async (pool, prescriptionID) => {
     return rows[0].IDpharmacien;
 }
 
+const getPrescriptions = async (userRole, userID) => {
+    const pool = utility.pool;
+
+    if (userRole !== "pharma")
+        return "error";
+
+    try {
+        const pharmaID = await getPharmaID(pool, userID);
+        const sqlQuery = `SELECT
+                                ao.IDordonnance,
+                                o.dateOrdonnance,
+                                p.nomPatient,
+                                p.prenomPatient,
+                                s.nouveauStatut
+                            FROM AccesOrdo AS ao
+                            NATURAL JOIN Ordonnance AS o
+                            JOIN Patient AS p ON p.IDpatient = o.IDpatient
+                            JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
+                            WHERE ao.IDpharmacien = ${pharmaID}
+                            AND s.IDstatut = (
+                                SELECT
+                                    MAX(s2.IDstatut)
+                                FROM HistoriqueStatuts AS s2
+                                WHERE s2.IDordonnance = o.IDordonnance
+                            )
+                            ORDER BY o.IDordonnance DESC;`;
+
+        const [rows] = await pool.promise().query(sqlQuery);
+
+        for (const row in rows) {
+            rows[row].dateOrdonnance = rows[row].dateOrdonnance.toLocaleDateString();
+        }
+
+        const res = [];
+        for (const row in rows) {
+            res.push({
+                "dateOrdonnance": rows[row].dateOrdonnance,
+                "nomPatient": rows[row].nomPatient + " " + rows[row].prenomPatient,
+                "nouveauStatut": rows[row].nouveauStatut,
+                "IDordonnance": rows[row].IDordonnance
+            });
+        }
+
+        if (res.length === 0)
+            return "no prescriptions";
+        else
+            return res;
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
 exports.save = save;
 exports.find = find;
 exports.getAddressID = getAddressID;
@@ -112,3 +165,4 @@ exports.getPharmaID = getPharmaID;
 exports.getAllByParam = getAllByParam;
 exports.addPharmaToPrescription = addPharmaToPrescription;
 exports.findPharmaIDByPrescriptionId = findPharmaIDByPrescriptionId;
+exports.getPrescriptions = getPrescriptions;

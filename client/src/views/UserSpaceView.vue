@@ -17,8 +17,8 @@
             :research="true"
             :title="'Mes ordonnances'"
             class-title="ord-text-subtitle-bold py-4"
-            :data="dataOrdo"
-            :key="dataOrdo"
+            :data="dataOrdoPatient"
+            :key="dataOrdoPatient"
             @getClickValue="clickedPrescriptionID"
         />
         <Table
@@ -35,6 +35,7 @@
             class-title="ord-text-subtitle-bold py-4"
             :data="dataPharmas"
             :key="dataPharmas"
+            :disableClick="true"
         />
       </div>
 
@@ -56,11 +57,11 @@
       <div v-if="role === 'pharma'">
         <Table
             :research="true"
-            :title="'Mes patients'"
+            :title="'Mes ordonnances'"
             class-title="ord-text-subtitle-bold py-4"
-            :data="dataPatientsPharma"
-            :key="dataPatientsPharma"
-            @getClickValue="clickedPatientID"
+            :data="dataOrdoPharma"
+            :key="dataOrdoPharma"
+            @getClickValue="clickedPrescriptionPharmaID"
         />
       </div>
     </div>
@@ -113,11 +114,11 @@ export default {
   data() {
     return {
       role: localStorage.getItem('Role'),
-      dataOrdo: [],
+      dataOrdoPatient: [],
       dataDoctors: [],
       dataPharmas: [],
       dataPatientsDoctor: [],
-      dataPatientsPharma: [],
+      dataOrdoPharma: [],
       showAddPatient: false,
       showModalSuccess: false,
       showModalError: false,
@@ -138,6 +139,10 @@ export default {
       sessionStorage.setItem("patientIDforRecord", value);
       this.$router.push({ path: "/patientRecord" });
     },
+    clickedPrescriptionPharmaID(prescriptionID) {
+      sessionStorage.setItem("prescriptionID", prescriptionID);
+      this.$router.push({ path: "/prescription" });
+    },
     addPatient() {
       this.showAddPatient = true;
     },
@@ -156,9 +161,28 @@ export default {
           .then(response => response.json())
           .then(response => {
             if (response.result !== "error" && response.result !== "no prescriptions")
-              this.dataOrdo = response.result;
+              this.dataOrdoPatient = response.result;
             else if (response.result === "no prescriptions")
-              this.dataOrdo = [];
+              this.dataOrdoPatient = [];
+            else
+              console.log("error");
+          });
+    },
+    getPrescriptionsPharma() {
+      fetch(BASE_URL + "pharma/getPrescriptions", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        }
+      })
+          .then(response => response.json())
+          .then(response => {
+            if (response.result !== "error" && response.result !== "no prescriptions")
+              this.dataOrdoPharma = response.result;
+            else if (response.result === "no prescriptions")
+              this.dataOrdoPharma = [];
             else
               console.log("error");
           });
@@ -235,6 +259,9 @@ export default {
     }
     if (this.role === "doctor") {
       this.getPatients();
+    }
+    if (this.role === "pharma") {
+      this.getPrescriptionsPharma();
     }
   }
 }
