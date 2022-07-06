@@ -45,7 +45,7 @@
         <InfoBubble
           class="transition hover:scale-110"
           blackWord="Maxime Tata"
-
+          :path="require('../assets/About/maxime.png')"
           image-size="w-52 h-52"
           bubble-size="w-56 h-56"
         />
