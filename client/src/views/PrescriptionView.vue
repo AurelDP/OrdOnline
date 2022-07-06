@@ -91,7 +91,8 @@ export default {
       fetch(BASE_URL + "prescription/" + this.prescriptionID + "/statuses", {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         }
       })
           .then(response => response.json())
@@ -106,7 +107,8 @@ export default {
       fetch(BASE_URL + "prescription/" + this.prescriptionID, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         }
       })
           .then(response => response.json())
@@ -122,7 +124,8 @@ export default {
       fetch(BASE_URL + "prescription/" + this.prescriptionID + "/close", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         }
       });
       this.getStatuses();
@@ -131,7 +134,8 @@ export default {
       fetch(BASE_URL + "prescription/treatment/" + this.id + "/delivery", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         },
       });
       this.getPrescription();
