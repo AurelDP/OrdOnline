@@ -63,7 +63,7 @@
         @button1Click="closeModalSuccess"
         :icon="'fa-check'"
         :iconClass="'text-ord-green-100'"
-        :textModal="'Pharmacie ajoutée à l\'ordonnance'"
+        :textModal="this.textModalSuccess"
         :text1="'Continuer'"
         :class1="'ord-button-green hover:ord-button-green-hover'"
     />
@@ -72,7 +72,7 @@
         @button1Click="closeModalError"
         :icon="'fa-warning'"
         :iconClass="'text-ord-red'"
-        :textModal="'Pharmacie déjà ajoutée à cette ordonnance'"
+        :textModal="this.textModalError"
         :text1="'Continuer'"
         :class1="'ord-button-green hover:ord-button-green-hover'"
     />
@@ -127,6 +127,8 @@ export default {
       showAddPharma: false,
       showModalSuccess: false,
       showModalError: false,
+      textModalSuccess: "",
+      textModalError: "",
     }
   },
   methods: {
@@ -187,7 +189,17 @@ export default {
           treatmentsToActualiseIds: this.treatmentsToActualiseIds,
           treatments: this.prescription.treatments
         })
-      });
+      })
+          .then(response => response.json())
+          .then(data => {
+            if (data.result !== "error") {
+              this.textModalSuccess = "Ordonnance modifiée avec succès";
+              this.showModalSuccess = true;
+            } else {
+              this.textModalError = "Problème dans la modification de l\'ordonnance";
+              this.showModalError = true;
+            }
+          });
       this.getPrescription();
       this.getStatuses();
     },
@@ -218,10 +230,13 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            if (data.result === "success")
+            if (data.result === "success") {
+              this.textModalSuccess = "Pharmacie ajoutée à l\'ordonnance";
               this.showModalSuccess = true;
-            else
+            } else {
+              this.textModalError = "Pharmacie déjà ajoutée à cette ordonnance";
               this.showModalError = true;
+            }
           });
     },
     closeModalSuccess() {
