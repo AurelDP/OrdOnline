@@ -14,9 +14,29 @@
   <h1 class="flex mt-11 ord-px-body-adapt ord-text-title">Ord'Online c'est quoi ?</h1>
 
   <div class="flex flex-wrap ord-px-body-adapt md:gap-36 sm:gap-20 gap-10 my-20 place-content-center">
-    <InfoBubble class="transition hover:scale-110" blackWord="Application" greenWord="sécurisée" :path="require('../../assets/Accueil/infoSecure.svg')"/>
-    <InfoBubble class="transition hover:scale-110" blackWord="Communication" greenWord="fluide" :path="require('../../assets/Accueil/infoCommunication.svg')"/>
-    <InfoBubble class="transition hover:scale-110" blackWord="Utilisation" greenWord="simple" :path="require('../../assets/Accueil/infoSimple.svg')"/>
+    <InfoBubble
+        class="transition hover:scale-110"
+        blackWord="Application"
+        greenWord="sécurisée"
+        :path="require('../../assets/Accueil/infoSecure.svg')"
+        image-size="h-40"
+        bubble-size="w-64 h-64"
+    />
+    <InfoBubble
+        class="transition hover:scale-110"
+        blackWord="Communication" greenWord="fluide"
+        :path="require('../../assets/Accueil/infoCommunication.svg')"
+        image-size="h-44"
+        bubble-size="w-64 h-64"
+    />
+    <InfoBubble
+        class="transition hover:scale-110"
+        blackWord="Utilisation"
+        greenWord="simple"
+        :path="require('../../assets/Accueil/infoSimple.svg')"
+        image-size="h-48"
+        bubble-size="w-64 h-64"
+    />
   </div>
 
   <div v-if="isConnected === false" class="flex flex-wrap bg-ord-green-600 ord-px-body-adapt py-10">
