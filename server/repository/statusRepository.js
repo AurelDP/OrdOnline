@@ -35,12 +35,16 @@ const findByPrescriptionId = async (prescriptionId, userID, role) => {
             const [rows2] = await pool.promise().query(sqlQuery2);
             const statuses = [];
 
+            const getDoctorNameQuery = `SELECT nomMedecin FROM Médecin JOIN Ordonnance ON Ordonnance.IDmedecin = Médecin.IDmedecin WHERE IDordonnance = ${prescriptionId};`;
+            const [doctorName] = await pool.promise().query(getDoctorNameQuery);
+
             for (const row in rows2) {
-                if (rows2[row].IDpharmacien === null) {
-                    const getDoctorNameQuery = `SELECT nomMedecin FROM Médecin JOIN Ordonnance ON Ordonnance.IDmedecin = Médecin.IDmedecin WHERE IDordonnance = ${rows2[row].IDordonnance};`;
-                    const [doctorName] = await pool.promise().query(getDoctorNameQuery);
-                    statuses.push({"date": rows2[row].dateStatut ? rows2[row].dateStatut.toLocaleDateString() : "", "status": rows2[row].nouveauStatut, "pharma": rows2[row].IDpharmacien === null ? "Docteur " + doctorName[0].nomMedecin  : rows2[row].IDpharmacien});
+                let namePharma;
+                if (rows2[row].IDpharmacien !== null) {
+                    const getNamePharmaQuery = `SELECT nomPharmacie FROM Pharmacie WHERE Pharmacie.IDpharmacien = ${rows2[row].IDpharmacien};`;
+                    [namePharma] = await pool.promise().query(getNamePharmaQuery);
                 }
+                statuses.push({"date": rows2[row].dateStatut ? rows2[row].dateStatut.toLocaleDateString() : "", "status": rows2[row].nouveauStatut, "pharma": rows2[row].IDpharmacien === null ? "Docteur " + doctorName[0].nomMedecin  : namePharma[0].nomPharmacie});
             }
 
             return statuses;
