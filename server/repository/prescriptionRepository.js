@@ -1,6 +1,6 @@
 const utility = require("../utility/index");
 const treatmentRepository = require("./treatmentRepository");
-const patientRepository = require("./patientRepository");
+const linkDoctorPatientRepository = require("./linkDoctorPatientRepository");
 const doctorRepository = require("./doctorRepository");
 const statusRepository = require("./statusRepository");
 const pharmaRepository = require("./pharmaRepository");
@@ -35,6 +35,11 @@ const addPrescription = async (userID, userRole, prescription) => {
         }
 
         const doctorID = await doctorRepository.getDoctorID(pool, userID);
+
+        const isValid = await linkDoctorPatientRepository.isPatientOfDoctor(pool, doctorID, prescription.patientID);
+        if (!isValid)
+            return "error";
+
         const [savePrescriptionResult] = await add(pool, prescription.medicalAdvices, doctorID, prescription.patientID);
         const prescriptionId = savePrescriptionResult.insertId;
         if (!treatmentsEmpty)

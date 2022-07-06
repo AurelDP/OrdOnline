@@ -1,7 +1,7 @@
 const utility = require("../utility");
 const doctorRepository = require("./doctorRepository");
 const {secureApostrophes} = require("../methods/globalMethods");
-const linkDoctorPatientRepository = require("./linkDoctorPatient");
+const linkDoctorPatientRepository = require("./linkDoctorPatientRepository");
 
 async function save(pool, lastName, firstName, addressId, accountId) {
     const insertUserQuery = `INSERT INTO Patient (nomPatient, prenomPatient, IDadresse, IDcompte)
