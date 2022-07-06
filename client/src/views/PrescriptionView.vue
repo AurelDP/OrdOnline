@@ -23,14 +23,14 @@
             v-if="this.role === 'doctor' && this.statuses[0].status !== 'Fermée'"
             :class="'ord-button-red hover:ord-button-red-hover'"
             :text="'Fermer'"
-            :src="'/prescription'"
+            :src="''"
             @click="closePrescription"
         />
         <Button
             v-if="this.role === 'pharma' && this.statuses[0].status !== 'Fermée'"
             :class="'ord-button-green hover:ord-button-green-hover'"
             :text="'Sauvegarder'"
-            :src="'/prescription'"
+            :src="''"
             @click="actualisePrescription"
         />
         <Button
@@ -175,8 +175,21 @@ export default {
           "Content-Type": "application/json",
           "Authorization": localStorage.getItem("WebToken"),
         }
-      });
-      this.getStatuses();
+      })
+          .then(response => response.json())
+          .then(data => {
+            if (data.prescription !== "error") {
+              this.textModalSuccess = "La prescription a été fermée";
+              this.showModalSuccess = true;
+              this.getStatuses();
+            } else {
+              this.textModalError = "Une erreur est survenue";
+              this.showModalError = true;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
     },
     actualisePrescription() {
       fetch(BASE_URL + "prescription/" + this.prescriptionID + "/treatments/delivery", {
@@ -195,13 +208,13 @@ export default {
             if (data.result !== "error") {
               this.textModalSuccess = "Ordonnance modifiée avec succès";
               this.showModalSuccess = true;
+              this.getPrescription();
+              this.getStatuses();
             } else {
               this.textModalError = "Problème dans la modification de l\'ordonnance";
               this.showModalError = true;
             }
           });
-      this.getPrescription();
-      this.getStatuses();
     },
     saveTreatmentToActualise(treatmentId) {
       this.treatmentsToActualiseIds.push(treatmentId);
