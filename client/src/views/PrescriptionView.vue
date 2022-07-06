@@ -228,7 +228,7 @@ export default {
   },
   created() {
     this.role = localStorage.getItem("Role");
-    this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : this.$router.push('/patientRecord');
+    this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : this.$router.back();
     if (sessionStorage.getItem('prescriptionID') !== null) {
       this.getPrescription();
       this.getStatuses();

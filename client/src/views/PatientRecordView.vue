@@ -123,7 +123,7 @@ export default {
       socialSecNb: "",
       dataOrdo: [],
       role: localStorage.getItem('Role'),
-      idPatientAccount: 2,
+      patientID: "",
     }
   },
   methods: {
@@ -132,7 +132,7 @@ export default {
       this.$router.push('/prescription');
     },
     addPrescription() {
-      sessionStorage.setItem('patientAccountIDforNewPrescription', this.idPatientAccount);
+      sessionStorage.setItem('patientIDforNewPrescription', this.patientID);
       this.$router.push('/addPrescription');
     },
     getRecord() {
@@ -144,7 +144,7 @@ export default {
           "Authorization": localStorage.getItem("WebToken"),
         },
         body: JSON.stringify({
-          idPatientAccount: this.idPatientAccount,
+          patientID: this.patientID,
         })
       })
           .then(response => response.json())
@@ -169,7 +169,7 @@ export default {
           "Authorization": localStorage.getItem("WebToken"),
         },
         body: JSON.stringify({
-          idPatientAccount: this.idPatientAccount,
+          patientID: this.patientID,
         })
       })
           .then(response => response.json())
@@ -184,8 +184,11 @@ export default {
     }
   },
   created() {
-    this.getRecord();
-    this.getPrescriptions();
+    this.patientID = sessionStorage.getItem("patientIDforRecord") ? sessionStorage.getItem("patientIDforRecord") : this.$router.back();
+    if (this.patientID) {
+      this.getRecord();
+      this.getPrescriptions();
+    }
   }
 }
 </script>

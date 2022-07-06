@@ -1,5 +1,6 @@
 const utility = require("../utility");
 const doctorRepository = require("./doctorRepository");
+const {secureApostrophes} = require("../methods/globalMethods");
 
 async function save(pool, lastName, firstName, addressId, accountId) {
     const insertUserQuery = `INSERT INTO Patient (nomPatient, prenomPatient, IDadresse, IDcompte)
@@ -15,10 +16,10 @@ async function find(pool, id) {
 const getRecord = async (id, role) => {
     const pool = utility.pool;
     const query = `SELECT nomPatient, prenomPatient, dateDeNaissance, numeroSecu, poids, numeroAdresse, rueAdresse, communeAdresse, codePostal, mailCompte, telCompte 
-                    FROM Patient, Adresse, Compte
-                    WHERE Patient.IDadresse = Adresse.IDadresse
-                    AND Compte.IDcompte = Patient.IDcompte
-                    AND Compte.IDcompte = '${id}';`;
+                    FROM Patient
+                    JOIN Adresse ON Adresse.IDadresse = Patient.IDadresse
+                    JOIN Compte ON Compte.IDcompte = Patient.IDcompte
+                    WHERE Patient.IDpatient = '${id}';`;
 
     try {
         if (role === "doctor" || role === "healthService") {
@@ -34,7 +35,7 @@ const getRecord = async (id, role) => {
     }
 }
 
-const getPrescriptions = async (patientAccountID, userRole, userID) => {
+const getPrescriptions = async (patientID, userRole, userID) => {
     const pool = utility.pool;
 
     try {
@@ -42,7 +43,6 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
 
         if (userRole === "doctor") {
             const doctorID = await doctorRepository.getDoctorID(pool, userID);
-            const patientID = await getPatientID(pool, patientAccountID);
             const doctorQuery = `SELECT
                                 o.IDordonnance,
                                 o.dateOrdonnance,
@@ -62,7 +62,6 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                             ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(doctorQuery);
         } else if (userRole === "healthService") {
-            const patientID = await getPatientID(pool, patientAccountID);
             const healthServiceQuery = `SELECT
                                         o.IDordonnance,
                                         o.dateOrdonnance,
@@ -81,7 +80,6 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(healthServiceQuery);
         } else if (userRole === "patient") {
-            const patientID = await getPatientID(pool, userID);
             const patientQuery = `SELECT
                                         o.IDordonnance,
                                         o.dateOrdonnance,
@@ -192,6 +190,69 @@ async function getPharmas(userRole, userID) {
     }
 }
 
+async function getAllByParam(userRole, search) {
+    const pool = utility.pool;
+
+    search = secureApostrophes(search.toLowerCase());
+    if (userRole !== "doctor")
+        return "error";
+
+    const query = `SELECT
+                        IDpatient,
+                        nomPatient,
+                        prenomPatient,
+                        numeroAdresse,
+                        rueAdresse,
+                        communeAdresse,
+                        codePostal
+                    FROM Patient
+                    NATURAL JOIN Adresse
+                    WHERE nomPatient LIKE '%${search}%'
+                    OR prenomPatient LIKE '%${search}%'
+                    OR rueAdresse LIKE '%${search}%'
+                    OR communeAdresse LIKE '%${search}%'
+                    OR codePostal LIKE '%${search}%'`;
+
+    try {
+        const [rows] = await pool.promise().query(query);
+        if (rows.length === 0)
+            return "noPatientFound";
+        else {
+            let res = [];
+            for (const row in rows) {
+                res.push({
+                    "nomPatient": rows[row].nomPatient + " " + rows[row].prenomPatient,
+                    "adressePatient": rows[row].numeroAdresse + " " + rows[row].rueAdresse + ", " + rows[row].communeAdresse + ", " + rows[row].codePostal,
+                    "IDpatient": rows[row].IDpatient,
+                });
+            }
+            return res;
+        }
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
+async function addPatientToDoctor (patientID, userID, userRole) {
+    const pool = utility.pool;
+
+    if (userRole !== "doctor")
+        return "error";
+
+    try {
+        const doctorID = await doctorRepository.getDoctorID(pool, userID);
+
+        const query = `INSERT INTO LiaisonMedecinPatient (IDmedecin, IDpatient)
+                        VALUES (${doctorID}, ${patientID});`;
+        await pool.promise().query(query);
+        return "success";
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
 module.exports = {
     save,
     find,
@@ -201,4 +262,6 @@ module.exports = {
     getAddressID,
     getPatientID,
     getPharmas,
+    getAllByParam,
+    addPatientToDoctor
 }

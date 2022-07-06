@@ -10,6 +10,7 @@
         :src2="'/'"
         @button2Click="disconnect"
     />
+
     <div class="md:px-24 sm:px-16 px-8 py-10">
       <div v-if="role === 'patient'">
         <Table
@@ -48,6 +49,7 @@
             :data="dataPatientsDoctor"
             :key="dataPatientsDoctor"
             @getClickValue="clickedPatientID"
+            :only2Col="true"
         />
       </div>
 
@@ -62,6 +64,31 @@
         />
       </div>
     </div>
+
+    <AddPatient
+        v-if="showAddPatient && this.role === 'doctor'"
+        @clickedCloseAddPatient="closeAddPatient"
+        @addThisPatient="addThisPatient"
+    />
+
+    <Modal
+        v-show="showModalSuccess"
+        @button1Click="closeModalSuccess"
+        :icon="'fa-check'"
+        :iconClass="'text-ord-green-100'"
+        :textModal="'Patient ajouté avec succès'"
+        :text1="'Continuer'"
+        :class1="'ord-button-green hover:ord-button-green-hover'"
+    />
+    <Modal
+        v-show="showModalError"
+        @button1Click="closeModalError"
+        :icon="'fa-warning'"
+        :iconClass="'text-ord-red'"
+        :textModal="'Patient déjà ajouté'"
+        :text1="'Continuer'"
+        :class1="'ord-button-green hover:ord-button-green-hover'"
+    />
   </AdaptFooterBackground>
 </template>
 
@@ -69,6 +96,8 @@
 import AdaptFooterBackground from "@/components/globalComponents/AdaptFooterBackground";
 import Navbar from "@/components/globalComponents/Navbar";
 import Table from "@/components/globalComponents/Table/Table";
+import AddPatient from "@/components/userSpace/AddPatient";
+import Modal from "@/components/globalComponents/Modal";
 
 const BASE_URL = 'http://localhost:8081/';
 
@@ -78,6 +107,8 @@ export default {
     AdaptFooterBackground,
     Table,
     Navbar,
+    AddPatient,
+    Modal
   },
   data() {
     return {
@@ -87,23 +118,31 @@ export default {
       dataPharmas: [],
       dataPatientsDoctor: [],
       dataPatientsPharma: [],
+      showAddPatient: false,
+      showModalSuccess: false,
+      showModalError: false,
     };
   },
   methods: {
     disconnect() {
       localStorage.removeItem("WebToken");
       sessionStorage.removeItem("prescriptionID");
-      sessionStorage.removeItem("patientAccountIDforNewPrescription");
+      sessionStorage.removeItem("patientIDforNewPrescription");
+      sessionStorage.removeItem("patientIDforRecord");
     },
     clickedPrescriptionID(prescriptionID) {
       sessionStorage.setItem("prescriptionID", prescriptionID);
       this.$router.push({ path: "/prescription" });
     },
-    clickedPatientID() {
-
+    clickedPatientID(value) {
+      sessionStorage.setItem("patientIDforRecord", value);
+      this.$router.push({ path: "/patientRecord" });
     },
     addPatient() {
-
+      this.showAddPatient = true;
+    },
+    closeAddPatient() {
+      this.showAddPatient = false;
     },
     getPrescriptions() {
       fetch(BASE_URL + "patient/getPrescriptions", {
@@ -142,12 +181,60 @@ export default {
             else
               console.log("error");
           });
+    },
+    getPatients() {
+      fetch(BASE_URL + "doctor/getPatients", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        }
+      })
+          .then(response => response.json())
+          .then(response => {
+            if (response.result !== "error" && response.result !== "noPatientsFound")
+              this.dataPatientsDoctor = response.result;
+            else if (response.result === "noPatientsFound")
+              this.dataPatientsDoctor = [];
+            else
+              console.log("error");
+          });
+    },
+    addThisPatient(patientID) {
+      fetch(BASE_URL + "patient/addPatientToDoctor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
+        },
+        body: JSON.stringify({
+          patientID: patientID,
+        })
+      })
+          .then(response => response.json())
+          .then(data => {
+            if (data.result === "success") {
+              this.showModalSuccess = true;
+              this.getPatients();
+            } else
+              this.showModalError = true;
+          });
+    },
+    closeModalSuccess() {
+      this.showModalSuccess = false;
+    },
+    closeModalError() {
+      this.showModalError = false;
     }
   },
   created() {
     if (this.role === "patient") {
       this.getPrescriptions();
       this.getPharmas();
+    }
+    if (this.role === "doctor") {
+      this.getPatients();
     }
   }
 }

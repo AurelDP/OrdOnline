@@ -101,7 +101,7 @@ export default {
     return {
       treatmentList: [],
       medicalAdvices: '',
-      idPatientAccount: sessionStorage.getItem('patientAccountIDforNewPrescription'),
+      patientID: sessionStorage.getItem('patientIDforNewPrescription'),
       showModalError: false,
       showModalSuccess: false,
       prescriptionID: '',
@@ -116,7 +116,7 @@ export default {
           'Authorization': localStorage.getItem('WebToken')
         },
         body: JSON.stringify({
-          idPatientAccount: this.idPatientAccount,
+          patientID: this.patientID,
           medicalAdvices: this.medicalAdvices,
           treatments: this.treatmentList
         })
@@ -138,7 +138,7 @@ export default {
       this.showModalSuccess = false;
       this.$router.push("/prescription");
       sessionStorage.setItem('prescriptionID', this.prescriptionID);
-      sessionStorage.removeItem('patientAccountIDforNewPrescription');
+      sessionStorage.removeItem('patientIDforNewPrescription');
     },
     closeModalError() {
       this.showModalError = false;
@@ -185,11 +185,11 @@ export default {
       }
     },
     removeSessionStorage() {
-      sessionStorage.removeItem('patientAccountIDforNewPrescription');
+      sessionStorage.removeItem('patientIDforNewPrescription');
     }
   },
   created() {
-    if (sessionStorage.getItem('patientAccountIDforNewPrescription') === null)
+    if (sessionStorage.getItem('patientIDforNewPrescription') === null)
       this.$router.push("/patientRecord");
     this.addTreatement();
   }

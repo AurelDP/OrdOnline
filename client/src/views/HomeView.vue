@@ -47,7 +47,8 @@ export default {
     disconnect() {
       localStorage.removeItem("WebToken");
       sessionStorage.removeItem("prescriptionID");
-      sessionStorage.removeItem("patientAccountIDforNewPrescription");
+      sessionStorage.removeItem("patientIDforNewPrescription");
+      sessionStorage.removeItem("patientIDforRecord");
       this.isConnected = false;
     }
   },
