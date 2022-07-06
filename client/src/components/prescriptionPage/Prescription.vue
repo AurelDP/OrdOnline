@@ -4,7 +4,7 @@
   </InfoBox>
   <InfoBox :title="'Patient'" :borderLeft="true">
     <p>
-      {{ this.prescription.patient.lastName }} {{ this.prescription.patient.firstName }}
+      <span>{{ this.prescription.patient.lastName }} {{ this.prescription.patient.firstName }}</span>
       <span v-if="this.prescription.patient.birthDate !== null">, né(e) le {{ this.prescription.patient.birthDate }}</span>
       <span v-if="this.prescription.patient.weight !== null">, {{ this.prescription.patient.weight }} kg</span>
     </p>
