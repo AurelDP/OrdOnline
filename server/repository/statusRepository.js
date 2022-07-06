@@ -36,7 +36,11 @@ const findByPrescriptionId = async (prescriptionId, userID, role) => {
             const statuses = [];
 
             for (const row in rows2) {
-                statuses.push({"date": rows2[row].dateStatut ? rows2[row].dateStatut.toLocaleDateString() : "", "status": rows2[row].nouveauStatut, "pharma": rows2[row].IDpharmacien === null ? "Aucune" : rows2[row].IDpharmacien});
+                if (rows2[row].IDpharmacien === null) {
+                    const getDoctorNameQuery = `SELECT nomMedecin FROM Médecin JOIN Ordonnance ON Ordonnance.IDmedecin = Médecin.IDmedecin WHERE IDordonnance = ${rows2[row].IDordonnance};`;
+                    const [doctorName] = await pool.promise().query(getDoctorNameQuery);
+                    statuses.push({"date": rows2[row].dateStatut ? rows2[row].dateStatut.toLocaleDateString() : "", "status": rows2[row].nouveauStatut, "pharma": rows2[row].IDpharmacien === null ? "Docteur " + doctorName[0].nomMedecin  : rows2[row].IDpharmacien});
+                }
             }
 
             return statuses;

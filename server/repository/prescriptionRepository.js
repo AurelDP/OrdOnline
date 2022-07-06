@@ -148,10 +148,6 @@ const actualiseById = async (prescriptionId, treatmentsToActualiseIds, role, tre
             }
 
             try {
-                const getCurrentStatusQuery = `SELECT nouveauStatut FROM HistoriqueStatuts WHERE IDordonnance = ${prescriptionId} ORDER BY dateStatut, IDstatut DESC LIMIT 1;`;
-                const [rows] = await pool.promise().query(getCurrentStatusQuery);
-                const currentStatus = rows[0].nouveauStatut;
-
                 let newStatus = "Fermée";
 
                 for (let i in treatments) {
