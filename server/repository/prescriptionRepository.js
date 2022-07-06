@@ -105,7 +105,7 @@ const closeById = async (prescriptionId, role, userID) => {
     try {
         if (role === 'doctor') {
             const doctorID = await doctorRepository.getDoctorID(pool, userID);
-            if (doctorID === await findDoctorIdByPrescriptionId(pool, prescriptionId)) {
+            if (doctorID === await doctorRepository.findDoctorIdByPrescriptionId(pool, prescriptionId)) {
                 const getCurrentStatusQuery = `SELECT nouveauStatut FROM HistoriqueStatuts WHERE IDordonnance = ${prescriptionId} ORDER BY dateStatut, IDstatut DESC LIMIT 1;`;
                 const [rows] = await pool.promise().query(getCurrentStatusQuery);
                 const currentStatus = rows[0].nouveauStatut;
@@ -132,7 +132,7 @@ const actualiseById = async (prescriptionId, treatmentsToActualiseIds, role, tre
 
     if (role === 'pharma') {
         const pharmaID = await pharmaRepository.getPharmaID(pool, userID);
-        if (pharmaID === await findPharmaIDByPrescriptionId(pool, prescriptionId)) {
+        if (pharmaID === await pharmaRepository.findPharmaIDByPrescriptionId(pool, prescriptionId)) {
             try {
                 for (let treatmentId of treatmentsToActualiseIds) {
                     const sqlQuery = `UPDATE Traitement SET estDelivre = TRUE WHERE IDtraitement = ${treatmentId};`;
