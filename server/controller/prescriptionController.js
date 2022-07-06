@@ -2,10 +2,12 @@ const prescriptionRepository = require('../repository/prescriptionRepository');
 const statusesRepository = require('../repository/statusRepository');
 
 async function add(req, res) {
-    const prescription = req.body
+    const prescription = req.body;
+    const userID = req.authUser.userID;
+    const userRole = req.authUser.userRole;
     let isSuccess;
     try {
-        isSuccess = await prescriptionRepository.addPrescription(prescription);
+        isSuccess = await prescriptionRepository.addPrescription(userID, userRole, prescription);
     } catch (error) {
         isSuccess = "error";
     }

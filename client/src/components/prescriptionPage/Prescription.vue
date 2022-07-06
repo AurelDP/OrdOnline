@@ -3,9 +3,11 @@
     <p>{{ this.prescription.doctor.lastName }} {{ this.prescription.doctor.firstName }}, {{ this.prescription.doctor.address }}</p>
   </InfoBox>
   <InfoBox :title="'Patient'" :borderLeft="true">
-    <p>{{ this.prescription.patient.lastName }} {{ this.prescription.patient.firstName }}</p>
-    <p v-if="this.prescription.patient.age !== null">{{ this.prescription.patient.age }} ans</p>
-    <p v-if="this.prescription.patient.weight !== null">{{ this.prescription.patient.weight }} kg</p>
+    <p>
+      {{ this.prescription.patient.lastName }} {{ this.prescription.patient.firstName }}
+      <span v-if="this.prescription.patient.birthDate !== null">, né(e) le {{ this.prescription.patient.birthDate }}</span>
+      <span v-if="this.prescription.patient.weight !== null">, {{ this.prescription.patient.weight }} kg</span>
+    </p>
   </InfoBox>
   <InfoBox :title="'Traitements (' + this.prescription.treatments.length + ')'">
     <ul>

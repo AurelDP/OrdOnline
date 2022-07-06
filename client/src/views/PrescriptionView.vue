@@ -1,46 +1,12 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
-    <WhiteBoard v-if="this.statuses.length === 0"
-        title="Ordonnance"
-        :statut="true"
-        :textStatut="'En attente'"
-    >
-      <Prescription
-        :prescription="this.prescription"
-        :role="this.role"
-        :statuses="this.statuses"
-        @delivery="actualiseTreatment"
-        @status="actualiseStatus"
-      />
-      <div class="ord-whiteboard-buttons">
-        <Button
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Retour'"
-            :src="'/'"
-        />
-        <Button
-            v-if="this.role === 'doctor' && this.statuses[0] !== 'Fermée'"
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Fermer'"
-            :src="'/prescription'"
-            @click="this.closePrescription"
-        />
-        <Button
-            v-if="this.role === 'pharma'"
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Sauvegarder'"
-            :src="'/'"
-            @click="this.actualisePrescription"
-        />
-      </div>
-    </WhiteBoard>
-    <WhiteBoard v-else
-                title="Ordonnance"
+    <WhiteBoard title="Ordonnance"
                 :statut="true"
                 :textStatut="this.statuses[0].status"
     >
       <Prescription
+          v-if="this.statuses.length > 0"
           :prescription="this.prescription"
           :role="this.role"
           :statuses="this.statuses"
@@ -50,11 +16,12 @@
         <Button
             :class="'ord-button-green hover:ord-button-green-hover'"
             :text="'Retour'"
-            :src="'/'"
+            :src="'/patientRecord'"
+            @click="removeSessionStorage"
         />
         <Button
             v-if="this.role === 'doctor' && this.statuses[0].status !== 'Fermée'"
-            :class="'ord-button-green hover:ord-button-green-hover'"
+            :class="'ord-button-red hover:ord-button-red-hover'"
             :text="'Fermer'"
             :src="'/prescription'"
             @click="this.closePrescription"
@@ -72,7 +39,7 @@
         title="Historique des statuts"
     >
       <PrescriptionStatus
-        :statuses="this.statuses"
+          :statuses="this.statuses"
       />
     </WhiteBoard>
   </AdaptFooterBackground>
@@ -100,16 +67,14 @@ export default {
   },
   data() {
     return {
+      prescriptionID: "",
       statuses: [],
       prescription: {
-        id: Number,
-        name: "",
-        description: "",
         medicalAdvices: "",
         patient: {
           lastName: "",
           firstName: "",
-          age: Number,
+          birthDate: "",
           weight: Number,
         },
         doctor: {
@@ -125,10 +90,11 @@ export default {
   },
   methods: {
     getStatuses() {
-      fetch(BASE_URL + "prescription/11/statuses", {
+      fetch(BASE_URL + "prescription/" + this.prescriptionID + "/statuses", {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         }
       })
           .then(response => response.json())
@@ -140,10 +106,11 @@ export default {
           });
     },
     getPrescription() {
-      fetch(BASE_URL + "prescription/11", {
+      fetch(BASE_URL + "prescription/" + this.prescriptionID, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         }
       })
           .then(response => response.json())
@@ -156,10 +123,11 @@ export default {
           });
     },
     closePrescription() {
-      fetch(BASE_URL + "prescription/11/close", {
+      fetch(BASE_URL + "prescription/" + this.prescriptionID + "/close", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         }
       });
       this.getStatuses();
@@ -169,7 +137,8 @@ export default {
       fetch(BASE_URL + "prescription/treatment/" + this.id + "/delivery", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("WebToken"),
         },
         body: JSON.stringify({
           prescriptionId: this.prescription.id,
@@ -202,10 +171,17 @@ export default {
         date: new Date(),
       });
     },
+    },
+    removeSessionStorage() {
+      sessionStorage.removeItem("prescriptionID");
+    }
   },
   created() {
-    this.getPrescription();
-    this.getStatuses();
+    this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : this.$router.push('/patientRecord');
+    if (sessionStorage.getItem('prescriptionID') !== null) {
+      this.getPrescription();
+      this.getStatuses();
+    }
   }
 }
 </script>
