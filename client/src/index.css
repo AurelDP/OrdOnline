@@ -4,7 +4,7 @@
 
 @layer base {
     .ord-button {
-        @apply rounded-lg h-7 w-40 flex items-center justify-center font-semibold;
+        @apply rounded-lg h-7 w-40 flex items-center justify-center font-semibold outline-none;
     }
 
     .ord-button-icon {

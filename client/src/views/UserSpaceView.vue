@@ -27,7 +27,7 @@
             class-title="ord-text-subtitle-bold py-4"
             :data="dataDoctors"
             :key="dataDoctors"
-            @getClickValue="clickedDoctorID"
+            :disableClick="true"
         />
         <Table
             :only2Col="true"
@@ -145,10 +145,6 @@ export default {
     clickedPrescriptionPharmaID(prescriptionID) {
       sessionStorage.setItem("prescriptionID", prescriptionID);
       this.$router.push({ path: "/prescription" });
-    },
-    clickedDoctorID(value) {
-      console.log(value);
-      this.doctorID = value;
     },
     addPatient() {
       this.showAddPatient = true;
