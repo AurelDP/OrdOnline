@@ -35,26 +35,36 @@
           <div class="flex flex-wrap md:gap-12 sm:gap-8 gap-4">
             <ul class="overflow-scroll">
               <li class="font-bold pb-2">Date de naissance</li>
-              <li v-if="birthDate !== null">{{ birthDate }}</li>
+              <li v-if="birthDate !== null && birthDate !== ''">{{ birthDate }}</li>
               <li v-else>N/A</li>
             </ul>
             <ul class="overflow-scrolll">
               <li class="font-bold pb-2">Poids</li>
-              <li v-if="weight !== null">{{ weight }}</li>
+              <li v-if="weight !== null && weight !== ''">{{ weight }} kg</li>
               <li v-else>N/A</li>
             </ul>
             <ul class="overflow-scroll">
               <li class="font-bold pb-2">Numéro de sécurité sociale</li>
-              <li v-if="socialSecNb !== null">{{ socialSecNb }}</li>
+              <li v-if="socialSecNb !== null && socialSecNb !== ''">{{ socialSecNb }}</li>
               <li v-else>N/A</li>
             </ul>
           </div>
         </InfoBox>
 
         <Table
+            v-if="role === 'doctor'"
             :button="true"
             :btnText="'Ajouter'"
-            @buttonClick="console.log('clicked')"
+            @buttonClick="addPrescription"
+            :research="true"
+            :title="'Ordonnances'"
+            class-title="ord-text-subtitle py-4"
+            :data="dataOrdo"
+            :key="dataOrdo"
+            @getClickValue="clickedPrescriptionID"
+        />
+        <Table
+            v-else
             :research="true"
             :title="'Ordonnances'"
             class-title="ord-text-subtitle py-4"
@@ -66,12 +76,13 @@
         <div class="ord-whiteboard-buttons">
           <Button
               :class="'ord-button-green hover:ord-button-green-hover'"
-              :src="'/'"
+              :src="'/userSpace'"
               :text="'Retour'"
           />
           <Button
+              v-if="role === 'doctor'"
               :class="'ord-button-red hover:ord-button-red-hover'"
-              :src="'/'"
+              :src="''"
               :text="'Supprimer'"
           />
         </div>
@@ -100,7 +111,6 @@ export default {
     InfoBox,
     Button
   },
-
   data() {
     return {
       firstName: "",
@@ -112,12 +122,18 @@ export default {
       weight: "",
       socialSecNb: "",
       dataOrdo: [],
+      role: localStorage.getItem('Role'),
+      idPatientAccount: 2,
     }
   },
   methods: {
     clickedPrescriptionID(value) {
       sessionStorage.setItem('prescriptionID', value);
       this.$router.push('/prescription');
+    },
+    addPrescription() {
+      sessionStorage.setItem('patientAccountIDforNewPrescription', this.idPatientAccount);
+      this.$router.push('/addPrescription');
     },
     getRecord() {
       fetch(BASE_URL + "patient/getRecord", {
@@ -128,7 +144,7 @@ export default {
           "Authorization": localStorage.getItem("WebToken"),
         },
         body: JSON.stringify({
-          idPatient: 1,
+          idPatientAccount: this.idPatientAccount,
         })
       })
           .then(response => response.json())
@@ -153,7 +169,7 @@ export default {
           "Authorization": localStorage.getItem("WebToken"),
         },
         body: JSON.stringify({
-          idPatient: 1,
+          idPatientAccount: this.idPatientAccount,
         })
       })
           .then(response => response.json())

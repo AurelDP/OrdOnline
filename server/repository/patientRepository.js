@@ -21,8 +21,10 @@ const getRecord = async (id, role) => {
 
     try {
         if (role === "doctor" || role === "healthService") {
-            const res = await pool.promise().query(query);
-            return res[0][0];
+            const [res] = await pool.promise().query(query);
+            if (res[0].dateDeNaissance !== null)
+                res[0].dateDeNaissance = res[0].dateDeNaissance.toLocaleDateString();
+            return res[0];
         } else
             return "error";
     } catch (err) {
@@ -48,7 +50,8 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                         MAX(s2.dateStatut)
                                     FROM HistoriqueStatuts AS s2
                                     WHERE s2.IDordonnance = o.IDordonnance
-                                );`;
+                                )
+                                ORDER BY o.IDordonnance DESC;`;
     const doctorQuery = `SELECT
                             o.IDordonnance,
                             o.dateOrdonnance,
@@ -65,21 +68,36 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                 MAX(s2.dateStatut)
                             FROM HistoriqueStatuts AS s2
                             WHERE s2.IDordonnance = o.IDordonnance
-                        );`;
+                        )
+                        ORDER BY o.IDordonnance DESC;`;
 
     try {
-        let res;
+        let rows;
 
         if (userRole === "doctor")
-            res = await pool.promise().query(doctorQuery);
+            [rows] = await pool.promise().query(doctorQuery);
         else if (userRole === 'healthService')
-            res = await pool.promise().query(healthServiceQuery);
+            [rows] = await pool.promise().query(healthServiceQuery);
 
-        for (let i = 0; i < res[0].length; i++) {
-            res[0][i].dateOrdonnance = res[0][i].dateOrdonnance.toLocaleDateString();
-            res[0][i].nomMedecin = "Docteur " + res[0][i].nomMedecin;
+        for (const row in rows) {
+            rows[row].dateOrdonnance = rows[row].dateOrdonnance.toLocaleDateString();
+            rows[row].nomMedecin = "Docteur " + rows[row].nomMedecin;
         }
-        return res[0];
+
+        const res = [];
+        for (const row in rows) {
+            res.push({
+                "dateOrdonnance": rows[row].dateOrdonnance,
+                "nomMedecin": rows[row].nomMedecin,
+                "nouveauStatut": rows[row].nouveauStatut,
+                "IDordonnance": rows[row].IDordonnance
+            });
+        }
+
+        if (res.length === 0)
+            return "no prescriptions";
+        else
+            return res;
     } catch (err) {
         console.log(err);
         return "error";

@@ -47,11 +47,12 @@
         <Button
             :class="'ord-button-green hover:ord-button-green-hover'"
             :text="'Retour'"
-            :src="'/'"
+            :src="'/patientRecord'"
+            @click="removeSessionStorage"
         />
         <Button
             v-if="this.role === 'doctor' && this.statuses[0].status !== 'Fermée'"
-            :class="'ord-button-green hover:ord-button-green-hover'"
+            :class="'ord-button-red hover:ord-button-red-hover'"
             :text="'Fermer'"
             :src="'/prescription'"
             @click="this.closePrescription"
@@ -121,7 +122,7 @@ export default {
   },
   methods: {
     getStatuses() {
-      fetch(BASE_URL + "prescription/11/statuses", {
+      fetch(BASE_URL + "prescription/" + this.prescriptionID + "/statuses", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -136,7 +137,7 @@ export default {
           });
     },
     getPrescription() {
-      fetch(BASE_URL + "prescription/11", {
+      fetch(BASE_URL + "prescription/" + this.prescriptionID, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -144,7 +145,6 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            console.log(data);
             this.prescription = data.prescription;
             this.role = data.role;
           })
@@ -153,7 +153,7 @@ export default {
           });
     },
     closePrescription() {
-      fetch(BASE_URL + "prescription/11/close", {
+      fetch(BASE_URL + "prescription/" + this.prescriptionID + "/close", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -177,12 +177,17 @@ export default {
           this.prescription.treatments[i].isDelivery = !this.prescription.treatments[i].isDelivery;
         }
       }
+    },
+    removeSessionStorage() {
+      sessionStorage.removeItem("prescriptionID");
     }
   },
   created() {
-    this.getPrescription();
-    this.getStatuses();
-    this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : "";
+    this.prescriptionID = sessionStorage.getItem('prescriptionID') ? sessionStorage.getItem('prescriptionID') : this.$router.push('/patientRecord');
+    if (sessionStorage.getItem('prescriptionID') !== null) {
+      this.getPrescription();
+      this.getStatuses();
+    }
   }
 }
 </script>
