@@ -1,44 +1,12 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
-    <WhiteBoard v-if="this.statuses.length === 0"
-        title="Ordonnance"
-        :statut="true"
-        :textStatut="'En attente'"
-    >
-      <Prescription
-        :prescription="this.prescription"
-        :role="this.role"
-        @delivery="actualiseTreatment"
-      />
-      <div class="ord-whiteboard-buttons">
-        <Button
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Retour'"
-            :src="'/'"
-        />
-        <Button
-            v-if="this.role === 'doctor' && this.statuses[0] !== 'Fermée'"
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Fermer'"
-            :src="'/prescription'"
-            @click="this.closePrescription"
-        />
-        <Button
-            v-if="this.role === 'pharma'"
-            :class="'ord-button-green hover:ord-button-green-hover'"
-            :text="'Sauvegarder'"
-            :src="'/'"
-            @click="this.actualisePrescription"
-        />
-      </div>
-    </WhiteBoard>
-    <WhiteBoard v-else
-                title="Ordonnance"
+    <WhiteBoard title="Ordonnance"
                 :statut="true"
                 :textStatut="this.statuses[0].status"
     >
       <Prescription
+          v-if="this.statuses.length > 0"
           :prescription="this.prescription"
           :role="this.role"
           @delivery="actualiseTreatment"
@@ -70,7 +38,7 @@
         title="Historique des statuts"
     >
       <PrescriptionStatus
-        :statuses="this.statuses"
+          :statuses="this.statuses"
       />
     </WhiteBoard>
   </AdaptFooterBackground>
@@ -100,13 +68,11 @@ export default {
       prescriptionID: "",
       statuses: [],
       prescription: {
-        name: "",
-        description: "",
         medicalAdvices: "",
         patient: {
           lastName: "",
           firstName: "",
-          age: Number,
+          birthDate: "",
           weight: Number,
         },
         doctor: {

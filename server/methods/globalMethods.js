@@ -20,8 +20,13 @@ function convertFromMySQLDate(date) {
         return null;
 }
 
+function secureApostrophes(str) {
+    return str.replace(/'/g, "\\'");
+}
+
 module.exports = {
     upperFirstLetterOfWords,
     convertToMySQLDate,
-    convertFromMySQLDate
+    convertFromMySQLDate,
+    secureApostrophes
 }

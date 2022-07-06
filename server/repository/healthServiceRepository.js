@@ -14,8 +14,18 @@ async function update(pool, id, rppsNumber) {
     return await pool.promise().query(query);
 }
 
+async function getHealthServiceID(pool, id) {
+    const query = `SELECT IDsante FROM ServiceDeSante WHERE IDcompte = '${id}'`;
+    const [res] = await pool.promise().query(query);
+    if (res.length !== 0)
+        return res[0].IDsante;
+    else
+        return "error";
+}
+
 module.exports = {
     save,
     find,
-    update
+    update,
+    getHealthServiceID
 }

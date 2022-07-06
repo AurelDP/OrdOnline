@@ -19,9 +19,19 @@ async function update(pool, id, rppsNumber) {
     return await pool.promise().query(query);
 }
 
+async function getPharmaID(pool, id) {
+    const query = `SELECT IDpharmacien FROM Pharmacie WHERE IDcompte = '${id}'`;
+    const [res] = await pool.promise().query(query);
+    if (res.length !== 0)
+        return res[0].IDpharmacien;
+    else
+        return "error";
+}
+
 module.exports = {
     save,
     find,
     getAddressID,
-    update
+    update,
+    getPharmaID
 }

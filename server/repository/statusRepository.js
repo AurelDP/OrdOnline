@@ -1,6 +1,6 @@
 const utility = require("../utility");
 
-const findByPrescriptionId= async (prescriptionId) => {
+const findByPrescriptionId = async (prescriptionId) => {
     const pool = utility.pool;
 
     try {
@@ -19,6 +19,19 @@ const findByPrescriptionId= async (prescriptionId) => {
     }
 }
 
+const add = async (prescriptionId, status, pharma) => {
+    const pool = utility.pool;
+
+    try {
+        const sqlQuery = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance, IDpharmacien) VALUES (NOW(), '${status}', ${prescriptionId}, ${pharma});`;
+        await pool.promise().query(sqlQuery);
+    } catch (err) {
+        console.log(err);
+        throw new err;
+    }
+}
+
 module.exports = {
-    findByPrescriptionId
+    findByPrescriptionId,
+    add
 }

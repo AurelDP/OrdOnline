@@ -19,9 +19,19 @@ async function update(pool, id, rppsNumber, domain) {
     return await pool.promise().query(query);
 }
 
+async function getDoctorID(pool, id) {
+    const query = `SELECT IDmedecin FROM Médecin WHERE IDcompte = '${id}'`;
+    const [res] = await pool.promise().query(query);
+    if (res.length !== 0)
+        return res[0].IDmedecin;
+    else
+        return "error";
+}
+
 module.exports = {
     save,
     find,
     getAddressID,
-    update
+    update,
+    getDoctorID
 }

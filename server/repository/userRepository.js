@@ -5,7 +5,7 @@ const patientRepository = require("../repository/patientRepository");
 const doctorRepository = require("../repository/doctorRepository");
 const pharmaRepository = require("../repository/pharmaRepository");
 const healthServiceRepository = require("../repository/healthServiceRepository");
-const globalMethods = require("../methods/globalMethods");
+const { secureApostrophes, upperFirstLetterOfWords, convertToMySQLDate, convertFromMySQLDate  } = require("../methods/globalMethods");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -51,10 +51,10 @@ const register = async user => {
     const pool = utility.pool;
     const passwordHash = await bcrypt.hash(user.password, 10);
 
-    user.streetName = globalMethods.upperFirstLetterOfWords(user.streetName.replace("'", "\\'"));
-    user.city = globalMethods.upperFirstLetterOfWords(user.city.replace("'", "\\'"));
-    user.domain = globalMethods.upperFirstLetterOfWords(user.domain.replace("'", "\\'"));
-    user.namePharma = globalMethods.upperFirstLetterOfWords(user.namePharma.replace("'", "\\'"));
+    user.streetName = upperFirstLetterOfWords(secureApostrophes(user.streetName));
+    user.city = upperFirstLetterOfWords(secureApostrophes(user.city));
+    user.domain = upperFirstLetterOfWords(secureApostrophes(user.domain));
+    user.namePharma = upperFirstLetterOfWords(secureApostrophes(user.namePharma));
     user.email = user.email.toLowerCase();
 
     try {
@@ -68,7 +68,7 @@ const register = async user => {
         const accountId = saveAccountResult.insertId;
         let addressId = '';
         if (user.type !== "healthService") {
-            const [saveAddressResult] = await addressRepository.save(pool, user.streetNumber, user.streetName.replace("'", "\\'"), user.postalCode, user.city);
+            const [saveAddressResult] = await addressRepository.save(pool, user.streetNumber, user.streetName, user.postalCode, user.city);
             addressId = saveAddressResult.insertId;
         }
         switch (user.type) {
@@ -146,7 +146,7 @@ const getInfo = async (id, role) => {
                 user.city = address[0][0].communeAdresse;
                 user.weight = temp[0][0].poids;
                 user.securityNumber = temp[0][0].numeroSecu;
-                user.birthDate = globalMethods.convertFromMySQLDate(temp[0][0].dateDeNaissance);
+                user.birthDate = convertFromMySQLDate(temp[0][0].dateDeNaissance);
                 user.name = temp[0][0].nomPatient + " " + temp[0][0].prenomPatient;
                 return user;
             case "doctor":
@@ -189,15 +189,15 @@ const saveInfo = async (user, id, role) => {
     const pool = utility.pool;
 
     if (user.streetName !== undefined)
-        user.streetName = globalMethods.upperFirstLetterOfWords(user.streetName.replace("'", "\\'"));
+        user.streetName = upperFirstLetterOfWords(secureApostrophes(user.streetName));
     if (user.city !== undefined)
-        user.city = globalMethods.upperFirstLetterOfWords(user.city.replace("'", "\\'"));
+        user.city = upperFirstLetterOfWords(secureApostrophes(user.city));
     if (user.domain !== undefined)
-        user.domain = globalMethods.upperFirstLetterOfWords(user.domain.replace("'", "\\'"));
+        user.domain = upperFirstLetterOfWords(secureApostrophes(user.domain));
     if (user.namePharma !== undefined)
-        user.namePharma = globalMethods.upperFirstLetterOfWords(user.namePharma.replace("'", "\\'"));
+        user.namePharma = upperFirstLetterOfWords(secureApostrophes(user.namePharma));
     if (user.birthDate !== undefined)
-        user.birthDate = globalMethods.convertToMySQLDate(user.birthDate);
+        user.birthDate = convertToMySQLDate(user.birthDate);
 
     if (user.weight === undefined || user.weight === "")
         user.weight = null;

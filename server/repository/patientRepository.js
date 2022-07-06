@@ -1,4 +1,5 @@
 const utility = require("../utility");
+const doctorRepository = require("./doctorRepository");
 
 async function save(pool, lastName, firstName, addressId, accountId) {
     const insertUserQuery = `INSERT INTO Patient (nomPatient, prenomPatient, IDadresse, IDcompte)
@@ -35,49 +36,51 @@ const getRecord = async (id, role) => {
 
 const getPrescriptions = async (patientAccountID, userRole, userID) => {
     const pool = utility.pool;
-    const healthServiceQuery = `SELECT
-                                    o.IDordonnance,
-                                    o.dateOrdonnance,
-                                    m.nomMedecin,
-                                    s.nouveauStatut
-                                FROM Ordonnance AS o
-                                JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
-                                JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
-                                JOIN Patient AS p ON p.IDpatient = o.IDpatient
-                                WHERE p.IDcompte = ${patientAccountID}
-                                AND s.dateStatut = (
-                                    SELECT
-                                        MAX(s2.dateStatut)
-                                    FROM HistoriqueStatuts AS s2
-                                    WHERE s2.IDordonnance = o.IDordonnance
-                                )
-                                ORDER BY o.IDordonnance DESC;`;
-    const doctorQuery = `SELECT
-                            o.IDordonnance,
-                            o.dateOrdonnance,
-                            m.nomMedecin,
-                            s.nouveauStatut
-                        FROM Ordonnance AS o
-                        JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
-                        JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
-                        JOIN Patient AS p ON p.IDpatient = o.IDpatient
-                        WHERE p.IDcompte = ${patientAccountID}
-                        AND m.IDcompte = ${userID}
-                        AND s.dateStatut = (
-                            SELECT
-                                MAX(s2.dateStatut)
-                            FROM HistoriqueStatuts AS s2
-                            WHERE s2.IDordonnance = o.IDordonnance
-                        )
-                        ORDER BY o.IDordonnance DESC;`;
 
     try {
         let rows;
 
-        if (userRole === "doctor")
+        if (userRole === "doctor") {
+            const doctorID = await doctorRepository.getDoctorID(pool, userID);
+            const patientID = await getPatientID(pool, patientAccountID);
+            const doctorQuery = `SELECT
+                                o.IDordonnance,
+                                o.dateOrdonnance,
+                                m.nomMedecin,
+                                s.nouveauStatut
+                            FROM Ordonnance AS o
+                            JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
+                            JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
+                            WHERE o.IDpatient = ${patientID}
+                            AND o.IDmedecin = ${doctorID}
+                            AND s.dateStatut = (
+                                SELECT
+                                    MAX(s2.dateStatut)
+                                FROM HistoriqueStatuts AS s2
+                                WHERE s2.IDordonnance = o.IDordonnance
+                            )
+                            ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(doctorQuery);
-        else if (userRole === 'healthService')
+        } else if (userRole === "healthService") {
+            const patientID = await getPatientID(pool, patientAccountID);
+            const healthServiceQuery = `SELECT
+                                        o.IDordonnance,
+                                        o.dateOrdonnance,
+                                        m.nomMedecin,
+                                        s.nouveauStatut
+                                    FROM Ordonnance AS o
+                                    JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
+                                    JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
+                                    WHERE o.IDpatient = ${patientID}
+                                    AND s.dateStatut = (
+                                        SELECT
+                                            MAX(s2.dateStatut)
+                                        FROM HistoriqueStatuts AS s2
+                                        WHERE s2.IDordonnance = o.IDordonnance
+                                    )
+                                    ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(healthServiceQuery);
+        }
 
         for (const row in rows) {
             rows[row].dateOrdonnance = rows[row].dateOrdonnance.toLocaleDateString();
@@ -116,11 +119,21 @@ async function getAddressID(pool, id) {
     return await pool.promise().query(query);
 }
 
+async function getPatientID(pool, id) {
+    const query = `SELECT IDpatient FROM Patient WHERE IDcompte = '${id}'`;
+    const [res] = await pool.promise().query(query);
+    if (res.length !== 0)
+        return res[0].IDpatient;
+    else
+        return "error";
+}
+
 module.exports = {
     save,
     find,
     getRecord,
     getPrescriptions,
     update,
-    getAddressID
+    getAddressID,
+    getPatientID
 }
