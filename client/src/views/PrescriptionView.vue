@@ -1,16 +1,15 @@
 <template>
   <AdaptFooterBackground :backgroundGradient="true">
     <Navbar/>
-    <WhiteBoard title="Ordonnance"
+    <WhiteBoard v-if="this.statuses.length > 0"
+                title="Ordonnance"
                 :statut="true"
                 :textStatut="this.statuses[0].status"
     >
       <Prescription
-          v-if="this.statuses.length > 0"
           :prescription="this.prescription"
-          :role="this.role"
           :statuses="this.statuses"
-          @delivery="actualiseTreatment"
+          @treatmentDeliveryStatusActualisation="saveTreatmentToActualise"
       />
       <div class="ord-whiteboard-buttons">
         <Button
@@ -56,7 +55,7 @@ import Button from "@/components/globalComponents/Button";
 const BASE_URL = "http://localhost:8081/";
 export default {
   name: "PrescriptionView",
-  emits: ["delivery", "status"],
+  emits: ["treatmentDeliveryStatusActualisation"],
   components: {
     Prescription,
     AdaptFooterBackground,
@@ -67,6 +66,7 @@ export default {
   },
   data() {
     return {
+      role: "",
       prescriptionID: "",
       statuses: [],
       prescription: {
@@ -84,8 +84,7 @@ export default {
         },
         treatments: [],
       },
-      role: "",
-      id: Number,
+      treatmentsToActualiseIds: []
     }
   },
   methods: {
@@ -132,43 +131,23 @@ export default {
       this.getStatuses();
     },
     actualisePrescription() {
-      this.actualiseStatus();
-      fetch(BASE_URL + "prescription/treatment/" + this.id + "/delivery", {
+      console.log(this.treatmentsToActualiseIds);
+      fetch(BASE_URL + "prescription/" + this.prescriptionID + "/treatments/delivery", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": localStorage.getItem("WebToken"),
         },
         body: JSON.stringify({
-          prescriptionId: this.prescription.id,
-          status: this.statuses[0].status,
+          treatmentsToActualiseIds: this.treatmentsToActualiseIds,
+          treatments: this.prescription.treatments
         })
       });
       this.getPrescription();
       this.getStatuses();
     },
-    actualiseTreatment(id) {
-      this.id = id;
-      for (let i in this.prescription.treatments) {
-        if (this.prescription.treatments[i].id === id) {
-          this.prescription.treatments[i].isDelivery = !this.prescription.treatments[i].isDelivery;
-        }
-      }
-    },
-    actualiseStatus() {
-      let newStatus = "Fermée";
-
-      for (let i in this.prescription.treatments) {
-        if (!this.prescription.treatments[i].isDelivery) {
-          newStatus = "En cours";
-          break;
-        }
-      }
-
-      this.statuses.unshift({
-        status: newStatus,
-        date: new Date(),
-      });
+    saveTreatmentToActualise(treatmentId) {
+      this.treatmentsToActualiseIds.push(treatmentId);
     },
     removeSessionStorage() {
       sessionStorage.removeItem("prescriptionID");

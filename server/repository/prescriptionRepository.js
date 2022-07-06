@@ -1,6 +1,5 @@
 const utility = require("../utility/index");
 const treatmentRepository = require("./treatmentRepository");
-const userRepository = require("./userRepository");
 const patientRepository = require("./patientRepository");
 const doctorRepository = require("./doctorRepository");
 const statusRepository = require("./statusRepository");
@@ -54,7 +53,7 @@ const addPrescription = async (userID, userRole, prescription) => {
     }
 }
 
-const findById = async (prescriptionId, userId) => {
+const findById = async (prescriptionId) => {
     const pool = utility.pool;
     try {
         const sqlQuery = `SELECT * FROM Ordonnance 
@@ -92,38 +91,64 @@ const findById = async (prescriptionId, userId) => {
     }
 }
 
-const closeById = async (prescriptionId) => {
+const closeById = async (prescriptionId, role) => {
     const pool = utility.pool;
 
     try {
-        const sqlQuery = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), 'Fermée', ${prescriptionId});`;
-        console.log(sqlQuery);
-        await pool.promise().query(sqlQuery);
-        return "success";
+        if (role === 'doctor') {
+            const getCurrentStatusQuery = `SELECT nouveauStatut FROM HistoriqueStatuts WHERE IDordonnance = ${prescriptionId} ORDER BY dateStatut, IDstatut DESC LIMIT 1;`;
+            const [rows] = await pool.promise().query(getCurrentStatusQuery);
+            const currentStatus = rows[0].nouveauStatut;
+
+            if (currentStatus !== "Fermée") {
+                const insertNewStatus = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), 'Fermée', ${prescriptionId});`;
+                await pool.promise().query(insertNewStatus);
+            }
+            return "success";
+        }
     } catch (err) {
         console.log(err);
         throw new err;
     }
 }
 
-const actualiseById = async (prescriptionId, status, treatmentId) => {
+const actualiseById = async (prescriptionId, treatmentsToActualiseIds, role, treatments) => {
     const pool = utility.pool;
 
-    try {
-        console.log(treatmentId)
-        const sqlQuery = `UPDATE Traitement SET estDelivre = !estDelivre WHERE Traitement.IDtraitement = ${treatmentId};`;
-        await pool.promise().query(sqlQuery);
-    } catch (err) {
-        console.log(err);
-        throw new err;
-    }
+    if (role === 'pharma') {
+        try {
+            for (let treatmentId of treatmentsToActualiseIds) {
+                const sqlQuery = `UPDATE Traitement SET estDelivre = TRUE WHERE IDtraitement = ${treatmentId};`;
+                await pool.promise().query(sqlQuery);
+            }
+        } catch (err) {
+            console.log(err);
+            throw new err;
+        }
 
-    try {
-        const sqlQuery = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), '${status}', ${prescriptionId});`;
-        await pool.promise().query(sqlQuery);
-    } catch (err) {
-        console.log(err);
-        throw new err;
+        try {
+            const getCurrentStatusQuery = `SELECT nouveauStatut FROM HistoriqueStatuts WHERE IDordonnance = ${prescriptionId} ORDER BY dateStatut, IDstatut DESC LIMIT 1;`;
+            const [rows] = await pool.promise().query(getCurrentStatusQuery);
+            const currentStatus = rows[0].nouveauStatut;
+
+            let newStatus = "Fermée";
+
+            for (let i in treatments) {
+                if (!treatmentsToActualiseIds.includes(treatments[i].id) && !treatments[i].isDelivery) {
+                    newStatus = "En cours";
+                    break;
+                }
+            }
+
+            if (currentStatus !== newStatus) {
+                const insertNewStatus = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), '${newStatus}', ${prescriptionId});`;
+                await pool.promise().query(insertNewStatus);
+            }
+
+        } catch (err) {
+            console.log(err);
+            throw new err;
+        }
     }
 }
 
