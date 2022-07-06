@@ -206,6 +206,50 @@ async function getPharmas(userRole, userID) {
     }
 }
 
+async function getDoctors(userRole, userID) {
+    const pool = utility.pool;
+
+    if (userRole !== "patient")
+        return "error";
+
+    try {
+        const patientID = await getPatientID(pool, userID);
+
+        const doctorsQuery = `SELECT DISTINCT
+                            m.nomMedecin,
+                            m.prenomMedecin,
+                            m.domaineMedecin,
+                            a.numeroAdresse,
+                            a.rueAdresse,
+                            a.communeAdresse,
+                            a.codePostal
+                        FROM LiaisonMedecinPatient AS l
+                        NATURAL JOIN Médecin AS m
+                        NATURAL JOIN Adresse AS a
+                        WHERE l.IDpatient = ${patientID};`;
+
+        const [res] = await pool.promise().query(doctorsQuery);
+        let rows;
+
+        if (res.length === 0)
+            return "no doctors";
+        else {
+            rows = [];
+            for (const row in res) {
+                rows.push({
+                    "nomMedecin": res[row].prenomMedecin + " " + res[row].nomMedecin,
+                    "adresseMedecin": res[row].numeroAdresse + " " + res[row].rueAdresse + ", " + res[row].communeAdresse + ", " + res[row].codePostal,
+                    "domaineMedecin": res[row].domaineMedecin
+                });
+            }
+            return rows;
+        }
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
 async function getAllByParam(userRole, search) {
     const pool = utility.pool;
 
@@ -283,6 +327,7 @@ exports.update = update;
 exports.getAddressID = getAddressID;
 exports.getPatientID = getPatientID;
 exports.getPharmas = getPharmas;
+exports.getDoctors = getDoctors;
 exports.getAllByParam = getAllByParam;
 exports.addPatientToDoctor = addPatientToDoctor;
 exports.findPatientIdByPrescriptionId = findPatientIdByPrescriptionId;

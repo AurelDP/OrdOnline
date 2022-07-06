@@ -38,6 +38,18 @@ async function getPharmas(req, res) {
     res.send({result: result});
 }
 
+async function getDoctors(req, res) {
+    const userRole = req.authUser.userRole;
+    const userID = req.authUser.userID;
+    let result
+    try {
+        result = await patientRepository.getDoctors(userRole, userID);
+    } catch (error) {
+        result = "error"
+    }
+    res.send({result: result});
+}
+
 async function getAllByParam(req, res) {
     const userRole = req.authUser.userRole;
     const search = req.body.search;
@@ -57,6 +69,7 @@ module.exports = {
     getRecord,
     getPrescriptions,
     getPharmas,
+    getDoctors,
     getAllByParam,
     addPatientToDoctor
 }

@@ -27,6 +27,7 @@
             class-title="ord-text-subtitle-bold py-4"
             :data="dataDoctors"
             :key="dataDoctors"
+            @getClickValue="clickedDoctorID"
         />
         <Table
             :only2Col="true"
@@ -122,6 +123,8 @@ export default {
       showAddPatient: false,
       showModalSuccess: false,
       showModalError: false,
+      doctorID: "",
+      showDoctorModal: false,
     };
   },
   methods: {
@@ -142,6 +145,10 @@ export default {
     clickedPrescriptionPharmaID(prescriptionID) {
       sessionStorage.setItem("prescriptionID", prescriptionID);
       this.$router.push({ path: "/prescription" });
+    },
+    clickedDoctorID(value) {
+      console.log(value);
+      this.doctorID = value;
     },
     addPatient() {
       this.showAddPatient = true;
@@ -164,6 +171,25 @@ export default {
               this.dataOrdoPatient = response.result;
             else if (response.result === "no prescriptions")
               this.dataOrdoPatient = [];
+            else
+              console.log("error");
+          });
+    },
+    getDoctors() {
+      fetch(BASE_URL + "patient/getDoctors", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+          "Authorization": localStorage.getItem("WebToken"),
+        }
+      })
+          .then(response => response.json())
+          .then(response => {
+            if (response.result !== "error" && response.result !== "no doctors")
+              this.dataDoctors = response.result;
+            else if (response.result === "no doctors")
+              this.dataDoctors = [];
             else
               console.log("error");
           });
@@ -250,12 +276,16 @@ export default {
     },
     closeModalError() {
       this.showModalError = false;
-    }
+    },
+    closeDoctorModal() {
+      this.showDoctorModal = false;
+    },
   },
   created() {
     if (this.role === "patient") {
       this.getPrescriptions();
       this.getPharmas();
+      this.getDoctors();
     }
     if (this.role === "doctor") {
       this.getPatients();
