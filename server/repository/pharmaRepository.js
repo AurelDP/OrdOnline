@@ -104,13 +104,11 @@ const findPharmaIDByPrescriptionId = async (pool, prescriptionID) => {
     return rows[0].IDpharmacien;
 }
 
-module.exports = {
-    save,
-    find,
-    getAddressID,
-    update,
-    getPharmaID,
-    getAllByParam,
-    addPharmaToPrescription,
-    findPharmaIDByPrescriptionId,
-}
+exports.save = save;
+exports.find = find;
+exports.getAddressID = getAddressID;
+exports.update = update;
+exports.getPharmaID = getPharmaID;
+exports.getAllByParam = getAllByParam;
+exports.addPharmaToPrescription = addPharmaToPrescription;
+exports.findPharmaIDByPrescriptionId = findPharmaIDByPrescriptionId;

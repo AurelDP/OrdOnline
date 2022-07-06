@@ -61,8 +61,7 @@ const add = async (prescriptionId, status, pharma) => {
     }
 }
 
-module.exports = {
-    findByPrescriptionId,
-    add,
-    checkAbilityToViewPrescription
-}
+exports.findByPrescriptionId = findByPrescriptionId;
+exports.add = add;
+exports.checkAbilityToViewPrescription = checkAbilityToViewPrescription;
+

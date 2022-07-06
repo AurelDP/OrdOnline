@@ -184,10 +184,8 @@ const checkPatientOrdo = async (pool, patientID, prescriptionID) => {
     return rows.length !== 0;
 }
 
-module.exports = {
-    addPrescription,
-    findById,
-    closeById,
-    actualiseById,
-    checkPatientOrdo
-}
+exports.checkPatientOrdo = checkPatientOrdo;
+exports.addPrescription = addPrescription;
+exports.findById = findById;
+exports.closeById = closeById;
+exports.actualiseById = actualiseById;

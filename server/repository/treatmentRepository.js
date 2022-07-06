@@ -39,7 +39,5 @@ const findByPrescriptionId = async (prescriptionId) => {
     }
 }
 
-module.exports = {
-    add,
-    findByPrescriptionId
-}
+exports.add = add;
+exports.findByPrescriptionId = findByPrescriptionId;

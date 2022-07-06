@@ -95,6 +95,7 @@ const getPrescriptions = async (patientID, userRole, userID) => {
                                     ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(healthServiceQuery);
         } else if (userRole === "patient") {
+            const IDpatient = await getPatientID(pool, userID);
             const patientQuery = `SELECT
                                         o.IDordonnance,
                                         o.dateOrdonnance,
@@ -103,7 +104,7 @@ const getPrescriptions = async (patientID, userRole, userID) => {
                                     FROM Ordonnance AS o
                                     JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                                     JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
-                                    WHERE o.IDpatient = ${patientID}
+                                    WHERE o.IDpatient = ${IDpatient}
                                     AND s.IDstatut = (
                                         SELECT
                                             MAX(s2.IDstatut)
@@ -274,16 +275,14 @@ const findPatientIdByPrescriptionId = async (pool, prescriptionID) => {
     return rows[0].IDpatient;
 }
 
-module.exports = {
-    save,
-    find,
-    getRecord,
-    getPrescriptions,
-    update,
-    getAddressID,
-    getPatientID,
-    getPharmas,
-    getAllByParam,
-    addPatientToDoctor,
-    findPatientIdByPrescriptionId
-}
+exports.save = save;
+exports.find = find;
+exports.getRecord = getRecord;
+exports.getPrescriptions = getPrescriptions;
+exports.update = update;
+exports.getAddressID = getAddressID;
+exports.getPatientID = getPatientID;
+exports.getPharmas = getPharmas;
+exports.getAllByParam = getAllByParam;
+exports.addPatientToDoctor = addPatientToDoctor;
+exports.findPatientIdByPrescriptionId = findPatientIdByPrescriptionId;

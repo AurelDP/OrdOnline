@@ -20,8 +20,6 @@ async function updatePassword(pool, id, passwordHash) {
     return await pool.promise().query(updatePasswordQuery);
 }
 
-module.exports = {
-    save,
-    updatePhoneNumber,
-    updatePassword
-}
+exports.save = save;
+exports.updatePhoneNumber = updatePhoneNumber;
+exports.updatePassword = updatePassword;

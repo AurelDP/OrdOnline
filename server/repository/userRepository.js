@@ -252,10 +252,8 @@ const getPhoneNumber = async (pool, id) => {
     return rows[0];
 }
 
-module.exports = {
-    register,
-    login,
-    findRole,
-    getInfo,
-    saveInfo
-}
+exports.register = register;
+exports.login = login;
+exports.findRole = findRole;
+exports.getInfo = getInfo;
+exports.saveInfo = saveInfo;

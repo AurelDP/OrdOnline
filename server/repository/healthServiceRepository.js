@@ -23,9 +23,7 @@ async function getHealthServiceID(pool, id) {
         return "error";
 }
 
-module.exports = {
-    save,
-    find,
-    update,
-    getHealthServiceID
-}
+exports.save = save;
+exports.find = find;
+exports.update = update;
+exports.getHealthServiceID = getHealthServiceID;

@@ -4,6 +4,4 @@ async function isPatientOfDoctor(pool, doctorId, patientId) {
     return result.length > 0;
 }
 
-module.exports = {
-    isPatientOfDoctor
-}
+exports.isPatientOfDoctor = isPatientOfDoctor;

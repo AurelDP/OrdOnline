@@ -26,8 +26,6 @@ async function update(pool, id, streetNumber, streetName, postalCode, city) {
     return await pool.promise().query(updateAddressQuery);
 }
 
-module.exports = {
-    save,
-    getInfo,
-    update
-}
+exports.save = save;
+exports.getInfo = getInfo;
+exports.update = update;
