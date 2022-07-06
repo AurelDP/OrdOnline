@@ -16,11 +16,13 @@ async function add(req, res) {
 
 async function findById(req, res) {
     const prescriptionId = req.params.prescriptionId;
+    const userID = req.authUser.userID;
+    const role = req.authUser.userRole;
     if (prescriptionId !== null) {
         let result;
 
         try {
-            result = await prescriptionRepository.findById(prescriptionId);
+            result = await prescriptionRepository.findById(prescriptionId, userID, role);
         } catch (error) {
             result = "error";
         }
@@ -30,10 +32,12 @@ async function findById(req, res) {
 
 async function findStatusesById(req, res) {
     const prescriptionId = req.params.prescriptionId;
+    const userID = req.authUser.userID;
+    const role = req.authUser.userRole;
     if (prescriptionId) {
         let statuses;
         try {
-            statuses = await statusesRepository.findByPrescriptionId(prescriptionId);
+            statuses = await statusesRepository.findByPrescriptionId(prescriptionId, userID, role);
         } catch (error) {
             statuses = "error";
         }
@@ -43,11 +47,12 @@ async function findStatusesById(req, res) {
 
 async function closeById(req, res) {
     const prescriptionId = req.params.prescriptionId;
+    const userID = req.authUser.userID;
     const role = req.authUser.userRole;
     if (prescriptionId) {
         let isSuccess;
         try {
-            isSuccess = await prescriptionRepository.closeById(prescriptionId, role);
+            isSuccess = await prescriptionRepository.closeById(prescriptionId, role, userID);
         } catch (error) {
             isSuccess = "error";
         }
@@ -60,11 +65,12 @@ async function actualiseTreatmentsDeliveryById(req, res) {
     const role = req.authUser.userRole;
     const treatmentsToActualiseIds = req.body.treatmentsToActualiseIds;
     const treatments = req.body.treatments;
+    const userID = req.authUser.userID;
 
     if (prescriptionId) {
         let isSuccess;
         try {
-            isSuccess = await prescriptionRepository.actualiseById(prescriptionId, treatmentsToActualiseIds, role, treatments);
+            isSuccess = await prescriptionRepository.actualiseById(prescriptionId, treatmentsToActualiseIds, role, treatments, userID);
         } catch (error) {
             isSuccess = "error";
         }

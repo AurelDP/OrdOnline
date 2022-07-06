@@ -28,5 +28,5 @@ module.exports = {
     upperFirstLetterOfWords,
     convertToMySQLDate,
     convertFromMySQLDate,
-    secureApostrophes
+    secureApostrophes,
 }

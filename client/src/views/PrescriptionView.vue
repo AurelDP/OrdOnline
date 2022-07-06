@@ -44,6 +44,7 @@
     </WhiteBoard>
 
     <WhiteBoard
+        v-if="this.statuses.length > 0"
         title="Historique des statuts"
     >
       <PrescriptionStatus
@@ -139,7 +140,9 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            this.statuses = data.statuses;
+            if (data.statuses !== "error") {
+              this.statuses = data.statuses;
+            }
           })
           .catch(error => {
             console.log(error);
@@ -155,7 +158,9 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            this.prescription = data.prescription;
+            if (data.prescription !== "error") {
+              this.prescription = data.prescription;
+            }
           })
           .catch(error => {
             console.log(error);

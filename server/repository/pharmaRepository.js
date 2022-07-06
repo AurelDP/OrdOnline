@@ -98,6 +98,12 @@ const addPharmaToPrescription = async (userRole, userID, prescriptionID, pharmaI
     }
 }
 
+const findPharmaIDByPrescriptionId = async (pool, prescriptionID) => {
+    const sqlQuery = `SELECT IDpharmacien FROM AccesOrdo WHERE IDordonnance = ${prescriptionID};`;
+    const [rows] = await pool.promise().query(sqlQuery);
+    return rows[0].IDpharmacien;
+}
+
 module.exports = {
     save,
     find,
@@ -105,5 +111,6 @@ module.exports = {
     update,
     getPharmaID,
     getAllByParam,
-    addPharmaToPrescription
+    addPharmaToPrescription,
+    findPharmaIDByPrescriptionId,
 }

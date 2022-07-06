@@ -149,6 +149,12 @@ async function getPatientID(pool, id) {
         return "error";
 }
 
+const findPatientIdByPrescriptionId = async (pool, prescriptionID) => {
+    const sqlQuery = `SELECT IDpatient FROM Ordonnance WHERE IDordonnance = ${prescriptionID};`;
+    const [rows] = await pool.promise().query(sqlQuery);
+    return rows[0].IDpatient;
+}
+
 module.exports = {
     save,
     find,
@@ -156,5 +162,6 @@ module.exports = {
     getPrescriptions,
     update,
     getAddressID,
-    getPatientID
+    getPatientID,
+    findPatientIdByPrescriptionId
 }
