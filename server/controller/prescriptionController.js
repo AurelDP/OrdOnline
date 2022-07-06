@@ -20,7 +20,7 @@ async function findById(req, res) {
         let result;
 
         try {
-            result = await prescriptionRepository.findById(prescriptionId, 5);
+            result = await prescriptionRepository.findById(prescriptionId);
         } catch (error) {
             result = "error";
         }
@@ -30,7 +30,7 @@ async function findById(req, res) {
 
 async function findStatusesById(req, res) {
     const prescriptionId = req.params.prescriptionId;
-    if (prescriptionId !== null) {
+    if (prescriptionId) {
         let statuses;
         try {
             statuses = await statusesRepository.findByPrescriptionId(prescriptionId);
@@ -43,10 +43,11 @@ async function findStatusesById(req, res) {
 
 async function closeById(req, res) {
     const prescriptionId = req.params.prescriptionId;
-    if (prescriptionId !== null) {
+    const role = req.authUser.userRole;
+    if (prescriptionId) {
         let isSuccess;
         try {
-            isSuccess = await prescriptionRepository.closeById(prescriptionId);
+            isSuccess = await prescriptionRepository.closeById(prescriptionId, role);
         } catch (error) {
             isSuccess = "error";
         }
@@ -54,15 +55,16 @@ async function closeById(req, res) {
     }
 }
 
-async function actualiseById(req, res) {
-    const treatmentId = req.params.treatmentId;
-    const status = req.body.status;
-    const prescriptionId = req.body.prescriptionId;
+async function actualiseTreatmentsDeliveryById(req, res) {
+    const prescriptionId = req.params.prescriptionId;
+    const role = req.authUser.userRole;
+    const treatmentsToActualiseIds = req.body.treatmentsToActualiseIds;
+    const treatments = req.body.treatments;
 
     if (prescriptionId) {
         let isSuccess;
         try {
-            isSuccess = await prescriptionRepository.actualiseById(prescriptionId, status, treatmentId);
+            isSuccess = await prescriptionRepository.actualiseById(prescriptionId, treatmentsToActualiseIds, role, treatments);
         } catch (error) {
             isSuccess = "error";
         }
@@ -75,5 +77,5 @@ module.exports = {
     findById,
     findStatusesById,
     closeById,
-    actualiseById
+    actualiseTreatmentsDeliveryById
 }

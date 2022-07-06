@@ -7,6 +7,6 @@ router.post('/add', auth, prescriptionController.add);
 router.get('/:prescriptionId', auth, prescriptionController.findById);
 router.get('/:prescriptionId/statuses', auth, prescriptionController.findStatusesById);
 router.post('/:prescriptionId/close', auth, prescriptionController.closeById);
-router.post('/treatment/:treatmentId/delivery', auth, prescriptionController.actualiseById)
+router.post('/:prescriptionId/treatments/delivery', auth, prescriptionController.actualiseTreatmentsDeliveryById);
 
 module.exports = router;
