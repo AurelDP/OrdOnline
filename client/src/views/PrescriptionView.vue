@@ -122,7 +122,7 @@ export default {
         },
         treatments: [],
       },
-      treatmentsToActualiseIds: []
+      treatmentsToActualiseIds: [],
       showAddPharma: false,
       showModalSuccess: false,
       showModalError: false,
