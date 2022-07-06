@@ -1,5 +1,7 @@
 const utility = require("../utility");
 const doctorRepository = require("./doctorRepository");
+const {secureApostrophes} = require("../methods/globalMethods");
+const linkDoctorPatientRepository = require("./linkDoctorPatient");
 
 async function save(pool, lastName, firstName, addressId, accountId) {
     const insertUserQuery = `INSERT INTO Patient (nomPatient, prenomPatient, IDadresse, IDcompte)
@@ -12,16 +14,25 @@ async function find(pool, id) {
     return await pool.promise().query(query);
 }
 
-const getRecord = async (id, role) => {
+const getRecord = async (patientID, role, userID) => {
     const pool = utility.pool;
     const query = `SELECT nomPatient, prenomPatient, dateDeNaissance, numeroSecu, poids, numeroAdresse, rueAdresse, communeAdresse, codePostal, mailCompte, telCompte 
-                    FROM Patient, Adresse, Compte
-                    WHERE Patient.IDadresse = Adresse.IDadresse
-                    AND Compte.IDcompte = Patient.IDcompte
-                    AND Compte.IDcompte = '${id}';`;
+                    FROM Patient
+                    JOIN Adresse ON Adresse.IDadresse = Patient.IDadresse
+                    JOIN Compte ON Compte.IDcompte = Patient.IDcompte
+                    WHERE Patient.IDpatient = '${patientID}';`;
 
     try {
         if (role === "doctor" || role === "healthService") {
+
+            if (role === "doctor") {
+                const doctorID = await doctorRepository.getDoctorID(pool, userID);
+                const isValid = await linkDoctorPatientRepository.isPatientOfDoctor(pool, doctorID, patientID);
+
+                if (!isValid)
+                    return "error";
+            }
+
             const [res] = await pool.promise().query(query);
             if (res[0].dateDeNaissance !== null)
                 res[0].dateDeNaissance = res[0].dateDeNaissance.toLocaleDateString();
@@ -34,7 +45,7 @@ const getRecord = async (id, role) => {
     }
 }
 
-const getPrescriptions = async (patientAccountID, userRole, userID) => {
+const getPrescriptions = async (patientID, userRole, userID) => {
     const pool = utility.pool;
 
     try {
@@ -42,7 +53,11 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
 
         if (userRole === "doctor") {
             const doctorID = await doctorRepository.getDoctorID(pool, userID);
-            const patientID = await getPatientID(pool, patientAccountID);
+
+            const isValid = await linkDoctorPatientRepository.isPatientOfDoctor(pool, doctorID, patientID);
+            if (!isValid)
+                return "error";
+
             const doctorQuery = `SELECT
                                 o.IDordonnance,
                                 o.dateOrdonnance,
@@ -53,16 +68,15 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                             JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                             WHERE o.IDpatient = ${patientID}
                             AND o.IDmedecin = ${doctorID}
-                            AND s.dateStatut = (
+                            AND s.IDstatut = (
                                 SELECT
-                                    MAX(s2.dateStatut)
+                                    MAX(s2.IDstatut)
                                 FROM HistoriqueStatuts AS s2
                                 WHERE s2.IDordonnance = o.IDordonnance
                             )
                             ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(doctorQuery);
         } else if (userRole === "healthService") {
-            const patientID = await getPatientID(pool, patientAccountID);
             const healthServiceQuery = `SELECT
                                         o.IDordonnance,
                                         o.dateOrdonnance,
@@ -72,16 +86,15 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                                     JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
                                     WHERE o.IDpatient = ${patientID}
-                                    AND s.dateStatut = (
+                                    AND s.IDstatut = (
                                         SELECT
-                                            MAX(s2.dateStatut)
+                                            MAX(s2.IDstatut)
                                         FROM HistoriqueStatuts AS s2
                                         WHERE s2.IDordonnance = o.IDordonnance
                                     )
                                     ORDER BY o.IDordonnance DESC;`;
             [rows] = await pool.promise().query(healthServiceQuery);
         } else if (userRole === "patient") {
-            const patientID = await getPatientID(pool, userID);
             const patientQuery = `SELECT
                                         o.IDordonnance,
                                         o.dateOrdonnance,
@@ -91,9 +104,9 @@ const getPrescriptions = async (patientAccountID, userRole, userID) => {
                                     JOIN Médecin AS m ON m.IDmedecin = o.IDmedecin
                                     JOIN HistoriqueStatuts AS s ON s.IDordonnance = o.IDordonnance
                                     WHERE o.IDpatient = ${patientID}
-                                    AND s.dateStatut = (
+                                    AND s.IDstatut = (
                                         SELECT
-                                            MAX(s2.dateStatut)
+                                            MAX(s2.IDstatut)
                                         FROM HistoriqueStatuts AS s2
                                         WHERE s2.IDordonnance = o.IDordonnance
                                     )
@@ -149,6 +162,112 @@ async function getPatientID(pool, id) {
         return "error";
 }
 
+async function getPharmas(userRole, userID) {
+    const pool = utility.pool;
+
+    if (userRole !== "patient")
+        return "error";
+
+    try {
+        const patientID = await getPatientID(pool, userID);
+
+        const query = `SELECT
+                            ph.nomPharmacie,
+                            ad.numeroAdresse,
+                            ad.rueAdresse,
+                            ad.communeAdresse,
+                            ad.codePostal
+                        FROM Pharmacie AS ph
+                        NATURAL JOIN AccesOrdo AS a
+                        JOIN Adresse AS ad ON ad.IDadresse = ph.IDadresse
+                        JOIN Ordonnance AS o ON a.IDordonnance = o.IDordonnance
+                        JOIN Patient AS pa ON pa.IDpatient = o.IDpatient
+                        WHERE pa.IDpatient = ${patientID};`;
+
+        const [res] = await pool.promise().query(query);
+        let rows;
+
+        if (res.length === 0)
+            return "noPharmacies";
+        else {
+            rows = [];
+            for (const row in res) {
+                rows.push({
+                    "nomPharma": res[row].nomPharmacie,
+                    "adressePharma": res[row].numeroAdresse + " " + res[row].rueAdresse + ", " + res[row].communeAdresse + ", " + res[row].codePostal,
+                });
+            }
+            return rows;
+        }
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
+async function getAllByParam(userRole, search) {
+    const pool = utility.pool;
+
+    search = secureApostrophes(search.toLowerCase());
+    if (userRole !== "doctor")
+        return "error";
+
+    const query = `SELECT
+                        IDpatient,
+                        nomPatient,
+                        prenomPatient,
+                        numeroAdresse,
+                        rueAdresse,
+                        communeAdresse,
+                        codePostal
+                    FROM Patient
+                    NATURAL JOIN Adresse
+                    WHERE nomPatient LIKE '%${search}%'
+                    OR prenomPatient LIKE '%${search}%'
+                    OR rueAdresse LIKE '%${search}%'
+                    OR communeAdresse LIKE '%${search}%'
+                    OR codePostal LIKE '%${search}%'`;
+
+    try {
+        const [rows] = await pool.promise().query(query);
+        if (rows.length === 0)
+            return "noPatientFound";
+        else {
+            let res = [];
+            for (const row in rows) {
+                res.push({
+                    "nomPatient": rows[row].nomPatient + " " + rows[row].prenomPatient,
+                    "adressePatient": rows[row].numeroAdresse + " " + rows[row].rueAdresse + ", " + rows[row].communeAdresse + ", " + rows[row].codePostal,
+                    "IDpatient": rows[row].IDpatient,
+                });
+            }
+            return res;
+        }
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
+async function addPatientToDoctor (patientID, userID, userRole) {
+    const pool = utility.pool;
+
+    if (userRole !== "doctor")
+        return "error";
+
+    try {
+        const doctorID = await doctorRepository.getDoctorID(pool, userID);
+
+        const query = `INSERT INTO LiaisonMedecinPatient (IDmedecin, IDpatient)
+                        VALUES (${doctorID}, ${patientID});`;
+        await pool.promise().query(query);
+        return "success";
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+}
+
 const findPatientIdByPrescriptionId = async (pool, prescriptionID) => {
     const sqlQuery = `SELECT IDpatient FROM Ordonnance WHERE IDordonnance = ${prescriptionID};`;
     const [rows] = await pool.promise().query(sqlQuery);
@@ -163,5 +282,8 @@ module.exports = {
     update,
     getAddressID,
     getPatientID,
+    getPharmas,
+    getAllByParam,
+    addPatientToDoctor,
     findPatientIdByPrescriptionId
 }

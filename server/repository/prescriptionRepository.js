@@ -34,9 +34,8 @@ const addPrescription = async (userID, userRole, prescription) => {
             return "noDataReceived";
         }
 
-        const patientID = await patientRepository.getPatientID(pool, prescription.idPatientAccount);
         const doctorID = await doctorRepository.getDoctorID(pool, userID);
-        const [savePrescriptionResult] = await add(pool, prescription.medicalAdvices, doctorID, patientID);
+        const [savePrescriptionResult] = await add(pool, prescription.medicalAdvices, doctorID, prescription.patientID);
         const prescriptionId = savePrescriptionResult.insertId;
         if (!treatmentsEmpty)
             await treatmentRepository.add(pool, prescription.treatments, prescriptionId);

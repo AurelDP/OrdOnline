@@ -14,7 +14,7 @@
       <p class="w-full md:w-1/2">{{ renewal }}</p>
       <div class="w-full md:w-1/2 md:text-right">
         <label for="delivered" class="mr-5">Delivré</label>
-        <input @click="actualiseDeliveryStatus" v-model="isDelivered" type="checkbox" id="delivered" name="delivered" :disabled="role === 'doctor' || role === 'patient' || prescriptionStatus === 'Fermée' || isDelivered" :checked="isDelivered"/>
+        <input @click="actualiseDeliveryStatus" v-model="isDelivered" type="checkbox" id="delivered" name="delivered" :disabled="role === 'doctor' || role === 'patient' || role === 'healthService' || prescriptionStatus === 'Fermée' || isDelivered" :checked="isDelivered"/>
       </div>
     </div>
   </li>
@@ -32,6 +32,11 @@ export default {
     renewal: String,
     isDelivered: Boolean,
     prescriptionStatus: String
+  },
+  data() {
+    return {
+      role: localStorage.getItem('Role'),
+    }
   },
   methods: {
     actualiseDeliveryStatus() {
