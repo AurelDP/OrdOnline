@@ -120,7 +120,7 @@ module.exports = {
     save,
     find,
     getRecord,
-    getPrescriptions
+    getPrescriptions,
     update,
     getAddressID
 }
