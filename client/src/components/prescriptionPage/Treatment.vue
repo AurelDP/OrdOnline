@@ -14,7 +14,7 @@
       <p class="w-full md:w-1/2">{{ renewal }}</p>
       <div class="w-full md:w-1/2 md:text-right">
         <label for="delivered" class="mr-5">Delivré</label>
-        <input @click="actualiseDelivery" v-model="isDelivered" type="checkbox" id="delivered" name="delivered" :disabled="role === 'doctor' || role === 'patient'" :checked="isDelivered"/>
+        <input @click="actualiseDelivery" v-model="isDelivered" type="checkbox" id="delivered" name="delivered" :disabled="role === 'doctor' || role === 'patient' || prescriptionStatus === 'Fermée' || isDelivered" :checked="isDelivered"/>
       </div>
     </div>
   </li>
@@ -31,11 +31,13 @@ export default {
     isReimbursable: Number,
     renewal: String,
     isDelivered: Boolean,
-    role: String
+    role: String,
+    prescriptionStatus: String
   },
   methods: {
     actualiseDelivery() {
       this.$emit("delivery", this.id);
+      this.$emit("status");
     }
   }
 }

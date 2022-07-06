@@ -14,47 +14,58 @@ async function add(req, res) {
 
 async function findById(req, res) {
     const prescriptionId = req.params.prescriptionId;
-    let result;
+    if (prescriptionId !== null) {
+        let result;
 
-    try {
-        result = await prescriptionRepository.findById(prescriptionId, 5);
-    } catch (error) {
-        result = "error";
+        try {
+            result = await prescriptionRepository.findById(prescriptionId, 5);
+        } catch (error) {
+            result = "error";
+        }
+        res.send(result);
     }
-    res.send(result);
 }
 
 async function findStatusesById(req, res) {
     const prescriptionId = req.params.prescriptionId;
-    let statuses;
-    try {
-        statuses = await statusesRepository.findByPrescriptionId(prescriptionId);
-    } catch (error) {
-        statuses = "error";
+    if (prescriptionId !== null) {
+        let statuses;
+        try {
+            statuses = await statusesRepository.findByPrescriptionId(prescriptionId);
+        } catch (error) {
+            statuses = "error";
+        }
+        res.send({statuses});
     }
-    res.send({statuses});
 }
 
 async function closeById(req, res) {
     const prescriptionId = req.params.prescriptionId;
-    let isSuccess;
-    try {
-        isSuccess = await prescriptionRepository.closeById(prescriptionId);
-    } catch (error) {
-        isSuccess = "error";
+    if (prescriptionId !== null) {
+        let isSuccess;
+        try {
+            isSuccess = await prescriptionRepository.closeById(prescriptionId);
+        } catch (error) {
+            isSuccess = "error";
+        }
+        res.send({result: isSuccess});
     }
-    res.send({result: isSuccess});
 }
 
 async function actualiseById(req, res) {
     const treatmentId = req.params.treatmentId;
-    let isSuccess;
-    try {
-        isSuccess = await prescriptionRepository.actualiseById(treatmentId);
-    } catch (error) {
-        isSuccess = "error";
+    const status = req.body.status;
+    const prescriptionId = req.body.prescriptionId;
+
+    if (prescriptionId) {
+        let isSuccess;
+        try {
+            isSuccess = await prescriptionRepository.actualiseById(prescriptionId, status, treatmentId);
+        } catch (error) {
+            isSuccess = "error";
+        }
+        res.send({result: isSuccess});
     }
-    res.send({result: isSuccess});
 }
 
 module.exports = {

@@ -9,7 +9,9 @@
       <Prescription
         :prescription="this.prescription"
         :role="this.role"
+        :statuses="this.statuses"
         @delivery="actualiseTreatment"
+        @status="actualiseStatus"
       />
       <div class="ord-whiteboard-buttons">
         <Button
@@ -41,6 +43,7 @@
       <Prescription
           :prescription="this.prescription"
           :role="this.role"
+          :statuses="this.statuses"
           @delivery="actualiseTreatment"
       />
       <div class="ord-whiteboard-buttons">
@@ -86,6 +89,7 @@ import Button from "@/components/globalComponents/Button";
 const BASE_URL = "http://localhost:8081/";
 export default {
   name: "PrescriptionView",
+  emits: ["delivery", "status"],
   components: {
     Prescription,
     AdaptFooterBackground,
@@ -98,6 +102,7 @@ export default {
     return {
       statuses: [],
       prescription: {
+        id: Number,
         name: "",
         description: "",
         medicalAdvices: "",
@@ -143,7 +148,6 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            console.log(data);
             this.prescription = data.prescription;
             this.role = data.role;
           })
@@ -161,13 +165,19 @@ export default {
       this.getStatuses();
     },
     actualisePrescription() {
+      this.actualiseStatus();
       fetch(BASE_URL + "prescription/treatment/" + this.id + "/delivery", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
+        body: JSON.stringify({
+          prescriptionId: this.prescription.id,
+          status: this.statuses[0].status,
+        })
       });
       this.getPrescription();
+      this.getStatuses();
     },
     actualiseTreatment(id) {
       this.id = id;
@@ -176,7 +186,22 @@ export default {
           this.prescription.treatments[i].isDelivery = !this.prescription.treatments[i].isDelivery;
         }
       }
-    }
+    },
+    actualiseStatus() {
+      let newStatus = "Fermée";
+
+      for (let i in this.prescription.treatments) {
+        if (!this.prescription.treatments[i].isDelivery) {
+          newStatus = "En cours";
+          break;
+        }
+      }
+
+      this.statuses.unshift({
+        status: newStatus,
+        date: new Date(),
+      });
+    },
   },
   created() {
     this.getPrescription();

@@ -4,7 +4,7 @@ const findByPrescriptionId= async (prescriptionId) => {
     const pool = utility.pool;
 
     try {
-        const sqlQuery2 = `SELECT * FROM HistoriqueStatuts WHERE HistoriqueStatuts.IDordonnance = ${prescriptionId} ORDER BY HistoriqueStatuts.dateStatut DESC;`;
+        const sqlQuery2 = `SELECT * FROM HistoriqueStatuts WHERE HistoriqueStatuts.IDordonnance = ${prescriptionId} ORDER BY HistoriqueStatuts.IDstatut DESC;`;
         const [rows2] = await pool.promise().query(sqlQuery2);
         const statuses = [];
 

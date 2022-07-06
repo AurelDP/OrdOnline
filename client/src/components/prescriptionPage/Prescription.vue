@@ -19,7 +19,9 @@
         :renewal="treatment.renew"
         :isDelivered="treatment.isDelivery"
         :role="role"
+        :prescriptionStatus="statuses[0].status"
         @delivery="actualiseDelivery"
+        @status="actualiseStatus"
       />
     </ul>
   </InfoBox>
@@ -35,6 +37,7 @@ import InfoBox from "@/components/globalComponents/InfoBox";
 const BASE_URL = "http://localhost:8081/";
 export default {
   name: "Prescription",
+  emits: ["delivery", "status"],
   components: {
     Treatment,
     InfoBox,
@@ -55,15 +58,18 @@ export default {
         firstName: String,
         address: String,
       },
-      treatments: [],
-      statuses: []
+      treatments: []
     },
+    statuses: Array,
     role: String
   },
   methods: {
     actualiseDelivery(delivery) {
       this.$emit("delivery", delivery);
-    }
+    },
+    actualiseStatus() {
+      this.$emit("status");
+    },
   }
 }
 </script>

@@ -33,7 +33,7 @@ const findById = async (prescriptionId, userId) => {
             WHERE Ordonnance.IDordonnance = ${prescriptionId};`;
         const [rows] = await pool.promise().query(sqlQuery);
 
-        const prescription = {"patient": {"lastName": rows[0].nomPatient, "firstName": rows[0].prenomPatient, "age": null, "weight": rows[0].poids}, "doctor": {"lastName": rows[0].nomMedecin, "firstName": rows[0].prenomMedecin, "address": rows[0].numeroAdresse.toString() + " " + rows[0].rueAdresse + ", " + rows[0].communeAdresse + ", " + rows[0].codePostal}, "medicalAdvices": rows[0].conseilsMedicaux, "date": rows[0].dateOrdonnance, "treatments": []};
+        const prescription = {"id": rows[0].IDordonnance, "patient": {"lastName": rows[0].nomPatient, "firstName": rows[0].prenomPatient, "age": null, "weight": rows[0].poids}, "doctor": {"lastName": rows[0].nomMedecin, "firstName": rows[0].prenomMedecin, "address": rows[0].numeroAdresse.toString() + " " + rows[0].rueAdresse + ", " + rows[0].communeAdresse + ", " + rows[0].codePostal}, "medicalAdvices": rows[0].conseilsMedicaux, "date": rows[0].dateOrdonnance, "treatments": []};
         prescription["treatments"] = await treatmentRepository.findByPrescriptionId(prescriptionId);
         if (rows[0].dateDeNaissance !== null) {
             prescription["patient"].age = new Date().getFullYear() - (rows[0].dateDeNaissance).getFullYear();
@@ -61,11 +61,20 @@ const closeById = async (prescriptionId) => {
     }
 }
 
-const actualiseById = async (treatmentId) => {
+const actualiseById = async (prescriptionId, status, treatmentId) => {
     const pool = utility.pool;
 
     try {
+        console.log(treatmentId)
         const sqlQuery = `UPDATE Traitement SET estDelivre = !estDelivre WHERE Traitement.IDtraitement = ${treatmentId};`;
+        await pool.promise().query(sqlQuery);
+    } catch (err) {
+        console.log(err);
+        throw new err;
+    }
+
+    try {
+        const sqlQuery = `INSERT INTO HistoriqueStatuts (dateStatut, nouveauStatut, IDordonnance) VALUES (NOW(), '${status}', ${prescriptionId});`;
         await pool.promise().query(sqlQuery);
     } catch (err) {
         console.log(err);
