@@ -1,7 +1,7 @@
 const patientRepository = require('../repository/patientRepository');
 
 async function getRecord(req, res) {
-    const id = req.body.idPatient;
+    const id = req.body.idPatientAccount;
     const role = req.authUser.userRole;
     let result
     try {
@@ -13,7 +13,7 @@ async function getRecord(req, res) {
 }
 
 async function getPrescriptions(req, res) {
-    const patientAccountID = req.body.idPatient;
+    const patientAccountID = req.body.idPatientAccount;
     const userRole = req.authUser.userRole;
     const userID = req.authUser.userID;
     let result

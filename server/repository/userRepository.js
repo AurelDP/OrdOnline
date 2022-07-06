@@ -27,18 +27,18 @@ async function findRole(id) {
     const pool = utility.pool;
 
     try {
-        const isPatient = await patientRepository.find(pool, id);
-        const isDoctor = await doctorRepository.find(pool, id);
-        const isPharma = await pharmaRepository.find(pool, id);
-        const isHealthService = await healthServiceRepository.find(pool, id);
+        const [isPatient] = await patientRepository.find(pool, id);
+        const [isDoctor] = await doctorRepository.find(pool, id);
+        const [isPharma] = await pharmaRepository.find(pool, id);
+        const [isHealthService] = await healthServiceRepository.find(pool, id);
 
-        if (isPatient[0].length !== 0)
+        if (isPatient.length !== 0)
             return "patient";
-        if (isDoctor[0].length !== 0)
+        if (isDoctor.length !== 0)
             return "doctor";
-        if (isPharma[0].length !== 0)
+        if (isPharma.length !== 0)
             return "pharma";
-        if (isHealthService[0].length !== 0)
+        if (isHealthService.length !== 0)
             return "healthService";
 
     } catch (error) {
@@ -64,12 +64,12 @@ const register = async user => {
             return "emailOrPhoneNumberAlreadyExists";
         }
 
-        const saveAccountResult = await accountRepository.save(pool, user.email, user.phoneNumber, passwordHash);
-        const accountId = saveAccountResult[0].insertId;
+        const [saveAccountResult] = await accountRepository.save(pool, user.email.toLowerCase(), user.phoneNumber, passwordHash);
+        const accountId = saveAccountResult.insertId;
         let addressId = '';
         if (user.type !== "healthService") {
-            const saveAddressResult = await addressRepository.save(pool, user.streetNumber, user.streetName, user.postalCode, user.city);
-            addressId = saveAddressResult[0].insertId;
+            const [saveAddressResult] = await addressRepository.save(pool, user.streetNumber, user.streetName.replace("'", "\\'"), user.postalCode, user.city);
+            addressId = saveAddressResult.insertId;
         }
         switch (user.type) {
             case "patient":

@@ -37,6 +37,8 @@ router.beforeEach((to, from, next) => {
         next({name: 'error'});
     else if (to.name === "patientrecord" && !(localStorage.getItem("Role") === 'doctor' || localStorage.getItem("Role") === 'healthService'))
         next({name: 'error'});
+    else if (to.name === "addprescription" && !(localStorage.getItem("Role") === 'doctor'))
+        next({name: 'error'});
     else
         next();
 })

@@ -12,8 +12,8 @@ const getAll = async () => {
     const sqlQuery = `SELECT * FROM ${TABLE_PATH}`;
 
     try {
-        const results = await client.promise().query(sqlQuery);
-        return results[0];
+        const [results] = await client.promise().query(sqlQuery);
+        return results;
     } catch(err) {
         console.log(err.stack);
         return null;

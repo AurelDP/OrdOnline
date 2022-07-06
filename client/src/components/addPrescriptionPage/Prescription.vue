@@ -41,6 +41,12 @@
           :src="'/addPrescription'"
           @click="addPrescription"
       />
+      <Button
+          class="ord-button-green hover:ord-button-green-hover"
+          :text="'Retour'"
+          :src="'/patientRecord'"
+          @click="removeSessionStorage"
+      />
     </div>
   </WhiteBoard>
 </template>
@@ -75,6 +81,7 @@ export default {
     return {
       treatmentList: [],
       medicalAdvices: '',
+      idPatientAccount: sessionStorage.getItem('patientAccountIDforNewPrescription'),
     }
   },
   methods: {
@@ -140,9 +147,14 @@ export default {
         if (this.treatmentList[i].id === id)
           this.treatmentList[i].renewal = renewal;
       }
+    },
+    removeSessionStorage() {
+      sessionStorage.removeItem('patientAccountIDforNewPrescription');
     }
   },
   created() {
+    if (sessionStorage.getItem('patientAccountIDforNewPrescription') === null)
+      this.$router.push("/patientRecord");
     this.addTreatement();
   }
 }
