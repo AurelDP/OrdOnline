@@ -14,9 +14,10 @@
 export default {
   props: {
     blackWord: String,
+    greenWord: String,
     path: String,
-    imageSize : String,
-    bubbleSize : String
+    imageSize: String,
+    bubbleSize: String
   },
 
   data(){
