@@ -52,7 +52,7 @@
       </a>
     </div>
     <h1 class="ord-text-title mt-10 ml-10 md:text-left text-center">Pourquoi ce site ?</h1>
-    <p class="text-center text-justify ord-text-subtitle my-10 mx-10">Nous sommes 5 étudiants à Efrei Paris et nous avions pour mission de réaliser une plateforme qui simpliefierai
+    <p class="text-center text-justify ord-text-subtitle my-10 mx-10">Nous sommes 5 étudiants à Efrei Paris et nous avions pour mission de réaliser une plateforme qui simplifierait
     le quotidien des patients, des services de santé, des médecins et des pharmacies. Ce site a donc pour but
     de répondre à cette demande et s'adresse à chacun de ces acteurs. Il permet de créer des ordonnances,
     de les transmettre et joue le rôle d'intermédiaire entre les personnes concernées. En utilisant Ord'Online
