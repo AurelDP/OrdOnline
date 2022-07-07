@@ -29,7 +29,7 @@ const findByPrescriptionId = async (prescriptionId) => {
         const treatments = [];
 
         for (const row in rows) {
-            treatments.push({"id": rows[row].IDtraitement,"name": rows[row].nomMedicament, "description": rows[row].descriptionTraitement, "substitutable": rows[row].nonSubstituable, "reimbursable": rows[row].nonRemboursable, "renew": rows[row].modaliteRenouvellement, "isDelivery": rows[row].estDelivre === 1});
+            treatments.push({"id": rows[row].IDtraitement,"name": rows[row].nomMedicament, "description": rows[row].descriptionTraitement, "substitutable": rows[row].nonSubstituable, "reimbursable": rows[row].nonRemboursable, "renew": rows[row].modalitesRenouvellement, "isDelivery": rows[row].estDelivre === 1});
         }
 
         return treatments;
