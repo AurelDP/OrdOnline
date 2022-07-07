@@ -10,7 +10,7 @@ const add = async (pool, treatments, prescriptionId) => {
         if (treatments[i].renewal !== "" && treatments[i].renewal !== null)
             treatments[i].renewal = secureApostrophes(treatments[i].renewal);
 
-        const sqlQuery = `INSERT INTO Traitement (nomMedicament, descriptionTraitement, substituable, remboursable, modalitesRenouvellement, estDelivre, IDordonnance)
+        const sqlQuery = `INSERT INTO Traitement (nomMedicament, descriptionTraitement, nonSubstituable, nonRemboursable, modalitesRenouvellement, estDelivre, IDordonnance)
                        VALUES('${treatments[i].name}', '${treatments[i].description}', ${treatments[i].isSubstitutable}, ${treatments[i].isReimbursable} , '${treatments[i].renewal}', ${treatments[i].isDelivered}, ${prescriptionId});`;
         try {
             await pool.promise().query(sqlQuery);
@@ -29,7 +29,7 @@ const findByPrescriptionId = async (prescriptionId) => {
         const treatments = [];
 
         for (const row in rows) {
-            treatments.push({"id": rows[row].IDtraitement,"name": rows[row].nomMedicament, "description": rows[row].descriptionTraitement, "substitutable": rows[row].substituable, "reimbursable": rows[row].remboursable, "renew": rows[row].modaliteRenouvellement, "isDelivery": rows[row].estDelivre === 1});
+            treatments.push({"id": rows[row].IDtraitement,"name": rows[row].nomMedicament, "description": rows[row].descriptionTraitement, "substitutable": rows[row].nonSubstituable, "reimbursable": rows[row].nonRemboursable, "renew": rows[row].modaliteRenouvellement, "isDelivery": rows[row].estDelivre === 1});
         }
 
         return treatments;
