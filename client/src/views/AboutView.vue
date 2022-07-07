@@ -26,7 +26,7 @@
       <a href="https://www.linkedin.com/in/joel-gabbai/" target="_blank">
         <InfoBubble
           class="transition hover:scale-110"
-          blackWord="Joel Gabbai"
+          blackWord="Joël Gabbai"
           :path="require('../assets/About/joel.png')"
           image-size="w-52 h-52"
           bubble-size="w-56 h-56"
@@ -35,7 +35,7 @@
       <a href="https://www.linkedin.com/in/kylian-sauv%C3%A9e-8822b319b/" target="_blank">
         <InfoBubble
           class="transition hover:scale-110"
-          blackWord="Kylian Sauvee"
+          blackWord="Kylian Sauvée"
           :path="require('../assets/About/kylian.png')"
           image-size="w-52 h-52"
           bubble-size="w-56 h-56"
