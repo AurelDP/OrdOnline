@@ -1,9 +1,10 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {DefaultColors} */
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     "./public/index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "./src/**/**/*.{vue,js,ts,jsx,tsx}"
+    "./src/**/*.{vue,js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {},
@@ -19,6 +20,11 @@ module.exports = {
       },
       'ord-dark-blue': '#2D3047',
       'ord-red': '#DE5456',
+      'ord-lightred': '#E47273',
+      'white': colors.white,
+      'light-gray': colors.gray[300],
+      'white-gray': colors.gray[200],
+      'gray': colors.gray,
     }
   },
   plugins: [],
